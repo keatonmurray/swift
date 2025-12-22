@@ -1,14 +1,16 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-function App() {
+import Login from "./pages/Login";
+
+const App = () => {
   return (
-    <div>
-      {/* Nav here */}
+    <div className="page-wrapper">
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </div>
-  );
+  )
 }
 
 export default App;

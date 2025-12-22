@@ -11,6 +11,12 @@ body {
   background-color: var(--primary-color);
 }
 
+.page-wrapper {
+  padding: 40px 0 0;
+  height: 100%;
+  min-height: 100vh;
+}
+
 .custom-rounded {
   border-radius: 30px;
 }
@@ -18,4 +24,21 @@ body {
 .custom-rounded-top {
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
+}
+
+.h4-extra-bold {
+  font-weight: 900; 
+  letter-spacing: -0.5px;
+}
+
+.display-4-custom {
+  font-size: calc(-0.525rem + 13.7vw);
+}
+
+.btn-rounded {
+  border-radius: 20px;
+}
+
+.btn-dark {
+  background-color: #000 !important;
 }
