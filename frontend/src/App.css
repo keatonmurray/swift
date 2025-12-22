@@ -1,0 +1,158 @@
+/* COMPONENTS-BASED CSS */
+.swift.homepage.mx-auto {
+    padding: 50px 0 0;
+}
+
+.swift.homepage .user-profile-img {
+    height: 80px;
+    width: auto;
+}
+
+.swift.homepage.notifications-icon figure {
+    margin: 0;
+    background: var(--primary-color);;
+    padding: 8px 14px;
+    border-radius: 26px;
+}
+
+.p-0.m-0.small.text-capitalize {
+    font-weight: 500;
+}
+
+.swift.homepage.notifications-icon figure img {
+  height: 14px;
+}
+
+.swift.homepage .card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.swift.homepage .credit-card {
+  width: 350px;
+  height: 200px;
+  border-radius: 15px;
+  background: linear-gradient(to bottom, #000000 70%, #FFBF00 30%);
+  padding: 1.5rem;
+  color: white;
+  position: relative;
+  /* box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: 'Poppins', sans-serif;
+}
+
+.swift.homepage .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.swift.homepage .card-name {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.swift.homepage .card-type {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.swift.homepage .chip {
+  width: 50px;
+  height: 35px;
+  background-color: #d4d4d4;
+  border-radius: 5px;
+  margin-top: 1rem;
+}
+
+.swift.homepage .card-number {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  letter-spacing: 3px;
+  font-weight: 600;
+}
+
+.swift.homepage .card-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  color: #333;
+}
+
+.swift.homepage.actions {
+    margin-top: 30px;
+}
+
+.swift.homepage.actions a img {
+    height: 30px;
+}
+
+.swift.homepage .transactions {
+    padding: 2rem 2rem 4rem 2rem;
+    height: 100%;
+    width: 100%;
+    min-height: 300px;
+    bottom: 0;
+}
+
+.swift.homepage .transactions a.text-decoration-none img {
+    height: 25px;
+    width: auto;
+}
+
+.swift.homepage.transaction-history {
+    margin-top: 25px;
+}
+
+.swift.homepage .transaction {
+  margin-bottom: 9px;
+}
+
+.swift.homepage .transaction:last-child {
+  border-bottom: none;
+}
+
+.swift.homepage .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #000;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.swift.homepage .name {
+  font-weight: 500;
+}
+
+.swift.homepage .time {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.swift.homepage .amount {
+  font-weight: 600;
+}
+
+.swift.homepage.footer-fixed {
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+}
+
+.swift.homepage.footer-fixed .card {
+    background-color: var(--primary-color);
+    margin: 0 10px;
+}
+
+.swift.homepage.footer-fixed img {
+    height: 40px
+}
+

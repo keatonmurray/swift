@@ -1,0 +1,21 @@
+/* GLOBAL CSS */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary-color: #f5eded;
+}
+
+body {
+  font-family: Poppins, sans-serif;
+  background-color: var(--primary-color);
+}
+
+.custom-rounded {
+  border-radius: 30px;
+}
+
+.custom-rounded-top {
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+}
