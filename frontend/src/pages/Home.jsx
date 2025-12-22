@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Home = () => {
     const transactions = [
         { name: "Jenny Wilson", initials: "JW", time: "Today, 12:30 pm", amount: "-$438", color: "#FDEBD0" },
@@ -11,7 +13,7 @@ const Home = () => {
        <div className="px-4">
             <div className="card border-0 custom-rounded px-4 py-2">
                 <div className="d-flex align-items-center justify-content-between pt-2">
-                <div className="account-balance">
+                    <div className="account-balance">
                         <div className="d-flex align-items-center justify-content-center">
                             <img src="./img/profile.png" alt="User Profile" className="user-profile-img"/>
                             <div className="d-flex flex-column align-items-start">
@@ -25,7 +27,6 @@ const Home = () => {
                             <img src="./img/bell.png" alt="Notification Bell" />
                         </figure>
                     </div>
-                    
                 </div>
             </div>
             <div className="swift homepage card-container">
@@ -40,7 +41,7 @@ const Home = () => {
                     <div className="card-number">6458 6354 7909 0001</div>
 
                     <div className="card-footer">
-                        <span className="fw-semibold">Valid Thru</span>
+                        <Link to="/login"className="fw-semibold">Valid Thru</Link>
                         <span className="fw-semibold">10/25</span>
                     </div>
                 </div>
