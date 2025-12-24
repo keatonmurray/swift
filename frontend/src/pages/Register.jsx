@@ -1,22 +1,21 @@
+import { Link } from "react-router-dom"
+
 const Register = () => {
   return (
-    <div className="swift auth">
-        <div className="bg-img-wrapper">
-            <img src="./img/auth-bg.png" alt="Page Background" />
-        </div>
-        <div className="content text-center px-3 px-md-0">
-            <div className="content text-center px-3 px-md-0 mt-4">
-                <h4 className="display-4-custom fw-bold mb-3">
-                    Get paid globally. Spend locally.
-                </h4>
-                <p className="lead small">Your multi-currency account, all in one place</p>
-            </div>
-            <br />
-            <div className="action-btn d-flex justify-content-center">
-                <button className="btn btn-rounded px-5 py-3 btn-light me-2 fw-semibold">Login</button>
-                <button className="btn btn-rounded px-5 py-3 btn-dark fw-semibold">Register</button>
-            </div>
-        </div>
+    <div className="swift auth register flex-column d-flex justify-content-center align-items-center">
+      <div>
+        <img src="./img/logo.png" alt="Logo" />
+      </div>
+      <div className="d-flex flex-column align-items-center mt-5">
+        <form action="#">
+          <input type="text" className="form-control mb-2 py-3" placeholder="First Name"/>
+          <input type="text" className="form-control mb-2 py-3" placeholder="Last Name"/>
+          <input type="email" className="form-control mb-2 py-3" placeholder="Email Address"/>
+          <input type="password" className="form-control mb-2 py-3" placeholder="Password"/>
+          <button className="btn btn-dark w-100 py-3 fw-semibold mt-3 py-2">Register</button>
+        </form>
+        <p className="fw-semibold small mt-3">Already have an account? <Link to="/login" className="text-dark">Login instead</Link></p>
+      </div>
     </div>
   )
 }

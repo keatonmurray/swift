@@ -1,6 +1,6 @@
 /* COMPONENTS-BASED CSS */
 
-/* Homepage */
+/* Dashboard */
 .swift.homepage .user-profile-img {
     height: 80px;
     width: auto;
@@ -154,7 +154,7 @@
     height: 40px
 }
 
-/* Login Page */
+/* Homepage */
 .swift.auth {
   min-height: 100vh;
   height: 100%;
@@ -174,4 +174,14 @@
 .swift.auth .bg-img-wrapper img {
   width: 100%;
   height: 100%;
+}
+
+.swift.auth.login img {
+  height: 130px;
+  width: auto;
+}
+
+.swift.auth.register img {
+  height: 130px;
+  width: auto;
 }

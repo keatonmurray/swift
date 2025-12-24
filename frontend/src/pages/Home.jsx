@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 const Home = () => {
   return (
     <div className="swift auth">
@@ -13,8 +15,8 @@ const Home = () => {
             </div>
             <br />
             <div className="action-btn d-flex justify-content-center">
-                <button className="btn btn-rounded px-5 py-3 btn-light me-2 fw-semibold">Login</button>
-                <button className="btn btn-rounded px-5 py-3 btn-dark fw-semibold">Register</button>
+                <Link to="/login" className="btn btn-rounded px-5 py-3 btn-light me-2 fw-semibold">Login</Link>
+                <Link to="/register" className="btn btn-rounded px-5 py-3 btn-dark fw-semibold">Register</Link>
             </div>
         </div>
     </div>
