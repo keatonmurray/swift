@@ -155,7 +155,7 @@
 }
 
 /* Login Page */
-.swift.login {
+.swift.auth {
   min-height: 100vh;
   height: 100%;
   background: #fcca08;
@@ -166,12 +166,12 @@
   overflow-x: hidden ;
 }
 
-.swift.login .bg-img-wrapper {
+.swift.auth .bg-img-wrapper {
   width: 100%;
   overflow: hidden;
 }
 
-.swift.login .bg-img-wrapper img {
+.swift.auth .bg-img-wrapper img {
   width: 100%;
   height: 100%;
 }

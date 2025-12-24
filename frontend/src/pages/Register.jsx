@@ -1,4 +1,4 @@
-const Home = () => {
+const Register = () => {
   return (
     <div className="swift auth">
         <div className="bg-img-wrapper">
@@ -21,4 +21,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Register
