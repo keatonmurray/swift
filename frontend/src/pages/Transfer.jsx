@@ -3,7 +3,7 @@ const Transfer = () => {
     <div className="swift transfer">
         <div className="bg-white p-4 w-100">
             <h3 className="fw-bold mb-3">Send Money</h3>
-            <div className="d-flex align-items-center justify-content-center">
+            <div className="d-flex align-items-center justify-content-center flex-column">
                 <div className="card border-0 p-3 account-details w-100">
                     <div className="d-flex align-items-center">
                         <div className="card-container text-white">
@@ -15,6 +15,12 @@ const Transfer = () => {
                         </div>
                     </div>
                 </div>
+                <div className="bubble-slider d-flex align-items-center justify-content-center gap-3">
+                    <div className="first-slide">.</div>
+                    <div className="second-slide">.</div>
+                    <div className="third-slide">.</div>
+                    <div className="fourth-slide">.</div>
+                </div>
             </div>
         </div>
         <div className="beneficiary-container container my-4">
@@ -22,37 +28,36 @@ const Transfer = () => {
                 Beneficiary
             </p>
             <div className="list">
-                <ul className="d-flex align-items-center justify-content-start gap-2 list-unstyled">
-                    <div className="list-wrapper add-new">
-                        <li className="fw-semibold"> + </li>
-                    </div>
-                    <div className="list-wrapper beneficiary-profile">
-                        <li>
-                            <img src="./img/profile.png" alt="Beneficiary Profile" />
-                        </li>
-                    </div>
-                    <div className="list-wrapper beneficiary-profile">
-                        <li>
-                            <img src="./img/profile.png" alt="Beneficiary Profile" />
-                        </li>
-                    </div>
-                    <div className="list-wrapper beneficiary-profile">
-                        <li>
-                            <img src="./img/profile.png" alt="Beneficiary Profile" />
-                        </li>
-                    </div>
-                    <div className="list-wrapper beneficiary-profile">
-                        <li>
-                            <img src="./img/profile.png" alt="Beneficiary Profile" />
-                        </li>
-                    </div>
-                        <div className="list-wrapper beneficiary-profile">
-                        <li>
-                            <img src="./img/profile.png" alt="Beneficiary Profile" />
-                        </li>
-                    </div>
+                <ul className="beneficiary-list">
+                    {/* Add new */}
+                    <li className="beneficiary-item text-center add-new">
+                        <div className="avatar">+</div>
+                        <span className="name small fw-semibold">Add New</span>
+                    </li>
+
+                    {/* Beneficiaries */}
+                    <li className="beneficiary-item text-center">
+                        <img src="./img/person1.jpg" alt="Theresa Webb" />
+                        <span className="name small fw-semibold">Theresa Webb</span>
+                    </li>
+
+                    <li className="beneficiary-item text-center">
+                        <img src="./img/person2.jpg" alt="Kathryn Murphy" />
+                        <span className="name small fw-semibold">Kathryn Murphy</span>
+                    </li>
+
+                    <li className="beneficiary-item text-center">
+                        <img src="./img/person3.jpg" alt="Kristin Watson" />
+                        <span className="name small fw-semibold">Kristin Watson</span>
+                    </li>
+
+                    <li className="beneficiary-item text-center">
+                        <img src="./img/person1.jpg" alt="Jane Cooper" />
+                        <span className="name small fw-semibold">Jane Cooper</span>
+                    </li>
                 </ul>
             </div>
+
         </div>
         <div className="set-amount bg-white p-4 w-100">
             <div className="text-center mb-4">
