@@ -41,26 +41,28 @@ const Dashboard = () => {
                     <div className="card-number">6458 6354 7909 0001</div>
 
                     <div className="card-footer">
-                        <span className="fw-semibold">Valid Thru</span>
-                        <span className="fw-semibold">10/25</span>
+                        <span className="fw-bold">Valid Thru</span>
+                        <span className="fw-bold">10/25</span>
                     </div>
                 </div>
             </div>
             <div className="swift homepage actions">
                 <div className="card border-0 custom-rounded px-4 py-3">
                     <div className="d-flex justify-content-between">
+                       
+
+                        <div className="d-flex flex-column align-items-center">
+                            <a href="#" className="text-decoration-none">
+                            <img src="./img/currency.png" alt="Withdraw Money Icon" />
+                            </a>
+                            <span className="fw-semibold mt-1">Currencies</span>
+                        </div>
+
                         <div className="d-flex flex-column align-items-center">
                             <a href="#" className="text-decoration-none">
                             <img src="./img/deposit.png" alt="Deposit Money Icon" />
                             </a>
                             <span className="fw-semibold mt-1">Deposit</span>
-                        </div>
-
-                        <div className="d-flex flex-column align-items-center">
-                            <a href="#" className="text-decoration-none">
-                            <img src="./img/withdraw.png" alt="Withdraw Money Icon" />
-                            </a>
-                            <span className="fw-semibold mt-1">Withdraw</span>
                         </div>
 
                         <div className="d-flex flex-column align-items-center">
