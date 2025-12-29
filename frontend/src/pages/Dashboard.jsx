@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Dashboard = () => {
     const transactions = [
         { name: "Jenny Wilson", initials: "JW", time: "Today, 12:30 pm", amount: "-$438", color: "#FDEBD0" },
@@ -62,9 +64,9 @@ const Dashboard = () => {
                         </div>
 
                         <div className="d-flex flex-column align-items-center">
-                            <a href="#" className="text-decoration-none">
-                            <img src="./img/transfer.png" alt="Transfer Money Icon" />
-                            </a>
+                            <Link to="/transfer" className="text-decoration-none">
+                                <img src="./img/transfer.png" alt="Transfer Money Icon" />
+                            </Link>
                             <span className="fw-semibold mt-1">Transfer</span>
                         </div>
                     </div>
