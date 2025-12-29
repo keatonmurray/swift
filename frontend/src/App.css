@@ -30,11 +30,13 @@
   vertical-align: middle; 
 }
 
-.swift.homepage .carousel-indicators {
+.swift.homepage .carousel-indicators,
+.swift.transfer .carousel-indicators  {
   margin-bottom: -30px !important;
 }
 
-.swift.homepage .carousel-indicators button {
+.swift.homepage .carousel-indicators button,
+.swift.swift.transfer .carousel-indicators button {
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -44,7 +46,8 @@
   border: none;
 }
 
-.swift.homepage .carousel-indicators button.active {
+.swift.homepage .carousel-indicators button.active,
+.swift.transfer .carousel-indicators button.active  {
   background-color: #000;   
   transform: scale(1.2);     
 }
@@ -210,6 +213,10 @@
 
 /* Transfer Page */
 
+.swift.transfer {
+  margin-top: -40px;
+}
+
 .swift.transfer .card.account-details {
   background-color: black;
   border-radius: 26px;
@@ -221,30 +228,6 @@
   padding: 12px 21px;
   font-weight: 800;
   font-size: 24px;
-}
-
-.swift.transfer .bubble-slider,
-.swift.homepage .bubble-slider {
-  font-weight: bold;
-  font-size: 50px;
-  margin-top: -28px;
-}
-
-.swift.transfer .bubble-slider .first-slide,
-.swift.homepage .bubble-slider .first-slide {
-  color: #000;
-}
-
-.swift.transfer .bubble-slider .second-slide,
-.swift.transfer .bubble-slider .third-slide,
-.swift.transfer .bubble-slider .fourth-slide {
-  color: var(--primary-color);
-}
-
-.swift.homepage .bubble-slider .second-slide,
-.swift.homepage .bubble-slider .third-slide,
-.swift.homepage .bubble-slider .fourth-slide {
-  color: #fff;
 }
 
 .swift.transfer .beneficiary-container .list .add-new .avatar {
