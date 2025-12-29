@@ -97,8 +97,8 @@ const Dashboard = () => {
                             <div className="chip"></div>
                             <div className="card-number">6458 6354 7909 0001</div>
                                 <div className="card-footer">
-                                    <span className="fw-bold">USD Account</span>
-                                    <span className="fw-bold">10/25</span>
+                                    <span className="fw-bold">USD</span>
+                                    <span className="fw-bold">Exp 10/25</span>
                                 </div>
                             </div>
                         </div>
@@ -111,8 +111,8 @@ const Dashboard = () => {
                             <div className="chip"></div>
                             <div className="card-number">4322 2211 6563 3252</div>
                                 <div className="card-footer">
-                                    <span className="fw-bold">GBP Account</span>
-                                    <span className="fw-bold">02/27</span>
+                                    <span className="fw-bold">GBP</span>
+                                    <span className="fw-bold">Exp 02/27</span>
                                 </div>
                             </div>
                         </div>
@@ -125,8 +125,8 @@ const Dashboard = () => {
                             <div className="chip"></div>
                                 <div className="card-number">5673 2322 6994 3321</div>
                                 <div className="card-footer">
-                                    <span className="fw-bold">EUR Account</span>
-                                    <span className="fw-bold">11/30</span>
+                                    <span className="fw-bold">EUR</span>
+                                    <span className="fw-bold">Exp 11/30</span>
                                 </div>
                             </div>
                         </div>

@@ -50,8 +50,8 @@
 }
 
 .swift.homepage .credit-card {
-  width: 335px;
-  height: 216px;
+  width: 360px;
+  height: 230px;
   border-radius: 15px;
   background: linear-gradient(to bottom, #000000 70%, #FFBF00 30%);
   padding: 1.5rem;
@@ -100,8 +100,7 @@
 .swift.homepage .card-footer {
   display: flex;
   justify-content: space-between;
-  font-size: 0.9rem;
-  margin-top: 1rem;
+  margin-top: 2rem;
   color: #333;
 }
 
