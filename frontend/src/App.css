@@ -84,11 +84,16 @@
 }
 
 .swift.homepage .chip {
-  width: 50px;
+  width: 53px;
   height: 35px;
-  background-color: #d4d4d4;
   border-radius: 5px;
   margin-top: 1rem;
+
+}
+
+.swift.homepage .chip img {
+  height: 45px;
+  width: 45px;
 }
 
 .swift.homepage .card-number {

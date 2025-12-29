@@ -94,7 +94,9 @@ const Dashboard = () => {
                                     <span className="card-name">Anik Deb</span>
                                     <span className="card-type">VISA</span>
                                 </div>
-                            <div className="chip"></div>
+                            <div className="chip">
+                                <img src="./img/logo-inverted.png" alt="Logo" />
+                            </div>
                             <div className="card-number">6458 6354 7909 0001</div>
                                 <div className="card-footer">
                                     <span className="fw-bold">USD</span>
@@ -108,7 +110,9 @@ const Dashboard = () => {
                                     <span className="card-name">Anik Deb</span>
                                     <span className="card-type">VISA</span>
                                 </div>
-                            <div className="chip"></div>
+                            <div className="chip">
+                                <img src="./img/logo-inverted.png" alt="Logo" />
+                            </div>
                             <div className="card-number">4322 2211 6563 3252</div>
                                 <div className="card-footer">
                                     <span className="fw-bold">GBP</span>
@@ -122,8 +126,10 @@ const Dashboard = () => {
                                     <span className="card-name">Anik Deb</span>
                                     <span className="card-type">VISA</span>
                                 </div>
-                            <div className="chip"></div>
-                                <div className="card-number">5673 2322 6994 3321</div>
+                            <div className="chip">
+                                <img src="./img/logo-inverted.png" alt="Logo" />
+                            </div>
+                            <div className="card-number">5673 2322 6994 3321</div>
                                 <div className="card-footer">
                                     <span className="fw-bold">EUR</span>
                                     <span className="fw-bold">Exp 11/30</span>
