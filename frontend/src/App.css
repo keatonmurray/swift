@@ -21,15 +21,36 @@
   height: 14px;
 }
 
-.swift.homepage .card-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 30px;
+.swift.homepage .carousel-inner {
+  text-align: center; 
+}
+
+.swift.homepage .carousel-inner .carousel-item > * {
+  display: inline-block; 
+  vertical-align: middle; 
+}
+
+.swift.homepage .carousel-indicators {
+  margin-bottom: -30px !important;
+}
+
+.swift.homepage .carousel-indicators button {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #cfd4da;  
+  opacity: 1;
+  margin: 0 4px;
+  border: none;
+}
+
+.swift.homepage .carousel-indicators button.active {
+  background-color: #000;   
+  transform: scale(1.2);     
 }
 
 .swift.homepage .credit-card {
-  width: 350px;
+  width: 335px;
   height: 216px;
   border-radius: 15px;
   background: linear-gradient(to bottom, #000000 70%, #FFBF00 30%);
@@ -40,6 +61,7 @@
   flex-direction: column;
   justify-content: space-between;
   font-family: 'Poppins', sans-serif;
+  margin-top: 30px;
 }
 
 .swift.homepage .card-header {
@@ -67,11 +89,12 @@
 }
 
 .swift.homepage .card-number {
-  margin-top: 2rem;
+  margin-top: 1rem;
   margin-bottom: 10px;
   font-size: 1.2rem;
   letter-spacing: 3px;
   font-weight: 600;
+  text-align: left;
 }
 
 .swift.homepage .card-footer {
@@ -201,26 +224,28 @@
   font-size: 24px;
 }
 
-.swift.transfer .bubble-slider {
+.swift.transfer .bubble-slider,
+.swift.homepage .bubble-slider {
   font-weight: bold;
   font-size: 50px;
   margin-top: -28px;
 }
 
-.swift.transfer .bubble-slider .first-slide {
+.swift.transfer .bubble-slider .first-slide,
+.swift.homepage .bubble-slider .first-slide {
   color: #000;
 }
 
-.swift.transfer .bubble-slider .second-slide {
-  color: var(--primary-color);
-}
-
-.swift.transfer .bubble-slider .third-slide {
-  color: var(--primary-color);
-}
-
+.swift.transfer .bubble-slider .second-slide,
+.swift.transfer .bubble-slider .third-slide,
 .swift.transfer .bubble-slider .fourth-slide {
   color: var(--primary-color);
+}
+
+.swift.homepage .bubble-slider .second-slide,
+.swift.homepage .bubble-slider .third-slide,
+.swift.homepage .bubble-slider .fourth-slide {
+  color: #fff;
 }
 
 .swift.transfer .beneficiary-container .list .add-new .avatar {

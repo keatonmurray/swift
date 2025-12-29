@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Carousel } from "bootstrap";
 
 const Dashboard = () => {
     const transactions = [
@@ -8,6 +10,34 @@ const Dashboard = () => {
         { name: "Esther Howard", initials: "EH", time: "Today, 12:30 pm", amount: "-$250", color: "#D0F7D0" },
         { name: "Ralph Edwards", initials: "RE", time: "Today, 12:30 pm", amount: "+$500", color: "#F7D0D0" },
     ];
+
+    useEffect(() => {
+        const carousel = document.getElementById("carouselExample");
+
+        const handleSlide = (event) => {
+        const indicators = document.querySelectorAll(
+            "#carouselExample .carousel-indicators button"
+        );
+        indicators.forEach((btn) => btn.classList.remove("active"));
+        indicators[event.to].classList.add("active");
+        };
+
+        carousel.addEventListener("slide.bs.carousel", handleSlide);
+
+        return () => {
+        carousel.removeEventListener("slide.bs.carousel", handleSlide);
+        };
+    }, []);
+
+    useEffect(() => {
+        const el = document.getElementById("carouselExample");
+        new Carousel(el, {
+            interval: false,
+            ride: false,
+            touch: true
+        });
+    }, []);
+
   return (
     <div className="swift homepage mx-auto">
        <div className="px-4">
@@ -30,22 +60,80 @@ const Dashboard = () => {
                 </div>
             </div>
             <div className="swift homepage card-container">
-                <div className="credit-card">
-                    <div className="card-header">
-                        <span className="card-name">Anik Deb</span>
-                        <span className="card-type">VISA</span>
+                <div
+                    id="carouselExample"
+                    className="carousel slide"
+                >
+                    <div className="carousel-indicators">
+                        <button
+                            type="button"
+                            data-bs-target="#carouselExample"
+                            data-bs-slide-to="0"
+                            className="active"
+                            aria-current="true"
+                            aria-label="Slide 1"
+                        ></button>
+                        <button
+                            type="button"
+                            data-bs-target="#carouselExample"
+                            data-bs-slide-to="1"
+                            aria-label="Slide 2"
+                        ></button>
+                        <button
+                            type="button"
+                            data-bs-target="#carouselExample"
+                            data-bs-slide-to="2"
+                            aria-label="Slide 3"
+                        ></button>
                     </div>
 
-                    <div className="chip"></div>
-
-                    <div className="card-number">6458 6354 7909 0001</div>
-
-                    <div className="card-footer">
-                        <span className="fw-bold">Valid Thru</span>
-                        <span className="fw-bold">10/25</span>
+                    <div className="carousel-inner">
+                        <div className="carousel-item active">
+                            <div className="credit-card">
+                                <div className="card-header">
+                                    <span className="card-name">Anik Deb</span>
+                                    <span className="card-type">VISA</span>
+                                </div>
+                            <div className="chip"></div>
+                            <div className="card-number">6458 6354 7909 0001</div>
+                                <div className="card-footer">
+                                    <span className="fw-bold">USD Account</span>
+                                    <span className="fw-bold">10/25</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="carousel-item">
+                            <div className="credit-card">
+                                <div className="card-header">
+                                    <span className="card-name">Anik Deb</span>
+                                    <span className="card-type">VISA</span>
+                                </div>
+                            <div className="chip"></div>
+                            <div className="card-number">4322 2211 6563 3252</div>
+                                <div className="card-footer">
+                                    <span className="fw-bold">GBP Account</span>
+                                    <span className="fw-bold">02/27</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="carousel-item">
+                            <div className="credit-card">
+                                <div className="card-header">
+                                    <span className="card-name">Anik Deb</span>
+                                    <span className="card-type">VISA</span>
+                                </div>
+                            <div className="chip"></div>
+                                <div className="card-number">5673 2322 6994 3321</div>
+                                <div className="card-footer">
+                                    <span className="fw-bold">EUR Account</span>
+                                    <span className="fw-bold">11/30</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <br />
             <div className="swift homepage actions">
                 <div className="card border-0 custom-rounded px-4 py-3">
                     <div className="d-flex justify-content-between">
