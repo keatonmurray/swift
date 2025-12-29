@@ -196,16 +196,6 @@ const Dashboard = () => {
                 ))}
             </div>
         </div>
-        <div className="swift homepage footer-fixed">
-            <div className="card custom-rounded border-0 px-4 py-3">
-                <div className="d-flex align-items-center justify-content-between">
-                    <img src="./img/home.png" alt="Home" />
-                    <img src="./img/transfer-solid.png" alt="Home" />
-                    <img src="./img/user.png" alt="Home" />
-                    <img src="./img/graph.png" alt="Home" />
-                </div>
-            </div>
-        </div>
     </div>
   )
 }
