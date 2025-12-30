@@ -47,7 +47,7 @@ const Dashboard = () => {
                         <div className="d-flex align-items-center justify-content-center">
                             <img src="./img/profile.png" alt="User Profile" className="user-profile-img"/>
                             <div className="d-flex flex-column align-items-start">
-                                <p className="p-0 m-0 small text-capitalize">Total balance</p>
+                                <p className="p-0 m-0 small text-capitalize">Balance</p>
                                 <h4 className="m-0 fw-semibold">$123,456</h4>
                             </div>
                         </div>
