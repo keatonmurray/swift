@@ -12,7 +12,7 @@ const Register = () => {
           <input type="text" className="form-control mb-2 py-3" placeholder="Last Name"/>
           <input type="email" className="form-control mb-2 py-3" placeholder="Email Address"/>
           <input type="password" className="form-control mb-2 py-3" placeholder="Password"/>
-          <button className="btn btn-dark w-100 py-3 fw-semibold mt-3 py-2">Register</button>
+          <button className="btn btn-dark w-100 py-3 fw-semibold mt-3 py-2">Signup</button>
         </form>
         <p className="fw-semibold small mt-3">Already have an account? <Link to="/login" className="text-dark">Login instead</Link></p>
       </div>
