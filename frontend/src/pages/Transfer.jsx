@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { Carousel } from "bootstrap";
 
+import cardLogo from '../../public/img/mastercard.png';
+
 const Transfer = () => {
   useEffect(() => {
     const el = document.getElementById("transferCarousel");
@@ -26,6 +28,12 @@ const Transfer = () => {
       carousel.dispose();
     };
   }, []);
+
+  const cardNumbers =[
+    {cardNumber: "4121491291024212", cardType: "Mastercard", initials: "M", cardLogo: cardLogo},
+    {cardNumber: "4232819271829056", cardType: "Mastercard", initials: "M", cardLogo: cardLogo},
+    {cardNumber: "4325213465783323", cardType: "Mastercard", initials: "M", cardLogo: cardLogo}
+  ];
 
   return (
     <div className="swift transfer">
@@ -57,47 +65,31 @@ const Transfer = () => {
           </div>
 
           <div className="carousel-inner">
-            <div className="carousel-item active">
-              <div className="card border-0 p-3 account-details w-100">
-                <div className="d-flex align-items-center">
-                  <div className="card-container text-white">V</div>
-                  <div className="card-details ms-2 text-white">
-                    <p className="lead fw-semibold p-0 m-0">Visa Card</p>
-                    <p className="small fw-semibold p-0 m-0">
-                      034191820192809
-                    </p>
+            {cardNumbers.map((c, index) => (
+              <div
+                key={index}
+                className={`carousel-item ${index === 0 ? "active" : ""}`}
+              >
+                <div className="card border-0 p-3 account-details w-100">
+                  <div className="d-flex align-items-center">
+                    <div className="card-container text-white">{c.initials}</div>
+                    <div className="card-details ms-2 text-white w-100">
+                      <div className="d-flex align-items-center justify-content-between">
+                        <div>
+                          <p className="lead fw-semibold p-0 m-0">{c.cardType}</p>
+                          <p className="small fw-semibold p-0 m-0">
+                            {c.cardNumber}
+                          </p>
+                        </div>
+                        <div className="text-end">
+                          <img src={cardLogo} alt="Card Logo" />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="carousel-item">
-              <div className="card border-0 p-3 account-details w-100">
-                <div className="d-flex align-items-center">
-                  <div className="card-container text-white">V</div>
-                  <div className="card-details ms-2 text-white">
-                    <p className="lead fw-semibold p-0 m-0">Visa Card</p>
-                    <p className="small fw-semibold p-0 m-0">
-                      034191820192809
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="carousel-item">
-              <div className="card border-0 p-3 account-details w-100">
-                <div className="d-flex align-items-center">
-                  <div className="card-container text-white">V</div>
-                  <div className="card-details ms-2 text-white">
-                    <p className="lead fw-semibold p-0 m-0">Visa Card</p>
-                    <p className="small fw-semibold p-0 m-0">
-                      034191820192809
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

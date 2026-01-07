@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { Carousel } from "bootstrap";
 
+import cardLogo from '../../public/img/mastercard.png';
+
 const Dashboard = () => {
     const transactions = [
         { name: "Jenny Wilson", initials: "JW", time: "Today, 12:30 pm", amount: "-$438", color: "#FDEBD0" },
@@ -42,6 +44,12 @@ const Dashboard = () => {
             touch: true
         });
     }, []);
+
+    const cardNumbers = [
+        {cardHolderName: "Keaton Murray", cardType: cardLogo, cardNumber: "4312121354637564", currencyType: "USD", expirationDate: "11/29"},
+        {cardHolderName: "Keaton Murray", cardType: cardLogo, cardNumber: "4333232154673212", currencyType: "GBP", expirationDate: "12/32"},
+        {cardHolderName: "Keaton Murray", cardType: cardLogo, cardNumber: "4546879709872341", currencyType: "CAD", expirationDate: "06/29"},
+    ];
 
   return (
     <div className="swift homepage mx-auto">
@@ -93,54 +101,29 @@ const Dashboard = () => {
                     </div>
 
                     <div className="carousel-inner">
-                        <div className="carousel-item active">
-                            <div className="credit-card">
-                                <div className="card-header">
-                                    <span className="card-name">Anik Deb</span>
-                                    <span className="card-type">VISA</span>
+                        {cardNumbers.map((c, index) => (
+                            <div
+                            key={index}
+                            className={`carousel-item ${index === 0 ? "active" : ""}`}
+                            >
+                                <div className="credit-card">
+                                    <div className="card-header">
+                                        <span className="card-name">{c.cardHolderName}</span>
+                                        <span className="card-type">
+                                            <img src={c.cardType} alt="" />
+                                        </span>
+                                    </div>
+                                <div className="chip">
+                                    <img src="./img/logo-inverted.png" alt="Logo" />
                                 </div>
-                            <div className="chip">
-                                <img src="./img/logo-inverted.png" alt="Logo" />
-                            </div>
-                            <div className="card-number">6458 6354 7909 0001</div>
-                                <div className="card-footer">
-                                    <span className="fw-bold">USD</span>
-                                    <span className="fw-bold">Exp 10/25</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="carousel-item">
-                            <div className="credit-card">
-                                <div className="card-header">
-                                    <span className="card-name">Anik Deb</span>
-                                    <span className="card-type">VISA</span>
-                                </div>
-                            <div className="chip">
-                                <img src="./img/logo-inverted.png" alt="Logo" />
-                            </div>
-                            <div className="card-number">4322 2211 6563 3252</div>
-                                <div className="card-footer">
-                                    <span className="fw-bold">GBP</span>
-                                    <span className="fw-bold">Exp 02/27</span>
+                                <div className="card-number">{c.cardNumber}</div>
+                                    <div className="card-footer">
+                                        <span className="fw-bold">{c.currencyType}</span>
+                                        <span className="fw-bold">{c.expirationDate}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="carousel-item">
-                            <div className="credit-card">
-                                <div className="card-header">
-                                    <span className="card-name">Anik Deb</span>
-                                    <span className="card-type">VISA</span>
-                                </div>
-                            <div className="chip">
-                                <img src="./img/logo-inverted.png" alt="Logo" />
-                            </div>
-                            <div className="card-number">5673 2322 6994 3321</div>
-                                <div className="card-footer">
-                                    <span className="fw-bold">EUR</span>
-                                    <span className="fw-bold">Exp 11/30</span>
-                                </div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </div>

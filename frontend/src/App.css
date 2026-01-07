@@ -78,16 +78,18 @@
   font-size: 1.2rem;
 }
 
-.swift.homepage .card-type {
-  font-weight: 600;
-  font-size: 1rem;
+.swift.homepage .card-type img {
+  height: 50px;
+}
+
+.card-details img {
+  height: 50px;
 }
 
 .swift.homepage .chip {
   width: 53px;
   height: 35px;
   border-radius: 5px;
-  margin-top: 1rem;
 
 }
 
