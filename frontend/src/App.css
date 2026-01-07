@@ -120,12 +120,19 @@
     height: 30px;
 }
 
-.swift.homepage .transactions {
-    padding: 2rem 2rem 4rem 2rem;
+/* .swift.homepage .transactions {
+    padding: 1rem 1rem 2rem 1rem;
     height: 100%;
     width: 100%;
     min-height: 300px;
     bottom: 0;
+} */
+
+.swift.homepage.transaction-history .transactions {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1rem 1rem 2rem 1rem;
 }
 
 .swift.homepage .transactions a.text-decoration-none img {
@@ -133,8 +140,48 @@
     width: auto;
 }
 
+.swift.homepage.transaction-history .transactions > .border-bottom {
+  flex-shrink: 0;
+  padding: 0.5rem 1rem; 
+}
+
 .swift.homepage.transaction-history {
-    margin-top: 25px;
+    height: 490px;
+    display: flex;
+    flex-direction: column;
+}
+
+.transactions.card {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;          
+  min-height: 0 !important;  
+}
+
+.swift.homepage.transaction-history .transaction-list-wrapper {
+  flex-grow: 1;       
+  overflow-y: auto; 
+  padding-bottom: 60px !important;
+  padding-top: 18px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.swift.homepage.transaction-history .transaction-list-wrapper::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.transaction-list-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.transaction-list-wrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.transaction-list-wrapper::-webkit-scrollbar-track {
+  background-color: transparent;
 }
 
 .swift.homepage .transaction {
@@ -299,8 +346,8 @@
   font-size: 1.2rem;
 }
 
-/* Multicurrency Page */
 
+/* Multicurrency Page */
 .swift.currencies .user-profile-img {
     height: 40px;
     width: auto;
@@ -314,13 +361,15 @@
 }
 
 .swift.currencies .card.available-currencies {
-  min-height: 400px;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 400px; 
+  max-height: 677px;
+  margin-bottom: 0;
 }
 
 .swift.currencies .card.available-currencies .card {
   min-height: 80px;
-  height: 100%;
   margin: 0 auto;
   background-color: #eeeeee;
 }
@@ -328,4 +377,29 @@
 .swift.currencies .card.available-currencies .card img.flag {
   height: 40px;
   width: auto;
+}
+
+.currency-list-wrapper {
+  flex: 1;                 /* Take all remaining vertical space */
+  overflow-y: auto;        /* Make it scrollable */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  padding-bottom: 80px;
+}
+
+.currency-list-wrapper::-webkit-scrollbar {
+  display: none;         
+}
+
+.currency-list-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.currency-list-wrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.currency-list-wrapper::-webkit-scrollbar-track {
+  background-color: transparent;
 }
