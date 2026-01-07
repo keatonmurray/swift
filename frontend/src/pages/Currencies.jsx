@@ -28,7 +28,7 @@ const Currencies = () => {
                     </div>
                 </div>
                 <div className="w-100 mb-3">
-                    <input type="text" className="form-control" placeholder="Filter Search"/>
+                    <input type="text" className="form-control py-2" placeholder="Search here"/>
                 </div>
                 <div className="card border-0 shadow-0 custom-rounded-x w-100 px-3 py-3 mt-2">
                     <div className="d-flex align-items-center justify-content-between mt-1">
