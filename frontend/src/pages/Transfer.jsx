@@ -1,9 +1,17 @@
 import { useEffect } from "react";
 import { Carousel } from "bootstrap";
+import { useState } from "react";
 
 import cardLogo from '../../public/img/mastercard.png';
+import person1 from '../../public/img/person1.jpg';
+import person2 from '../../public/img/person2.jpg';
+import person3 from '../../public/img/person3.jpg';
 
 const Transfer = () => {
+
+  // Initialize keypad state
+  const [amount, setAmount] = useState("0");
+
   useEffect(() => {
     const el = document.getElementById("transferCarousel");
     if (!el) return;
@@ -34,6 +42,43 @@ const Transfer = () => {
     {cardNumber: "4232819271829056", cardType: "Mastercard", initials: "M", cardLogo: cardLogo},
     {cardNumber: "4325213465783323", cardType: "Mastercard", initials: "M", cardLogo: cardLogo}
   ];
+
+  const beneficiaries = [
+    {name: "Theresa", profilePhoto: person1},
+    {name: "Adam", profilePhoto: person2},
+    {name: "Christina", profilePhoto: person3},
+    {name: "Steven", profilePhoto: person1},
+    {name: "Alex", profilePhoto: person2},
+    {name: "John", profilePhoto: person3},
+    {name: "Ryan", profilePhoto: person1},
+
+  ]
+
+  // Handle keypress with useState
+  const handleKeyPress = (key) => {
+    if (key === "⌫") {
+      setAmount((prev) => prev.slice(0, -1) || "0");
+      return;
+    }
+
+    if (key === ".") {
+      if (amount.includes(".")) return;
+      setAmount(amount + ".");
+      return;
+    }
+
+    // prevent leading zeros like 000
+    if (amount === "0") {
+      setAmount(key);
+    } else {
+      setAmount(amount + key);
+    }
+  };
+
+  const formattedAmount = Number(amount || 0).toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 
   return (
     <div className="swift transfer">
@@ -101,61 +146,43 @@ const Transfer = () => {
           <ul className="beneficiary-list">
             <li className="beneficiary-item text-center add-new">
               <div className="avatar">+</div>
-              <span className="name small fw-semibold">Add New</span>
+              <span className="name small fw-semibold">Add</span>
             </li>
-
-            <li className="beneficiary-item text-center">
-              <img src="./img/person1.jpg" alt="Theresa Webb" />
-              <span className="name small fw-semibold">Theresa Webb</span>
-            </li>
-
-            <li className="beneficiary-item text-center">
-              <img src="./img/person2.jpg" alt="Kathryn Murphy" />
-              <span className="name small fw-semibold">Kathryn Murphy</span>
-            </li>
-
-            <li className="beneficiary-item text-center">
-              <img src="./img/person3.jpg" alt="Kristin Watson" />
-              <span className="name small fw-semibold">Kristin Watson</span>
-            </li>
-
-            <li className="beneficiary-item text-center">
-              <img src="./img/person1.jpg" alt="Jane Cooper" />
-              <span className="name small fw-semibold">Jane Cooper</span>
-            </li>
+            {beneficiaries.map((p, index) => (
+              <li className="beneficiary-item text-center">
+                <img src={p.profilePhoto} alt="Theresa Webb" />
+                <span className="name small fw-semibold">{p.name}</span>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
 
-      <div className="set-amount bg-white p-4 w-100">
+     <div className="set-amount bg-white p-4 w-100">
         <div className="text-center mb-4">
-          <h1 className="fw-semibold">$670.00</h1>
+          <h1 className="fw-semibold">${formattedAmount}</h1>
           <p className="text-muted">You have $123,456.00 available</p>
         </div>
 
         <div className="d-flex justify-content-center">
           <div className="keypad">
             <div className="row g-2">
-              <div className="col-4"><button className="key-btn">1</button></div>
-              <div className="col-4"><button className="key-btn">2</button></div>
-              <div className="col-4"><button className="key-btn">3</button></div>
-              <div className="col-4"><button className="key-btn">4</button></div>
-              <div className="col-4"><button className="key-btn">5</button></div>
-              <div className="col-4"><button className="key-btn">6</button></div>
-              <div className="col-4"><button className="key-btn">7</button></div>
-              <div className="col-4"><button className="key-btn">8</button></div>
-              <div className="col-4"><button className="key-btn">9</button></div>
-              <div className="col-4"><button className="key-btn">.</button></div>
-              <div className="col-4"><button className="key-btn">0</button></div>
-              <div className="col-4">
-                <button className="key-btn backspace">⌫</button>
-              </div>
+              {["1","2","3","4","5","6","7","8","9",".","0","⌫"].map((key) => (
+                <div className="col-4" key={key}>
+                  <button
+                    className={`key-btn ${key === "⌫" ? "backspace" : ""}`}
+                    onClick={() => handleKeyPress(key)}
+                  >
+                    {key}
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
         <button className="send-money btn btn-dark w-100 my-3 py-3 fw-semibold">
-          Send $670.00
+          Send ${formattedAmount}
         </button>
       </div>
     </div>
