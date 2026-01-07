@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Transfer from "./pages/Transfer";
+import Currencies from "./pages/Currencies";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/transfer" element={<Transfer />} />
+        <Route path="/currencies" element={<Currencies />} />
       </Routes>
     </div>
   )

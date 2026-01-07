@@ -146,9 +146,9 @@ const Dashboard = () => {
                        
 
                         <div className="d-flex flex-column align-items-center">
-                            <a href="#" className="text-decoration-none">
-                            <img src="./img/currency.png" alt="Withdraw Money Icon" />
-                            </a>
+                            <Link to="/currencies" className="text-decoration-none">
+                                <img src="./img/currency.png" alt="Withdraw Money Icon" />
+                            </Link>
                             <span className="fw-semibold mt-1">Currencies</span>
                         </div>
 

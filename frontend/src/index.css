@@ -4,6 +4,7 @@
 
 :root {
   --primary-color: #f5eded;
+  --secondary-color: #f7f7f7;
 }
 
 body {
@@ -25,6 +26,11 @@ body {
 .custom-rounded-top {
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
+}
+
+.custom-rounded-x {
+  border-top-left-radius: 30px;
+  border-bottom-right-radius: 30px;
 }
 
 .h4-extra-bold {
