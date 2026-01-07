@@ -24,7 +24,7 @@ const Currencies = () => {
             <div className="card border-0 custom-rounded px-4 pt-2 pb-5 mt-4 available-currencies mb-3">
                 <div className="mb-4">
                     <div className="border-bottom w-100">
-                        <h6 className="my-3 fw-semibold">Currencies Available</h6>
+                        <h5 className="my-3 fw-semibold">Currencies Available</h5>
                     </div>
                 </div>
                 <div className="w-100 mb-3">
@@ -60,8 +60,8 @@ const Currencies = () => {
                 <div className="card border-0 shadow-0 custom-rounded-x w-100 px-3 py-3 mt-2">
                     <div className="d-flex align-items-center justify-content-between mt-1">
                         <span className="fw-semibold">
-                            <img src="/img/canada.png" className="flag me-1" alt="Flag" />
-                            Canadian Dollar
+                            <img src="/img/australia.png" className="flag me-1" alt="Flag" />
+                            Australian Dollar
                         </span>
                         <span className="text-success small fw-semibold">+10.012</span>
                     </div>
@@ -69,8 +69,8 @@ const Currencies = () => {
                 <div className="card border-0 shadow-0 custom-rounded-x w-100 px-3 py-3 mt-2">
                     <div className="d-flex align-items-center justify-content-between mt-1">
                         <span className="fw-semibold">
-                            <img src="/img/uk.png" className="flag me-1" alt="Flag" />
-                            British Pounds
+                            <img src="/img/korea.png" className="flag me-1" alt="Flag" />
+                            Korean Won
                         </span>
                         <span className="text-success small fw-semibold">+16.012</span>
                     </div>
@@ -78,8 +78,8 @@ const Currencies = () => {
                 <div className="card border-0 shadow-0 custom-rounded-x w-100 px-3 py-3 mt-2">
                     <div className="d-flex align-items-center justify-content-between mt-1">
                         <span className="fw-semibold">
-                            <img src="/img/euro.png" className="flag me-1" alt="Flag" />
-                            Euro
+                            <img src="/img/japan.png" className="flag me-1" alt="Flag" />
+                            Japanese Yen
                         </span>
                         <span className="text-success small fw-semibold">+13.012</span>
                     </div>
