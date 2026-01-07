@@ -1,3 +1,5 @@
+import AddBeneficiaryFormModal from "../components/transfer/AddBeneficiaryFormModal";
+
 import { useEffect } from "react";
 import { Carousel } from "bootstrap";
 import { useState } from "react";
@@ -11,6 +13,7 @@ const Transfer = () => {
 
   // Initialize keypad state
   const [amount, setAmount] = useState("0");
+  const [showForm, setFormState] = useState(false);
 
   useEffect(() => {
     const el = document.getElementById("transferCarousel");
@@ -74,6 +77,11 @@ const Transfer = () => {
       setAmount(amount + key);
     }
   };
+
+  // Handle add new beneficiary form modal with useState
+  const handleForm = () => {
+    setFormState(true)
+  }
 
   const formattedAmount = Number(amount || 0).toLocaleString("en-US", {
     minimumFractionDigits: 2,
@@ -139,13 +147,23 @@ const Transfer = () => {
         </div>
       </div>
 
-      {/* Everything below remains untouched */}
+      {/* Form Modal */}
+      {showForm && (
+        <>
+          {/* Backdrop */}
+          <div className="modal-backdrop-blur" onClick={() => setFormState(false)} />
+
+          {/* Modal */}
+          <AddBeneficiaryFormModal />
+        </>
+      )}
+
       <div className="beneficiary-container container my-4">
         <p className="lead fw-bold">Beneficiary</p>
         <div className="list">
           <ul className="beneficiary-list">
             <li className="beneficiary-item text-center add-new">
-              <div className="avatar">+</div>
+              <button onClick={handleForm} className="avatar border-0">+</button>
               <span className="name small fw-semibold">Add</span>
             </li>
             {beneficiaries.map((p, index) => (
