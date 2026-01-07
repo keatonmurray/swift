@@ -5,6 +5,7 @@
 :root {
   --primary-color: #f5eded;
   --secondary-color: #f7f7f7;
+  --footer-height: 80px;
 }
 
 body {
@@ -14,7 +15,7 @@ body {
 }
 
 .page-wrapper {
-  padding: 40px 0 0;
+  padding: 40px 0 calc(var(--footer-height) + 20px);
   height: 100%;
   min-height: 100vh;
 }

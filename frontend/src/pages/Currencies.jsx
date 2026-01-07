@@ -21,13 +21,13 @@ const Currencies = () => {
                 </div>
             </div>
 
-            <div className="card border-0 custom-rounded px-4 pt-2 pb-5 mt-4 available-currencies">
-                <div className="pt-2 mb-4">
+            <div className="card border-0 custom-rounded px-4 pt-2 pb-5 mt-4 available-currencies mb-3">
+                <div className="mb-4">
                     <div className="border-bottom w-100">
-                        <h6 className="mb-3 mt-1 fw-semibold">Currencies Available</h6>
+                        <h6 className="my-3 fw-semibold">Currencies Available</h6>
                     </div>
                 </div>
-                <div className="w-100 mb-2">
+                <div className="w-100 mb-3">
                     <input type="text" className="form-control" placeholder="Filter Search"/>
                 </div>
                 <div className="card border-0 shadow-0 custom-rounded-x w-100 px-3 py-3 mt-2">
