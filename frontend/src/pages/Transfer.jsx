@@ -162,7 +162,7 @@ const Transfer = () => {
           </div>
         </div>
 
-        <button className="btn btn-dark w-100 my-3 py-4 fw-semibold">
+        <button className="send-money btn btn-dark w-100 my-3 py-3 fw-semibold">
           Send $670.00
         </button>
       </div>

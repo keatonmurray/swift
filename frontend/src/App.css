@@ -318,6 +318,10 @@
   border-radius: 21px;
 }
 
+.swift.transfer .set-amount button.send-money {
+  margin-bottom: 80px !important;
+}
+
 .swift.transfer .set-amount .keypad {
   width: 306px;
 }
