@@ -13,6 +13,8 @@ const Transfer = () => {
 
   // Initialize keypad state
   const [amount, setAmount] = useState("0");
+
+  // Initialize form state
   const [showForm, setFormState] = useState(false);
 
   useEffect(() => {
