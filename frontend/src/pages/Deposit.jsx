@@ -34,21 +34,21 @@ const Deposit = () => {
                 </div>
                 <button className="btn btn-dark w-100 py-3 fw-semibold custom-rounded">Add $34,825</button>
             </div>
-        </div>
-        <div className="set-amount p-4 w-100">
-            <div className="d-flex justify-content-center">
-                <div className="keypad">
-                    <div className="row g-2">
-                    {["1","2","3","4","5","6","7","8","9",".","0","⌫"].map((key) => (
-                        <div className="col-4" key={key}>
-                        <button
-                            className={`key-btn ${key === "⌫" ? "backspace" : ""}`}
-                            onClick={() => handleKeyPress(key)}
-                        >
-                            {key}
-                        </button>
+            <div className="set-amount p-4 w-100">
+                <div className="d-flex justify-content-center">
+                    <div className="keypad">
+                        <div className="row g-2">
+                        {["1","2","3","4","5","6","7","8","9",".","0","⌫"].map((key) => (
+                            <div className="col-4" key={key}>
+                            <button
+                                className={`key-btn ${key === "⌫" ? "backspace" : ""}`}
+                                onClick={() => handleKeyPress(key)}
+                            >
+                                {key}
+                            </button>
+                            </div>
+                        ))}
                         </div>
-                    ))}
                     </div>
                 </div>
             </div>
