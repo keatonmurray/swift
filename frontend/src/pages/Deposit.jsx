@@ -15,7 +15,7 @@ const Deposit = () => {
                     </h1>
                 </div>
             </div>
-            <div className="d-flex justify-content-between mt-5">
+            <div className="d-flex justify-content-between mt-4">
                 <span className="text-muted">Total Fee</span>
                 <span className="fw-semibold">$0.20</span>
             </div>
@@ -27,14 +27,12 @@ const Deposit = () => {
                             <span className="text-muted fw-semibold">Pay with card</span>
                         </div>
                         <div className="d-flex align-items-center">
-
                             <button className="btn btn-dark custom-rounded fw-semibold btn-sm py-2 px-3">Change</button>
                         </div>
                     </div>
                 </div>
-                <button className="btn btn-dark w-100 py-3 fw-semibold custom-rounded">Add $34,825</button>
             </div>
-            <div className="set-amount p-4 w-100">
+            <div className="set-amount w-100 flex-column">
                 <div className="d-flex justify-content-center">
                     <div className="keypad">
                         <div className="row g-2">
@@ -50,6 +48,9 @@ const Deposit = () => {
                         ))}
                         </div>
                     </div>
+                </div>
+                <div className="flex-row w-100 mt-3">
+                    <button className="send-money btn btn-dark w-100 my-3 py-3 fw-semibold">Add $34,825</button>
                 </div>
             </div>
         </div>
