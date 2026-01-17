@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
+import { useState } from "react";
 import { Carousel } from "bootstrap";
+
+import Notification from "../components/dashboard/Notification";
 
 import cardLogo from '../../public/img/mastercard.png';
 
@@ -17,6 +20,8 @@ const Dashboard = () => {
         { name: "David Brown", initials: "DB", time: "Yesterday, 11:20 am", amount: "+$420", color: "#D4EDDA" },
         { name: "Samantha Lee", initials: "SL", time: "Today, 1:50 pm", amount: "+$650", color: "#E2D6F7" },
     ];
+
+    const [notificationIsTrue, setNotification] = useState(false); 
 
     useEffect(() => {
         const carousel = document.getElementById("carouselExample");
@@ -51,8 +56,19 @@ const Dashboard = () => {
         {cardHolderName: "Keaton Murray", cardType: cardLogo, cardNumber: "4546879709872341", currencyType: "CAD", expirationDate: "06/29"},
     ];
 
+    const openNotification = () => {
+        setNotification(prev => !prev);
+    }
+
   return (
     <div className="swift homepage mx-auto">
+
+        {/* Notifications (show if state is true) */}
+        {notificationIsTrue && (
+            <Notification />
+        )}
+
+        {/* Homepage Elements start here  */}
        <div className="px-4">
             <div className="card border-0 custom-rounded px-4 py-2">
                 <div className="d-flex align-items-center justify-content-between pt-2">
@@ -65,7 +81,7 @@ const Dashboard = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="swift homepage notifications-icon">
+                    <div className="swift homepage notifications-icon" onClick={openNotification}>
                         <figure>
                             <img src="./img/bell.png" alt="Notification Bell" />
                         </figure>

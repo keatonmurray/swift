@@ -11,7 +11,7 @@ const Currencies = () => {
   return (
     <div className="swift currencies mx-auto">
       <div className="px-4">
-        <div className="card border-0 custom-rounded px-4 pt-2 pb-3">
+        <div className="card border-0 custom-rounded px-4 pb-4 pt-3">
           <div className="d-flex align-items-center justify-content-between pt-2">
             <div className="account-balance">
               <div className="d-flex align-items-center justify-content-center gap-2">
@@ -40,7 +40,7 @@ const Currencies = () => {
       <div className="card border-0 custom-rounded-top px-4 pt-2 pb-4 mt-4 available-currencies">
         <div className="mb-4">
           <div className="border-bottom w-100">
-            <h5 className="my-3 fw-semibold">Currencies Available</h5>
+            <h5 className="my-4 fw-semibold">Currencies Available</h5>
           </div>
         </div>
 

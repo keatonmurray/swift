@@ -380,7 +380,7 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
   display: flex;
   flex-direction: column;
   min-height: 400px; 
-  max-height: 677px;
+  max-height: 725px;
   margin-bottom: 0;
 }
 
@@ -421,7 +421,6 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
 }
 
 /* Deposit Page */
-
 .swift.deposit {
     position: absolute;
     width: 100%;
@@ -503,7 +502,7 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
   font-size: 1.2rem;
 }
 
-/* Profile Page Styles */
+/* Profile Page */
 .swift.profile {
   background-color: #fff;
   height: 100%;
@@ -514,6 +513,10 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
   bottom: 0;
   margin: 0;
   padding-bottom: 0;
+}
+
+.swift.profile div.d-flex {
+  margin-top: 3rem;
 }
 
 .swift.profile div.d-flex img.user-profile {
