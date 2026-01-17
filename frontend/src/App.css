@@ -430,8 +430,6 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
     bottom: 0;
     margin: 0;
     padding-bottom: 0;
-
-   
 }
 
 .swift.deposit div.bg-white {
@@ -504,3 +502,35 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
 .swift.deposit .set-amount .key-btn.backspace {
   font-size: 1.2rem;
 }
+
+/* Profile Page Styles */
+.swift.profile {
+  background-color: #fff;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.swift.profile div.d-flex img.user-profile {
+  height: 200px;
+  width: auto;
+}
+
+.swift.profile div.profile-nav-menu ul.list-group {
+  border-radius: 0 !important;
+}
+
+.swift.profile div.profile-nav-menu ul.list-group li.list-group-item {
+  border-bottom: 1px #dbdbdb solid !important;
+}
+
+.swift.profile div.profile-nav-menu ul.list-group li.list-group-item img {
+  height: 22px;
+  margin-right: 8px;
+}
+

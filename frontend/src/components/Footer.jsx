@@ -9,7 +9,9 @@ const Footer = () => {
                     <img src="./img/home.png" alt="Home" />
                 </Link>
                 <img src="./img/transfer-solid.png" alt="Home" />
-                <img src="./img/user.png" alt="Home" />
+                <Link to="/profile">
+                    <img src="./img/user.png" alt="Profile" />
+                </Link>
                 <img src="./img/graph.png" alt="Home" />
             </div>
         </div>

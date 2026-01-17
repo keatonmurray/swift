@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Transfer from "./pages/Transfer";
 import Currencies from "./pages/Currencies";
 import Deposit from './pages/Deposit';
+import Profile from "./pages/Profile";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/transfer" element={<Transfer />} />
         <Route path="/currencies" element={<Currencies />} />
         <Route path="/deposit" element={<Deposit />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </div>
   )
