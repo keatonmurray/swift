@@ -519,7 +519,8 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
   margin-top: 3rem;
 }
 
-.swift.profile div.d-flex img.user-profile {
+.swift.profile div.d-flex img.user-profile,
+.swift.update-profile div.d-flex img.user-profile {
   height: 200px;
   width: auto;
 }
@@ -528,12 +529,13 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
   border-radius: 0 !important;
 }
 
-.swift.profile div.profile-nav-menu ul.list-group li.list-group-item {
+.swift.profile div.profile-nav-menu ul.list-group a.list-group-item {
   border-bottom: 1px #dbdbdb solid !important;
 }
 
-.swift.profile div.profile-nav-menu ul.list-group li.list-group-item img {
+.swift.profile div.profile-nav-menu ul.list-group a.list-group-item img {
   height: 22px;
   margin-right: 8px;
 }
 
+/* Update Profile Page */

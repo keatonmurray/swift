@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 const Profile = () => {
   return (
     <div className="swift profile">
@@ -10,26 +12,26 @@ const Profile = () => {
         </div>
         <div className="profile-nav-menu w-100 my-4">
             <ul className="list-group">
-                <li className="list-group-item fw-semibold py-4 px-3 border-top-0 d-flex align-items-center">
+                <Link to="/update-profile" className="list-group-item fw-semibold py-4 px-3 border-top-0 d-flex align-items-center">
                     <img src="./img/pen.png" alt="Edit" />
                     Update Profile
-                </li>
-                <li className="list-group-item fw-semibold py-4 px-3 border-top-0 d-flex align-items-center">
+                </Link>
+                <Link className="list-group-item fw-semibold py-4 px-3 border-top-0 d-flex align-items-center">
                     <img src="./img/invoice.png" alt="Invoices" />
                     Download Invoice
-                </li>
-                <li className="list-group-item fw-semibold py-4 px-3 border-top-0 d-flex align-items-center">
+                </Link>
+                <Link className="list-group-item fw-semibold py-4 px-3 border-top-0 d-flex align-items-center">
                     <img src="./img/payments.png" alt="Payments" />
                     Review Payments
-                </li>
-                <li className="list-group-item fw-semibold py-4 px-3 border-top-0 d-flex align-items-center">
+                </Link>
+                <Link className="list-group-item fw-semibold py-4 px-3 border-top-0 d-flex align-items-center">
                     <img src="./img/calculator.png" alt="Accounts" />
                     Manage Accounts
-                </li>
-                <li className="list-group-item fw-semibold py-4 px-3 border-top-0 d-flex align-items-center">
+                </Link>
+                <Link className="list-group-item fw-semibold py-4 px-3 border-top-0 d-flex align-items-center">
                     <img src="./img/logout.png" alt="Logout" />
                     Logout
-                </li>
+                </Link>
             </ul>
         </div>
     </div>
