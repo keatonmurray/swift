@@ -1,4 +1,8 @@
 import { Link } from "react-router-dom"
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const countries = [
   { code: "AF", name: "Afghanistan" },
@@ -196,13 +200,51 @@ const countries = [
 ];
 
 const Register = () => {
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [country, setCountry] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/register`, {
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        password: password,
+        password_confirmation: passwordConfirmation,
+        country,
+      })
+      toast.success(response.data.message)
+      navigate('/login')
+    } catch (error) {
+      // Check if it's a Laravel validation error
+      if (error.response?.status === 422 && error.response.data?.errors) {
+        const errors = error.response.data.errors;
+        // Loop through each field's errors and display each message
+        Object.values(errors).forEach((messages) => {
+          messages.forEach((msg) => toast.error(msg));
+        });
+      } else {
+        // generic fallback error
+        toast.error(error.response?.data?.message || "Something went wrong");
+      }
+    }
+  }
+
   return (
     <div className="swift auth register flex-column d-flex justify-content-center align-items-center">
         <div>
           <img src="./img/logo.png" alt="Logo" />
         </div>
         <div className="d-flex flex-column align-items-center mt-5">
-          <form action="#" className="register-form">
+          <form className="register-form" onSubmit={handleSubmit}>
             <div className="mb-2">
               <label htmlFor="firstName" className="form-label visually-hidden">First Name</label>
               <input 
@@ -210,6 +252,8 @@ const Register = () => {
                 id="firstName" 
                 className="form-control py-3" 
                 placeholder="First Name" 
+                value={firstName}
+                onChange={(e)=> setFirstName(e.target.value)}
                 required 
               />
             </div>
@@ -221,15 +265,27 @@ const Register = () => {
                 id="lastName" 
                 className="form-control py-3" 
                 placeholder="Last Name" 
+                value={lastName}
+                onChange={(e)=> setLastName(e.target.value)}
                 required 
               />
             </div>
 
             <div className="mb-2">
-              <label htmlFor="country" className="form-label visually-hidden">Country</label>
-              <select id="country" className="form-select py-3" required defaultValue="">
-                <option value="" disabled>Country</option>
-                {countries.map(c => (
+              <label htmlFor="country" className="form-label visually-hidden">
+                Country
+              </label>
+              <select
+                id="country"
+                className="form-select py-3"
+                value={country} 
+                onChange={(e) => setCountry(e.target.value)}
+                required
+              >
+                <option value="" disabled>
+                  Country
+                </option>
+                {countries.map((c) => (
                   <option key={c.code} value={c.code}>
                     {c.name}
                   </option>
@@ -244,6 +300,8 @@ const Register = () => {
                 id="email" 
                 className="form-control py-3" 
                 placeholder="Email Address" 
+                value={email}
+                onChange={(e)=> setEmail(e.target.value)}
                 required 
               />
             </div>
@@ -255,6 +313,21 @@ const Register = () => {
                 id="password" 
                 className="form-control py-3" 
                 placeholder="Password" 
+                value={password}
+                onChange={(e)=> setPassword(e.target.value)}
+                required 
+              />
+            </div>
+
+            <div className="mb-2">
+              <label htmlFor="password" className="form-label visually-hidden">Confirm Password</label>
+              <input 
+                type="password" 
+                id="password_confirmation" 
+                className="form-control py-3" 
+                placeholder="Confirm Password" 
+                value={passwordConfirmation}
+                onChange={(e)=> setPasswordConfirmation(e.target.value)}
                 required 
               />
             </div>
