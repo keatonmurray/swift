@@ -9,7 +9,6 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-
     /**
      * Store a newly created resource in storage.
      */
