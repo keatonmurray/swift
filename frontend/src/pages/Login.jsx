@@ -10,15 +10,22 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/login`, {
-        email,
-        password
-      }) 
-      toast.success(response.data.message)
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/login`,
+        { email, password },
+        { withCredentials: true }
+      );
+
+      toast.success(response.data.message);
+      navigate("/dashboard");
+
     } catch (error) {
-      toast.error(response.data.message)
+      const message =
+        error.response?.data?.message || "Login failed";
+
+      toast.error(message);
     }
-  }
+  };
   return (
     <div className="swift auth login flex-column d-flex justify-content-center align-items-center">
       <div>

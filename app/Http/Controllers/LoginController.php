@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-use App\Models\User;
-
 class LoginController extends Controller
 {
     public function login(Request $request) 
@@ -29,8 +27,14 @@ class LoginController extends Controller
         ], 401);
     }
 
-    public function logout() 
-    {
+    public function logout(Request $request) 
+    {   
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
+        return response()->json([
+            'message' => 'Logged out'
+        ]);
     }
 }
