@@ -14,6 +14,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:50',
             'last_name'  => 'required|string|max:50',
