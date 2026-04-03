@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://swift-peach-two.vercel.app/" target="_blank">
-    <img src="https://via.placeholder.com/400x100?text=Swift+Logo" width="400" alt="Swift Logo">
+    <img src="./frontend/public/img/logo.png" width="400" alt="Swift Logo">
   </a>
 </p>
 
