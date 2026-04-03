@@ -11,7 +11,7 @@ const Footer = () => {
                     <img src="/img/home.png" alt="Home" />
                 </Link>
                 <img src="/img/transfer-solid.png" alt="Home" />
-                <Link to="/profile">
+                <Link to={`/profile/${userId}`}>
                     <img src="/img/user.png" alt="Profile" />
                 </Link>
                 <img src="/img/graph.png" alt="Home" />

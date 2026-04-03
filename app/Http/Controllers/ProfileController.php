@@ -7,8 +7,12 @@ use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
-    public function index() 
+    public function profile() 
     {
         $user = Auth::user();
+
+        return response()->json([
+            'user' => $user
+        ]);
     }
 }
