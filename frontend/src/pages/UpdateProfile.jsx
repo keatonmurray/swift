@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
+import ClipLoader from "react-spinners/ClipLoader";
 
 const UpdateProfile = () => {
 
@@ -24,7 +25,14 @@ const UpdateProfile = () => {
         fetchProfile();
     }, []);
 
-    if (!userProfile) return <div>Loading...</div>;
+    if (!userProfile) return 
+    <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "100vh" }} // full viewport height
+    >
+        <ClipLoader color="#36d7b7" size={50} />
+    </div>;
+    
 
     return (
         <div className="swift update-profile">
