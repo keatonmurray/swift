@@ -1,15 +1,36 @@
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Carousel } from "bootstrap";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 import Notification from "../components/dashboard/Notification";
-
 import cardLogo from '../../public/img/mastercard.png';
 
 const Dashboard = () => {
     const { id } = useParams()
+
+    const [user, setUser] = useState(null);
+    const [notificationIsTrue, setNotification] = useState(false); 
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+        try {
+            const token = localStorage.getItem("api_token");
+            const res = await axios.get(
+            `${import.meta.env.VITE_API_BASE_URL}/api/profile`,
+            {
+                headers: { Authorization: `Bearer ${token}` }
+            }
+            );
+            setUser(res.data.user);
+        } catch (err) {
+            console.error(err);
+        }
+        };
+
+        fetchProfile();
+    }, []);
 
     const transactions = [
         { name: "Jenny Wilson", initials: "JW", time: "Today, 12:30 pm", amount: "-$438", color: "#FDEBD0" },
@@ -23,8 +44,6 @@ const Dashboard = () => {
         { name: "David Brown", initials: "DB", time: "Yesterday, 11:20 am", amount: "+$420", color: "#D4EDDA" },
         { name: "Samantha Lee", initials: "SL", time: "Today, 1:50 pm", amount: "+$650", color: "#E2D6F7" },
     ];
-
-    const [notificationIsTrue, setNotification] = useState(false); 
 
     useEffect(() => {
         const carousel = document.getElementById("carouselExample");
@@ -54,9 +73,9 @@ const Dashboard = () => {
     }, []);
 
     const cardNumbers = [
-        {cardHolderName: "Keaton Murray", cardType: cardLogo, cardNumber: "4312121354637564", currencyType: "USD", expirationDate: "11/29"},
-        {cardHolderName: "Keaton Murray", cardType: cardLogo, cardNumber: "4333232154673212", currencyType: "GBP", expirationDate: "12/32"},
-        {cardHolderName: "Keaton Murray", cardType: cardLogo, cardNumber: "4546879709872341", currencyType: "CAD", expirationDate: "06/29"},
+        { cardHolderName: `${user?.first_name || ''} ${user?.last_name || ''}`, cardType: cardLogo, cardNumber: "4312121354637564", currencyType: "USD", expirationDate: "11/29" },
+        { cardHolderName: `${user?.first_name || ''} ${user?.last_name || ''}`, cardType: cardLogo, cardNumber: "4333232154673212", currencyType: "GBP", expirationDate: "12/32" },
+        { cardHolderName: `${user?.first_name || ''} ${user?.last_name || ''}`, cardType: cardLogo, cardNumber: "4546879709872341", currencyType: "CAD", expirationDate: "06/29" },
     ];
 
     const openNotification = () => {
