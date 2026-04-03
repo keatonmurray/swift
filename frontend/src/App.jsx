@@ -26,7 +26,7 @@ const App = () => {
           <Route path="/currencies" element={<Currencies />} />
           <Route path="/deposit" element={<Deposit />} />
           <Route path="/profile/:id" element={<Profile />} />
-          <Route path="/update-profile" element={<UpdateProfile />} />
+          <Route path="/update-profile/:id" element={<UpdateProfile />} />
         </Route>
       </Routes>
     </div>

@@ -10,6 +10,8 @@ const Profile = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
+  const userId = localStorage.getItem("user_id");
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -32,7 +34,6 @@ const Profile = () => {
   if (!user) return <div>Loading...</div>;
 
   const handleLogout = async (e) => {
-    console.log(localStorage.getItem("api_token"))
         try {
             await axios.post(
             `${import.meta.env.VITE_API_BASE_URL}/api/logout`,
@@ -64,7 +65,7 @@ const Profile = () => {
         </div>
         <div className="profile-nav-menu w-100 my-4">
             <ul className="list-group">
-                <Link to="/update-profile" className="list-group-item fw-semibold py-4 px-3 border-top-0 d-flex align-items-center">
+                <Link to={`/update-profile/${userId}`} className="list-group-item fw-semibold py-4 px-3 border-top-0 d-flex align-items-center">
                     <img src="/img/pen.png" alt="Edit" />
                     Update Profile
                 </Link>
