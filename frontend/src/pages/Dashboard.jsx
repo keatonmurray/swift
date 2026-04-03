@@ -87,9 +87,8 @@ const Dashboard = () => {
 
         {/* Notifications (show if state is true) */}
         {notificationIsTrue && (
-            <Notification />
+            <Notification notification={notificationIsTrue} setNotification={setNotification} />
         )}
-
         {/* Homepage Elements start here  */}
        <div className="px-4">
             <div className="card border-0 custom-rounded px-4 py-2">

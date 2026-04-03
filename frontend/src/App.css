@@ -538,4 +538,41 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
   margin-right: 8px;
 }
 
-/* Update Profile Page */
+.notification-popup-wrapper {
+  background: white;
+  padding: 28px 19px;
+  height: 100vh;
+  z-index: 1050;             
+  position: fixed;
+  width: 100%;               
+  top: 0;
+  right: 0;
+  transform: translateX(100%);
+  transition: transform 0.10s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Slide in */
+.notification-popup-wrapper.open {
+  transform: translateX(0); 
+}
+
+.notification-popup-wrapper h3 {
+  font-size: 21px !important;
+  padding: 10px 6px;
+}
+
+.notification-popup-wrapper p {
+  padding: 7px 6px;
+}
+
+.notification-popup-wrapper .notification-item .d-flex img {
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+}
+
+.notification-popup-wrapper li.notification-item {
+  background-color: rgb(244, 244, 244) !important;
+}
