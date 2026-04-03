@@ -2,12 +2,15 @@ import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Carousel } from "bootstrap";
+import { useParams } from "react-router-dom";
 
 import Notification from "../components/dashboard/Notification";
 
 import cardLogo from '../../public/img/mastercard.png';
 
 const Dashboard = () => {
+    const { id } = useParams()
+
     const transactions = [
         { name: "Jenny Wilson", initials: "JW", time: "Today, 12:30 pm", amount: "-$438", color: "#FDEBD0" },
         { name: "Wade Warren", initials: "WW", time: "Today, 12:30 pm", amount: "+$1200", color: "#F5D3E0" },
@@ -74,7 +77,7 @@ const Dashboard = () => {
                 <div className="d-flex align-items-center justify-content-between pt-2">
                     <div className="account-balance">
                         <div className="d-flex align-items-center justify-content-center">
-                            <img src="./img/profile.png" alt="User Profile" className="user-profile-img"/>
+                            <img src="/img/profile.png" alt="User Profile" className="user-profile-img"/>
                             <div className="d-flex flex-column align-items-start">
                                 <p className="p-0 m-0 small text-capitalize">Total balance</p>
                                 <h4 className="m-0 fw-semibold">$123,456</h4>
@@ -83,7 +86,7 @@ const Dashboard = () => {
                     </div>
                     <div className="swift homepage notifications-icon" onClick={openNotification}>
                         <figure>
-                            <img src="./img/bell.png" alt="Notification Bell" />
+                            <img src="/img/bell.png" alt="Notification Bell" />
                         </figure>
                     </div>
                 </div>
@@ -130,7 +133,7 @@ const Dashboard = () => {
                                         </span>
                                     </div>
                                 <div className="chip">
-                                    <img src="./img/logo-inverted.png" alt="Logo" />
+                                    <img src="/img/logo-inverted.png" alt="Logo" />
                                 </div>
                                 <div className="card-number">{c.cardNumber}</div>
                                     <div className="card-footer">
@@ -151,21 +154,21 @@ const Dashboard = () => {
 
                         <div className="d-flex flex-column align-items-center">
                             <Link to="/currencies" className="text-decoration-none">
-                                <img src="./img/currency.png" alt="Withdraw Money Icon" />
+                                <img src="/img/currency.png" alt="Withdraw Money Icon" />
                             </Link>
                             <span className="fw-semibold mt-1">Currencies</span>
                         </div>
 
                         <div className="d-flex flex-column align-items-center">
                             <Link to="/deposit" className="text-decoration-none">
-                                <img src="./img/deposit.png" alt="Deposit Money Icon" />
+                                <img src="/img/deposit.png" alt="Deposit Money Icon" />
                             </Link>
                             <span className="fw-semibold mt-1">Deposit</span>
                         </div>
 
                         <div className="d-flex flex-column align-items-center">
                             <Link to="/transfer" className="text-decoration-none">
-                                <img src="./img/transfer.png" alt="Transfer Money Icon" />
+                                <img src="/img/transfer.png" alt="Transfer Money Icon" />
                             </Link>
                             <span className="fw-semibold mt-1">Transfer</span>
                         </div>
@@ -182,7 +185,7 @@ const Dashboard = () => {
                 <div className="border-bottom d-flex align-items-center justify-content-between px-3 py-2">
                 <h6 className="mb-0 fw-semibold">Transactions</h6>
                 <a href="#" className="text-decoration-none m-0 p-0">
-                    <img src="./img/filter.png" alt="Filter" />
+                    <img src="/img/filter.png" alt="Filter" />
                 </a>
                 </div>
 

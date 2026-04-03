@@ -19,8 +19,10 @@ const Login = () => {
         { withCredentials: true } );
         if (response.data?.user) {
           localStorage.setItem("api_token", response.data.token);
+          localStorage.setItem("user_id", response.data.user.id); 
           toast.success(response.data.message);
-          navigate("/dashboard");
+          const userId = response.data.user.id;
+          navigate(`/dashboard/${userId}`);
         }
       } catch (error) {
         if (error.response?.status === 401) {

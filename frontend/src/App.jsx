@@ -21,7 +21,7 @@ const App = () => {
 
         {/* Protected routes */}
         <Route element={<PrivateRoute />}>
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/:id" element={<Dashboard />} />
           <Route path="/transfer" element={<Transfer />} />
           <Route path="/currencies" element={<Currencies />} />
           <Route path="/deposit" element={<Deposit />} />
