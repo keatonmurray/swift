@@ -18,6 +18,7 @@ const Login = () => {
         { email, password },
         { withCredentials: true } );
         if (response.data?.user) {
+          localStorage.setItem("api_token", response.data.token);
           toast.success(response.data.message);
           navigate("/dashboard");
         }

@@ -1,6 +1,35 @@
 import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import axios from "axios"
 
 const Profile = () => {
+
+  const navigate = useNavigate();
+
+  const handleLogout = async (e) => {
+    console.log(localStorage.getItem("api_token"))
+        try {
+            await axios.post(
+            `${import.meta.env.VITE_API_BASE_URL}/api/logout`,
+            {},
+            {
+                headers: {
+                Authorization: `Bearer ${localStorage.getItem("api_token")}`
+                }
+            }
+            );
+            localStorage.removeItem("api_token");
+            toast.success("Logged out successfully");
+            navigate("/login");
+
+        } catch (error) {
+            console.error(error);
+            toast.error("Logout failed. Please try again.");
+        }
+   };
+
   return (
     <div className="swift profile">
         <div className="d-flex align-items-center justify-content-center">
@@ -28,7 +57,12 @@ const Profile = () => {
                     <img src="./img/calculator.png" alt="Accounts" />
                     Manage Accounts
                 </Link>
-                <Link className="list-group-item fw-semibold py-4 px-3 border-top-0 d-flex align-items-center">
+                <Link
+                    to="#" // prevents navigation
+                    onClick={handleLogout}
+                    className="list-group-item fw-semibold py-4 px-3 border-top-0 d-flex align-items-center"
+                    style={{ border: "none", background: "none", width: "100%", textAlign: "left" }}
+                    >
                     <img src="./img/logout.png" alt="Logout" />
                     Logout
                 </Link>
