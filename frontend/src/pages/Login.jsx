@@ -1,29 +1,31 @@
 import { Link } from "react-router-dom"
 import { useState } from "react"
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const navigate = useNavigate();
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/login`,
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/login`, 
         { email, password },
-        { withCredentials: true }
-      );
-
-      toast.success(response.data.message);
-      navigate("/dashboard");
-
-    } catch (error) {
-      const message =
-        error.response?.data?.message || "Login failed";
-
-      toast.error(message);
+        { withCredentials: true } );
+        if (response.data?.user) {
+          toast.success(response.data.message);
+          navigate("/dashboard");
+        }
+      } catch (error) {
+        if (error.response?.status === 401) {
+          const message = error.response?.data?.message || "Login failed";
+          toast.error(message);
+        }
     }
   };
   return (

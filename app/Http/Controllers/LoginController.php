@@ -7,31 +7,44 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function login(Request $request) 
+    /**
+     * API-friendly login using Laravel Sanctum tokens
+     */
+    public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email'     => 'required',
-            'password'  => 'required'
+            'email'    => 'required|email',
+            'password' => 'required'
         ]);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+        if (!Auth::attempt($credentials)) {
             return response()->json([
-                'message' => 'Logged in',
-                'user' => Auth::user()
-            ]);
+                'message' => 'Invalid credentials'
+            ], 401); // <-- important
         }
 
+        $user = Auth::user();
+
+        // Create a token for API authentication
+        $token = $user->createToken('api-token')->plainTextToken;
+
         return response()->json([
-            'message' => 'Invalid credentials'
-        ], 401);
+            'message' => 'Logged in',
+            'user'    => $user,
+            'token'   => $token
+        ]);
     }
 
-    public function logout(Request $request) 
-    {   
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+    /**
+     * API logout (revokes all tokens)
+     */
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+        if ($user) {
+            // Revoke all tokens for the authenticated user
+            $user->tokens()->delete();
+        }
 
         return response()->json([
             'message' => 'Logged out'
