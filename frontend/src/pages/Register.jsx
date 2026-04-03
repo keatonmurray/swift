@@ -4,9 +4,6 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-
-axios.defaults.withCredentials = true; 
-
 const countries = [
   { code: "AF", name: "Afghanistan" },
   { code: "AL", name: "Albania" },
