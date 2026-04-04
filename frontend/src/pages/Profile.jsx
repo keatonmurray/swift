@@ -19,7 +19,7 @@ const Profile = () => {
       try {
         const token = localStorage.getItem("api_token");
         const res = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/profile`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/user`,
           {
             headers: { Authorization: `Bearer ${token}` }
           }

@@ -10,7 +10,7 @@ class ProfileController extends Controller
 {
     public function profile() 
     {
-        $user = Auth::user(); //returns ID of logged in user
+        $user = Auth::user();
 
         return response()->json([
             'user' => $user

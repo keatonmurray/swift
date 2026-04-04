@@ -15,7 +15,7 @@ const UpdateProfile = () => {
       try {
         const token = localStorage.getItem("api_token");
         const res = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/profile`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/user`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -100,7 +100,7 @@ const UpdateProfile = () => {
         </div>
 
         <div className="text-center mt-2 mb-4">
-            <div className="d-flex align-items-center gap-1 justify-content-center">
+            <div className="d-flex align-items-center gap-1 justify-content-center m-0">
                   <MdVerified size={25} style={{color:"green"}}/>
                   <h4 className="fw-semibold mb-0">{userProfile.first_name} {userProfile.last_name}</h4>
               </div>
