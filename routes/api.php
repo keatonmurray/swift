@@ -12,6 +12,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:san
 // User Controller
 Route::post('/register', [UserController::class, 'store']);
 Route::get('/user', [UserController::class, 'index'])->middleware('auth:sanctum');
+Route::put('/update/{id}', [UserController::class, 'update']);
 
 // Profile Controler
 Route::get('/profile', [ProfileController::class, 'profile'])->middleware('auth:sanctum');

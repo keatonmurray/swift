@@ -69,12 +69,60 @@ class UserController extends Controller
         ]);
     }
 
-    /**
+        /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        //
+        dd($request);
+        $validator = Validator::make($request->all(), [
+            'first_name'     => 'required|string|max:50',
+            'last_name'      => 'required|string|max:50',
+            'country'        => 'required|string|max:100',
+            'email'          => 'required|email|max:100|unique:users,email,' . $id,
+            'profile_avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'id_photo'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'kyc_status'     => 'nullable|in:pending,approved,rejected',
+            'password' => [
+                'nullable', // optional on update
+                'string',
+                'min:8',
+                'confirmed',
+                'regex:/[a-z]/',      
+                'regex:/[A-Z]/',      
+                'regex:/[0-9]/',      
+                'regex:/[@$!%*?&#]/'
+            ],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors'  => $validator->errors()
+            ], 422);
+        }
+
+        $user = User::findOrFail($id);
+
+        $data = $request->only([
+            'first_name', 'last_name', 'country', 'email', 'kyc_status'
+        ]);
+
+        if ($request->filled('password')) {
+            $data['password'] = bcrypt($request->password);
+        }
+
+        if ($request->hasFile('profile_avatar')) {
+            $path = $request->file('profile_avatar')->store('avatars', 'public');
+            $data['profile_avatar'] = $path;
+        }
+
+        $user->update($data);
+
+        return response()->json([
+            'success' => true,
+            'user'    => $user
+        ]);
     }
 
     /**

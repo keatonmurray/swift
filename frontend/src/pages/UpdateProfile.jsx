@@ -7,8 +7,15 @@ import { RiErrorWarningFill } from "react-icons/ri";
 const UpdateProfile = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [avatarSrc, setAvatarSrc] = useState("/img/profile.png");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [country, setCountry] = useState("");
+  const [password, setPassword] = useState("");
   const [file, setFile] = useState(null); 
   const filePickerRef = useRef(null);
+
+  const userId = localStorage.getItem("user_id");
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -68,6 +75,36 @@ const UpdateProfile = () => {
     if (droppedFile) setFile(droppedFile);
   };
 
+  // Handler to update profile info
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/update/${userId}`, {
+        first_name:firstName,
+        last_name:lastName,
+        email: email,
+        country: country, 
+        profile_avatar: avatarSrc,
+        id_photo: file,
+        password: password
+      })
+      console.log(response.data)
+    } catch (error) {
+      console.log(error.response)
+    }
+  }
+
+  // Initialize user profile when it loads
+  useEffect(() => {
+    if (userProfile) {
+      setFirstName(userProfile.first_name);
+      setLastName(userProfile.last_name);
+      setEmail(userProfile.email);
+      setCountry(userProfile.country);
+      setAvatarSrc(userProfile.profile_avatar || "/img/profile.png");
+    }
+  }, [userProfile]);
+
   if (!userProfile) {
     return (
       <div
@@ -81,7 +118,7 @@ const UpdateProfile = () => {
 
   return (
     <div className="swift update-profile mx-4">
-      <form>
+      <form onSubmit={handleProfileUpdate}>
         <div className="d-flex align-items-center justify-content-center">
             <img
                 src={avatarSrc}
@@ -123,25 +160,23 @@ const UpdateProfile = () => {
                 type="text"
                 value={userProfile.first_name}
                 className="form-control py-3 mb-2"
-                readOnly
+                onChange={(e)=> setFirstName(e.target.value)}
             />
             <input
                 type="text"
                 value={userProfile.last_name}
                 className="form-control py-3 mb-2"
-                readOnly
+                onChange={(e)=> setLastName(e.target.value)}
             />
             <input
                 type="email"
                 value={userProfile.email}
                 className="form-control py-3 mb-2"
-                readOnly
+                onChange={(e)=> setEmail(e.target.value)}
             />
             <select
                 value={userProfile.country}
-                onChange={(e) =>
-                    setUserProfile({ ...userProfile, country: e.target.value })
-                }
+                onChange={(e) => setCountry(e.target.value)}
                 className="form-control py-3 mb-2"
                 >
                 <option value={userProfile.country}>{userProfile.country}</option>
@@ -150,6 +185,8 @@ const UpdateProfile = () => {
                 type="password"
                 className="form-control py-3 mb-2"
                 placeholder="Password"
+                value={userProfile.password}
+                onChange={(e) => setPassword(e.target.value)}
             />
 
             <div
@@ -166,6 +203,8 @@ const UpdateProfile = () => {
                 type="file"
                 onChange={handleFileChange}
                 hidden
+                value={userProfile.id_photo}
+                onChangeCapture={(e) => {setFile(e.target.value)}}
                 id="fileUpload"
                 />
 
@@ -190,7 +229,7 @@ const UpdateProfile = () => {
                 </div>
             )}
 
-            <button className="btn btn-dark fw-semibold py-3 w-100 mt-3">
+            <button type="submit" className="btn btn-dark fw-semibold py-3 w-100 mt-3">
                 Update Profile
             </button>
             </div>
