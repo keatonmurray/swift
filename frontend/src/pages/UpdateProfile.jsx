@@ -135,6 +135,15 @@ const UpdateProfile = () => {
                 className="form-control py-3 mb-2"
                 readOnly
             />
+            <select
+                value={userProfile.country}
+                onChange={(e) =>
+                    setUserProfile({ ...userProfile, country: e.target.value })
+                }
+                className="form-control py-3 mb-2"
+                >
+                <option value={userProfile.country}>{userProfile.country}</option>
+            </select>
             <input
                 type="password"
                 className="form-control py-3 mb-2"
