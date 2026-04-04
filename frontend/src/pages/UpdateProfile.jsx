@@ -144,7 +144,7 @@ const UpdateProfile = () => {
             <div
                 onDrop={handleDrop}
                 onDragOver={(e) => e.preventDefault()}
-                className="border rounded-4 p-4 text-center mb-3"
+                className="border custom-rounded-x p-4 text-center mb-3"
                 style={{
                 borderStyle: "dashed",
                 cursor: "pointer",

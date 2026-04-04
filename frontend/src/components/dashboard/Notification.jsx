@@ -20,7 +20,7 @@ const Notification = ({notification, setNotification}) => {
 
       {/* Notification List */}
       <ul className="notification-list list-unstyled flex-grow-1 overflow-auto">
-        <li className="notification-item px-3 py-4 mb-2 rounded bg-light d-flex justify-content-between align-items-center">
+        <li className="notification-item px-3 py-4 mb-2 custom-rounded-x bg-light d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center justify-content-center gap-2">
             <img src="/img/person1.jpg" alt="Profile" />
             <div>
@@ -29,7 +29,7 @@ const Notification = ({notification, setNotification}) => {
             </div>
           </div>
         </li>
-        <li className="notification-item px-3 py-4 mb-2 rounded bg-light d-flex justify-content-between align-items-center">
+        <li className="notification-item px-3 py-4 mb-2 custom-rounded-x bg-light d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center justify-content-center gap-2">
             <img src="/img/person1.jpg" alt="Profile" />
             <div>
@@ -38,7 +38,7 @@ const Notification = ({notification, setNotification}) => {
             </div>
           </div>
         </li>
-         <li className="notification-item px-3 py-4 mb-2 rounded bg-light d-flex justify-content-between align-items-center">
+         <li className="notification-item px-3 py-4 mb-2 custom-rounded-x bg-light d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center justify-content-center gap-2">
             <img src="/img/person1.jpg" alt="Profile" />
             <div>
