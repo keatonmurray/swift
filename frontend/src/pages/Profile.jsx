@@ -66,11 +66,11 @@ const Profile = () => {
   return (
     <div className="swift profile">
         <div className="d-flex align-items-center justify-content-center">
-            <img src="/img/profile.png" className="user-profile img-fluid" alt="Profile Photo" />
-        </div>
-        <div className="text-center">
-            <h4 className="fw-semibold mb-0">{user.first_name} {user.last_name}</h4>
-            <p className="text-secondary">Personal Account</p>
+            <div className="text-center">
+                <img src="/img/profile.png" className="user-profile img-fluid" alt="Profile Photo" />
+                <h4 className="fw-semibold mb-0">{user.first_name} {user.last_name}</h4>
+                <p className="text-secondary">Personal Account</p>
+            </div>
         </div>
         <div className="profile-nav-menu w-100 my-4">
             <ul className="list-group">
@@ -80,11 +80,11 @@ const Profile = () => {
                 </Link>
                 <Link className="list-group-item fw-semibold py-4 px-3 border-top-0 d-flex align-items-center">
                     <img src="/img/invoice.png" alt="Invoices" />
-                    Download Invoice
+                    Request Bank Statement
                 </Link>
                 <Link className="list-group-item fw-semibold py-4 px-3 border-top-0 d-flex align-items-center">
                     <img src="/img/payments.png" alt="Payments" />
-                    Review Payments
+                    Review Transactions
                 </Link>
                 <Link className="list-group-item fw-semibold py-4 px-3 border-top-0 d-flex align-items-center">
                     <img src="/img/calculator.png" alt="Accounts" />

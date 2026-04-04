@@ -518,10 +518,20 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
   margin-top: 3rem;
 }
 
-.swift.profile div.d-flex img.user-profile,
-.swift.update-profile div.d-flex img.user-profile {
+/* Update Profile */
+
+.swift.profile div.d-flex img.user-profile{
   height: 200px;
-  width: auto;
+  width: auto;  
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.swift.update-profile div.d-flex img.user-profile {
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .swift.profile div.profile-nav-menu ul.list-group {
@@ -536,6 +546,22 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
   height: 22px;
   margin-right: 8px;
 }
+
+.swift.update-profile {
+  padding-bottom: 100px;
+}
+
+.swift.update-profile svg.warning-icon {
+  margin-top: -6px;
+  color: #ffbf00;
+}
+
+.swift.update-profile div.kyc-info {
+  background: white;
+  padding: 18px 14px 18px;
+}
+
+/* Notification Styles */
 
 .notification-popup-wrapper {
   background: white;
@@ -576,17 +602,3 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
   background-color: rgb(244, 244, 244) !important;
 }
 
-.swift.update-profile {
-  padding-bottom: 100px;
-  margin-top: -40px;
-}
-
-.swift.update-profile svg.warning-icon {
-  margin-top: -6px;
-  color: #ffbf00;
-}
-
-.swift.update-profile div.kyc-info {
-  background: white;
-  padding: 14px;
-}
