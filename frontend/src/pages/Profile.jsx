@@ -2,6 +2,7 @@ import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
+import { MdVerified } from "react-icons/md";
 import ClipLoader from "react-spinners/ClipLoader";
 
 import axios from "axios"
@@ -68,7 +69,10 @@ const Profile = () => {
         <div className="d-flex align-items-center justify-content-center">
             <div className="text-center">
                 <img src="/img/profile.png" className="user-profile img-fluid" alt="Profile Photo" />
-                <h4 className="fw-semibold mb-0">{user.first_name} {user.last_name}</h4>
+                <div className="d-flex align-items-center gap-1">
+                    <MdVerified size={25} style={{color:"green"}}/>
+                    <h4 className="fw-semibold mb-0">{user.first_name} {user.last_name}</h4>
+                </div>
                 <p className="text-secondary">Personal Account</p>
             </div>
         </div>

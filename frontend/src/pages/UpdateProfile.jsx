@@ -1,12 +1,13 @@
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
+import { MdVerified } from "react-icons/md";
 import { RiErrorWarningFill } from "react-icons/ri";
 
 const UpdateProfile = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [avatarSrc, setAvatarSrc] = useState("/img/profile.png");
-  const [file, setFile] = useState(null); // ❗ missing state
+  const [file, setFile] = useState(null); 
   const filePickerRef = useRef(null);
 
   useEffect(() => {
@@ -99,9 +100,10 @@ const UpdateProfile = () => {
         </div>
 
         <div className="text-center mt-2 mb-4">
-            <h4 className="fw-semibold mb-0">
-            {userProfile.first_name} {userProfile.last_name}
-            </h4>
+            <div className="d-flex align-items-center gap-1 justify-content-center">
+                  <MdVerified size={25} style={{color:"green"}}/>
+                  <h4 className="fw-semibold mb-0">{userProfile.first_name} {userProfile.last_name}</h4>
+              </div>
             <p className="text-secondary">Personal Account</p>
         </div>
 
