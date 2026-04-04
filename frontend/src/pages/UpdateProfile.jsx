@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
 import ClipLoader from "react-spinners/ClipLoader";
-import { IoIosWarning } from "react-icons/io";
+import { RiErrorWarningFill } from "react-icons/ri";
 
 const UpdateProfile = () => {
 
@@ -64,8 +64,8 @@ const UpdateProfile = () => {
             </div>
             <div className="d-flex align-items-start justify-content-start kyc-info custom-rounded-x">
                 <div className="text-center">
-                    <IoIosWarning size={40} className="warning-icon mb-1"/>
-                    <p className="text-secondary text-center small mb-0">Updating your profile information is subject to KYC approval. This process typically takes 2–5 business days.</p>
+                    <RiErrorWarningFill size={35} className="warning-icon mb-1"/>
+                    <p className="fw-semibold text-center small mb-0">Updating your profile information is subject to KYC approval. We will review your information within 3-5 business days.</p>
                 </div>
             </div>
             <div className="w-100 d-flex align-items-center justify-content-center my-4">                
