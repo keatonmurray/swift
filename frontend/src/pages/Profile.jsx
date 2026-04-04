@@ -69,7 +69,7 @@ const Profile = () => {
         <div className="d-flex align-items-center justify-content-center">
             <div className="text-center">
                 <img src="/img/profile.png" className="user-profile img-fluid" alt="Profile Photo" />
-                <div className="d-flex align-items-center gap-1">
+                <div className="d-flex align-items-center gap-1 justify-content-center">
                     <MdVerified size={25} style={{color:"green"}}/>
                     <h4 className="fw-semibold mb-0">{user.first_name} {user.last_name}</h4>
                 </div>

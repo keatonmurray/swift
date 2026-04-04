@@ -12,12 +12,11 @@ class UserController extends Controller
 {
 
     /**
-     * Returns user info to JSON 
+     * Returns user info as a JSON formatted response for UI consumption
      */
     public function index()
     {
         $user = Auth::user();
-
         return response()->json([
             'user' => $user,
         ]);
@@ -28,20 +27,23 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
-            'first_name' => 'required|string|max:50',
-            'last_name'  => 'required|string|max:50',
-            'country'    => 'required|string',
-            'email'      => 'required|email|unique:users,email|max:100',
-            'password'   => [
+            'first_name'     => 'required|string|max:50',
+            'last_name'      => 'required|string|max:50',
+            'country'        => 'required|string|max:100',
+            'email'          => 'required|email|max:100|unique:users,email',
+            'profile_avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'kyc_status'     => 'nullable|in:pending,approved,rejected',
+            'password' => [
                 'required',
                 'string',
                 'min:8',
                 'confirmed',
-                'regex:/[a-z]/',
-                'regex:/[A-Z]/',
-                'regex:/[0-9]/',
-                'regex:/[@$!%*?&#]/'
+                'regex:/[a-z]/',      // lowercase
+                'regex:/[A-Z]/',      // uppercase
+                'regex:/[0-9]/',      // number
+                'regex:/[@$!%*?&#]/'  // special char
             ],
         ]);
 
