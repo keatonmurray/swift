@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Services\RapydService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
+use Illuminate\Support\Facades\Log; 
 
 class UserController extends Controller
 {
@@ -61,6 +63,29 @@ class UserController extends Controller
             'email'      => $request->email,
             'password'   => Hash::make($request->password),
         ]);
+
+        // Include required phone_number
+        $rapydUser = $rapyd->createUser([
+            'name' => $request->first_name . ' ' . $request->last_name,
+            'email' => $request->email,
+            'phone_number' => '+639123456789', // replace with real user phone
+            'metadata' => ['user_reference' => $user->id]
+        ]);
+
+        // Safely check if data exists
+        if (isset($rapydUser['data']['id'])) {
+            $user->rapyd_user_id = $rapydUser['data']['id'];
+            $user->save();
+        } else {
+            // Log the error and return response
+            Log::error('Rapyd createUser failed', ['response' => $rapydUser]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create user in Rapyd',
+                'rapyd_response' => $rapydUser
+            ], 422);
+        }
+        dd($user);
 
         return response()->json([
             'success' => true,
