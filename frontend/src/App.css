@@ -2,8 +2,10 @@
 
 /* Dashboard */
 .swift.homepage .user-profile-img {
-    height: 80px;
-    width: auto;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    margin-right: 8px;
 }
 
 .swift.homepage.notifications-icon figure {

@@ -91,11 +91,11 @@ const Dashboard = () => {
         )}
         {/* Homepage Elements start here  */}
        <div className="px-4">
-            <div className="card border-0 custom-rounded px-4 py-2">
+            <div className="card border-0 custom-rounded px-4 pt-2 pb-3">
                 <div className="d-flex align-items-center justify-content-between pt-2">
                     <div className="account-balance">
                         <div className="d-flex align-items-center justify-content-center">
-                            <img src="/img/profile.png" alt="User Profile" className="user-profile-img"/>
+                            <img src={user?.profile_avatar ?? "/img/profile.png"} alt="User Profile" className="user-profile-img"/>
                             <div className="d-flex flex-column align-items-start">
                                 <p className="p-0 m-0 small text-capitalize">Total balance</p>
                                 <h4 className="m-0 fw-semibold">$123,456</h4>
