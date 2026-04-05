@@ -6,6 +6,7 @@
     width: 50px;
     border-radius: 50%;
     margin-right: 8px;
+    object-fit: cover;
 }
 
 .swift.homepage.notifications-icon figure {
