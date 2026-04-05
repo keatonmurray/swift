@@ -287,6 +287,7 @@ const UpdateProfile = () => {
           email: email,
           country: country,
           profile_avatar: avatarSrc,
+          kyc_status: "pending", //pending by default
           id_photo: file,
           password: password,
           password_confirmation: confirmPassword
