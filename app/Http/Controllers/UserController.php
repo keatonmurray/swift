@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Services\RapydService;
 
 class UserController extends Controller
 {
@@ -25,7 +26,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, RapydService $rapyd)
     {
 
         $validator = Validator::make($request->all(), [
@@ -61,6 +62,16 @@ class UserController extends Controller
             'email'      => $request->email,
             'password'   => Hash::make($request->password),
         ]);
+
+        $rapydUser = $rapyd->createUser([
+            'name' => $request->first_name . ' ' . $request->last_name,
+            'email' => $request->email,
+            'metadata' => ['user_reference' => $user->id]
+        ]);
+
+        $user->rapyd_user_id = $rapydUser['data']['id'];
+
+        dd($user);
 
         return response()->json([
             'success' => true,

@@ -34,5 +34,10 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'rapyd' => [
+        'access_key' => env('RAPYD_SANDBOX_ACCESS_KEY'),
+        'secret_key' => env('RAPYD_SANDBOX_SECRET_KEY'),
+        'base_url'   => env('RAPYD_SANDBOX_BASE_URL'),
+    ],
 
 ];
