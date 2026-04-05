@@ -236,7 +236,7 @@ const UpdateProfile = () => {
                   src={file}
                   alt="ID preview"
                   className="img-fluid rounded mb-3 w-100"
-                  style={{ maxHeight: "150px" }}
+                  style={{ maxHeight: "250px" }}
                 />
               </div>
             )}
