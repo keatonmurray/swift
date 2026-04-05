@@ -81,7 +81,9 @@ const Profile = () => {
                         {user.first_name} {user.last_name}
                     </h4>
                 </div>
-                <p className="text-secondary">Personal Account</p>
+                <p className="text-secondary">
+                    {user.kyc_status === "approved" ? "Verified Account" : "Unverified Account"}
+                </p>
             </div>
         </div>
         <div className="profile-nav-menu w-100 my-4">

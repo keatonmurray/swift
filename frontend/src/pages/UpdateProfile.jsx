@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import { MdVerified } from "react-icons/md";
+import { GoUnverified } from "react-icons/go";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { toast } from "react-toastify";
 
@@ -144,12 +145,19 @@ const UpdateProfile = () => {
 
         <div className="text-center mt-2 mb-4">
           <div className="d-flex align-items-center gap-1 justify-content-center m-0">
-            <MdVerified size={25} style={{ color: "green" }} />
-            <h4 className="fw-semibold mb-0">
-              {userProfile.first_name} {userProfile.last_name}
-            </h4>
+              {(userProfile.kyc_status === "pending" || userProfile.kyc_status === "rejected") && (
+                  <GoUnverified size={20} style={{ color: "orange" }} />
+              )}
+              {userProfile.kyc_status === "approved" && (
+                  <MdVerified size={20} style={{ color: "green" }} />
+              )}
+              <h4 className="fw-semibold mb-0">
+                  {userProfile.first_name} {userProfile.last_name}
+              </h4>
           </div>
-          <p className="text-secondary">Personal Account</p>
+          <p className="text-secondary">
+              {userProfile.kyc_status === "approved" ? "Verified Account" : "Unverified Account"}
+          </p>
         </div>
 
         <div className="d-flex align-items-start justify-content-start kyc-info custom-rounded-x">
