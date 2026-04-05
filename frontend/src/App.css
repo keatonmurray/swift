@@ -521,10 +521,11 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
 /* Update Profile */
 
 .swift.profile div.d-flex img.user-profile{
-  height: 200px;
-  width: auto;  
+  height: 125px;
+  width: 125px;
   border-radius: 50%;
   object-fit: cover;
+  margin-bottom: 10px;
 }
 
 .swift.update-profile div.d-flex img.user-profile {
