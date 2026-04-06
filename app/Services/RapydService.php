@@ -28,20 +28,13 @@ class RapydService
         return $salt;
     }
 
-    private function toBase64Url(string $str): string
-    {
-        return rtrim(strtr(base64_encode($str), '+/', '-_'), '=');
-    }
 
     private function generateHeaders(string $method, string $path, string $bodyString, string $salt, int $timestamp): array
     {
-        $toSign = strtolower($method) . $path . $salt . $timestamp . $this->accessKey . $bodyString;
+        $toSign = strtolower($method) . $path . $salt . $timestamp . $this->accessKey . $this->secretKey . $bodyString;
 
-        // $hash = hash_hmac('sha256', $toSign, $this->secretKey, true);
-        // $signature = $this->toBase64Url($hash);
-
-        $hashHex = hash_hmac('sha256', $toSign, $this->secretKey); // IMPORTANT: no `true`
-        $signature = rtrim(strtr(base64_encode($hashHex), '+/', '-_'), '=');
+        $hash = hash_hmac('sha256', $toSign, $this->secretKey, true); // raw bytes
+        $signature = rtrim(strtr(base64_encode($hash), '+/', '-_'), '=');
 
         return [
             'Content-Type' => 'application/json',
