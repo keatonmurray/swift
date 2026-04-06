@@ -28,7 +28,6 @@ class RapydService
         return $salt;
     }
 
-
     private function generateHeaders(string $method, string $path, string $bodyString, string $salt, int $timestamp): array
     {
         $toSign = strtolower($method) . $path . $salt . $timestamp . $this->accessKey . $this->secretKey . $bodyString;
@@ -51,14 +50,14 @@ class RapydService
         $path = '/v1/customers';
         $method = 'POST';
 
-        // 1️⃣ Convert all numbers to strings
+        // Convert all numbers to strings
         array_walk_recursive($payload, function (&$item) {
             if (is_numeric($item)) {
                 $item = (string)$item;
             }
         });
 
-        // 2️⃣ Sort keys recursively for consistent JSON
+        // Sort keys recursively for consistent JSON
         $sortRecursive = function (&$array) use (&$sortRecursive) {
             ksort($array);
             foreach ($array as &$value) {
@@ -69,14 +68,14 @@ class RapydService
         };
         $sortRecursive($payload);
 
-        // 3️⃣ JSON encode compactly
+        // JSON encode compactly
         $bodyString = $payload ? json_encode($payload, JSON_UNESCAPED_SLASHES) : '';
 
-        // 4️⃣ Generate salt & timestamp
+        // Generate salt & timestamp
         $salt = $this->generateSalt();
         $timestamp = time();
 
-        // 5️⃣ Generate headers
+        // Generate headers
         $headers = $this->generateHeaders($method, $path, $bodyString, $salt, $timestamp);
 
         // dd(
@@ -85,7 +84,7 @@ class RapydService
         //     'Headers:', $headers
         // );
 
-        // 6️⃣ Send POST request using raw body to ensure exact match
+        // Send POST request using raw body to ensure exact match
         $response = Http::withHeaders($headers)
                         ->withBody($bodyString, 'application/json')
                         ->post($this->baseUrl . $path);
