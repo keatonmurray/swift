@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class RapydService 
 {
@@ -17,9 +18,6 @@ class RapydService
         $this->baseUrl   = config('services.rapyd.base_url'); 
     }
 
-    /**
-     * Generate salt with 12 characters in length containing alphanumeric characters
-     */
     private function generateSalt(int $length = 12): string
     {
         $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -30,49 +28,20 @@ class RapydService
         return $salt;
     }
 
-    /**
-     * Generate base64 based URL to build signature
-     */
     private function toBase64Url(string $str): string
     {
         return rtrim(strtr(base64_encode($str), '+/', '-_'), '=');
     }
 
-    /**
-     * Generate request headers
-     */
-    private function generateHeaders(string $method, string $path, array $body = []): array
+    private function generateHeaders(string $method, string $path, string $bodyString, string $salt, int $timestamp): array
     {
-        $salt = $this->generateSalt();
-        $timestamp = time();
-
-        // Convert all numeric values to strings
-        array_walk_recursive($body, function (&$item) {
-            if (is_numeric($item)) {
-                $item = (string)$item;
-            }
-        });
-
-        // Sort body keys recursively
-        $sortRecursive = function (&$array) use (&$sortRecursive) {
-            ksort($array);
-            foreach ($array as &$value) {
-                if (is_array($value)) {
-                    $sortRecursive($value);
-                }
-            }
-        };
-        $sortRecursive($body);
-
-        // Compact JSON body (sorted keys)
-        $bodyString = $body ? json_encode($body, JSON_UNESCAPED_SLASHES) : '';
-
-        // Build toSign: method + path + salt + timestamp + accessKey + bodyString
         $toSign = strtolower($method) . $path . $salt . $timestamp . $this->accessKey . $bodyString;
 
-        // HMAC SHA256 signature, then URL-safe Base64
-        $hash = hash_hmac('sha256', $toSign, $this->secretKey, true);
-        $signature = $this->toBase64Url($hash);
+        // $hash = hash_hmac('sha256', $toSign, $this->secretKey, true);
+        // $signature = $this->toBase64Url($hash);
+
+        $hashHex = hash_hmac('sha256', $toSign, $this->secretKey); // IMPORTANT: no `true`
+        $signature = rtrim(strtr(base64_encode($hashHex), '+/', '-_'), '=');
 
         return [
             'Content-Type' => 'application/json',
@@ -84,18 +53,50 @@ class RapydService
         ];
     }
 
-    /**
-     * Handle Rapyd user creation
-     */
     public function createUser(array $payload)
     {
         $path = '/v1/customers';
+        $method = 'POST';
 
-        $headers = $this->generateHeaders('POST', $path, $payload);
+        // 1️⃣ Convert all numbers to strings
+        array_walk_recursive($payload, function (&$item) {
+            if (is_numeric($item)) {
+                $item = (string)$item;
+            }
+        });
 
+        // 2️⃣ Sort keys recursively for consistent JSON
+        $sortRecursive = function (&$array) use (&$sortRecursive) {
+            ksort($array);
+            foreach ($array as &$value) {
+                if (is_array($value)) {
+                    $sortRecursive($value);
+                }
+            }
+        };
+        $sortRecursive($payload);
+
+        // 3️⃣ JSON encode compactly
+        $bodyString = $payload ? json_encode($payload, JSON_UNESCAPED_SLASHES) : '';
+
+        // 4️⃣ Generate salt & timestamp
+        $salt = $this->generateSalt();
+        $timestamp = time();
+
+        // 5️⃣ Generate headers
+        $headers = $this->generateHeaders($method, $path, $bodyString, $salt, $timestamp);
+
+        // dd(
+        //     'Body String:', $bodyString,
+        //     'ToSign:', strtolower($method) . $path . $salt . $timestamp . $this->accessKey . $bodyString,
+        //     'Headers:', $headers
+        // );
+
+        // 6️⃣ Send POST request using raw body to ensure exact match
         $response = Http::withHeaders($headers)
-                        ->post($this->baseUrl . $path, $payload);
+                        ->withBody($bodyString, 'application/json')
+                        ->post($this->baseUrl . $path);
 
-        return $response->json(); // returns associative array
+        return $response->json();
     }
 }
