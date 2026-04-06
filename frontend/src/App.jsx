@@ -13,8 +13,6 @@ const App = () => {
       setIsMobile(window.innerWidth <= 480);
     };
 
-    console.log(isMobile)
-
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);

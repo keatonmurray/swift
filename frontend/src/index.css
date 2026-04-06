@@ -19,6 +19,10 @@ body {
   min-height: 100vh;
 }
 
+.bg-yellow-primary {
+  background-color: #fcca08;
+}
+
 .custom-rounded {
   border-radius: 30px;
 }

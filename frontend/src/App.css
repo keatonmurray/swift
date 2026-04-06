@@ -1,5 +1,11 @@
 /* COMPONENTS-BASED CSS */
 
+/**
+-------------------------------------------------------------------------------
+Mobile View CSS 
+----------------------------------------------------------------------------------
+**/
+
 /* Dashboard */
 .swift.homepage .user-profile-img {
     height: 50px;
@@ -11,7 +17,7 @@
 
 .swift.homepage.notifications-icon figure {
     margin: 0;
-    background: var(--primary-color);;
+    background: var(--primary-color);
     padding: 8px 14px;
     border-radius: 26px;
 }
@@ -606,3 +612,25 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
   background-color: rgb(244, 244, 244) !important;
 }
 
+/**
+-------------------------------------------------------------------------------
+Desktop View CSS 
+----------------------------------------------------------------------------------
+**/
+
+.swift.desktop-view.home nav.navbar .navbar-brand img {
+  height: 100px;
+  width: auto;
+}
+
+.swift.desktop-view.home nav.navbar .nav-link {
+  font-size: 18px;
+}
+
+.swift.desktop-view.home .hero-heading-title {
+  font-size: 5rem !important;
+}
+
+.swift.desktop-view.home .hero-subheading {
+  font-size: 19px !important;
+}

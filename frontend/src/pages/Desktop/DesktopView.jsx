@@ -1,6 +1,11 @@
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+
 const DesktopView = () => {
   return (
-    <div>DesktopView</div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+    </Routes>
   )
 }
 
