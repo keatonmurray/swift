@@ -56,6 +56,7 @@ class UserController extends Controller
             ], 422);
         }
 
+        // If validation returns true, save user info in Swift DB
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name'  => $request->last_name,
@@ -64,13 +65,14 @@ class UserController extends Controller
             'password'   => Hash::make($request->password),
         ]);
 
-        // Include required phone_number
+        // Also create user in Rapyd
         $rapydUser = $rapyd->createUser([
             'name' => $request->first_name . ' ' . $request->last_name,
             'email' => $request->email,
             'phone_number' => '+639123456789', // replace with real user phone
-            'metadata' => ['user_reference' => $user->id]
+            'metadata' => ['user_reference' => $user->id] // reference to user created in Swift DB
         ]);
+
 
         // Safely check if data exists
         if (isset($rapydUser['data']['id'])) {
@@ -85,7 +87,6 @@ class UserController extends Controller
                 'rapyd_response' => $rapydUser
             ], 422);
         }
-        dd($user);
 
         return response()->json([
             'success' => true,

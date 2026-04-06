@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Http;
 
 class RapydService 
 {
-    private $accessKey; 
-    private $secretKey;
-    private $baseUrl;
+    private string $accessKey; 
+    private string $secretKey;
+    private string $baseUrl;
 
     public function __construct()
     {
@@ -17,9 +17,33 @@ class RapydService
         $this->baseUrl   = config('services.rapyd.base_url'); 
     }
 
-    private function generateHeaders($method, $path, array $body = [])
+    /**
+     * Generate salt with 12 characters in length containing alphanumeric characters
+     */
+    private function generateSalt(int $length = 12): string
     {
-        $salt      = bin2hex(random_bytes(8));
+        $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        $salt = '';
+        for ($i = 0; $i < $length; $i++) {
+            $salt .= $chars[random_int(0, strlen($chars) - 1)];
+        }
+        return $salt;
+    }
+
+    /**
+     * Generate base64 based URL to build signature
+     */
+    private function toBase64Url(string $str): string
+    {
+        return rtrim(strtr(base64_encode($str), '+/', '-_'), '=');
+    }
+
+    /**
+     * Generate request headers
+     */
+    private function generateHeaders(string $method, string $path, array $body = []): array
+    {
+        $salt = $this->generateSalt();
         $timestamp = time();
 
         // Convert all numeric values to strings
@@ -40,28 +64,29 @@ class RapydService
         };
         $sortRecursive($body);
 
-        // JSON encode compactly
+        // Compact JSON body (sorted keys)
         $bodyString = $body ? json_encode($body, JSON_UNESCAPED_SLASHES) : '';
 
-        // String to sign
-        $toSign = $method . $path . $salt . $timestamp . $this->accessKey . $this->secretKey . $bodyString;
+        // Build toSign: method + path + salt + timestamp + accessKey + bodyString
+        $toSign = strtolower($method) . $path . $salt . $timestamp . $this->accessKey . $bodyString;
 
-        // HMAC SHA256 signature
-        $signature = base64_encode(hash_hmac('sha256', $toSign, $this->secretKey, true));
+        // HMAC SHA256 signature, then URL-safe Base64
+        $hash = hash_hmac('sha256', $toSign, $this->secretKey, true);
+        $signature = $this->toBase64Url($hash);
 
-        $data = [
+        return [
             'Content-Type' => 'application/json',
             'access_key'   => $this->accessKey,
             'salt'         => $salt,
             'timestamp'    => $timestamp,
             'signature'    => $signature,
+            'idempotency'  => $timestamp . $salt,
         ];
-
-        dd($data);
-
-        return $data;
     }
 
+    /**
+     * Handle Rapyd user creation
+     */
     public function createUser(array $payload)
     {
         $path = '/v1/customers';
