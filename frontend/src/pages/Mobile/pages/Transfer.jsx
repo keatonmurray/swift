@@ -1,13 +1,13 @@
-import AddBeneficiaryFormModal from "../components/transfer/AddBeneficiaryFormModal";
+import AddBeneficiaryFormModal from "../../../components/transfer/AddBeneficiaryFormModal";
 
 import { useEffect } from "react";
 import { Carousel } from "bootstrap";
 import { useState } from "react";
 
-import cardLogo from '../../public/img/mastercard.png';
-import person1 from '../../public/img/person1.jpg';
-import person2 from '../../public/img/person2.jpg';
-import person3 from '../../public/img/person3.jpg';
+import cardLogo from '../../../../public/img/mastercard.png';
+import person1 from '../../../../public/img/person1.jpg';
+import person2 from '../../../../public/img/person2.jpg';
+import person3 from '../../../../public/img/person3.jpg';
 
 const Transfer = () => {
 

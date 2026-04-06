@@ -1,36 +1,38 @@
-import { Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
-import Home from "./pages/Home";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
-import Transfer from "./pages/Transfer";
-import Currencies from "./pages/Currencies";
-import Deposit from './pages/Deposit';
-import Profile from "./pages/Profile";
-import UpdateProfile from "./pages/UpdateProfile";
-import PrivateRoute from "./routes/PrivateRoutes";
+import { useState, useEffect } from "react";
+
+import MobileView from "./pages/Mobile/MobileView";
+import DesktopView from "./pages/Desktop/DesktopView";
+import Footer from "./components/Footer";
+
 
 const App = () => {
-  return (
-    <div className="page-wrapper">
-      <Routes>
-        {/* Public routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 480);
 
-        {/* Protected routes */}
-        <Route element={<PrivateRoute />}>
-          <Route path="/dashboard/:id" element={<Dashboard />} />
-          <Route path="/transfer" element={<Transfer />} />
-          <Route path="/currencies" element={<Currencies />} />
-          <Route path="/deposit" element={<Deposit />} />
-          <Route path="/profile/:id" element={<Profile />} />
-          <Route path="/update-profile/:id" element={<UpdateProfile />} />
-        </Route>
-      </Routes>
-    </div>
-  );
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 480);
+    };
+
+    console.log(isMobile)
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  if (isMobile) {
+    return (
+      <div className="page-wrapper">
+        <MobileView />
+        <Footer />
+      </div>
+    );
+  } else {
+    return (
+      <div className="desktop-wrapper">
+        <DesktopView />
+      </div>
+    );
+  }
 };
 
 export default App;

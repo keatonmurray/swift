@@ -4,8 +4,8 @@ import { Carousel } from "bootstrap";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-import Notification from "../components/dashboard/Notification";
-import cardLogo from '../../public/img/mastercard.png';
+import Notification from "../../../components/dashboard/Notification";
+import cardLogo from '../../../../public/img/mastercard.png';
 
 const Dashboard = () => {
     const { id } = useParams()
