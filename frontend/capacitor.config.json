@@ -1,0 +1,6 @@
+{
+  "appId": "com.swiftapp.app",
+  "appName": "Swift",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
