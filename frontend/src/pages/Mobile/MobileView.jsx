@@ -9,6 +9,7 @@ import Deposit from "./pages/Deposit";
 import Profile from "./pages/Profile";
 import UpdateProfile from "./pages/UpdateProfile";
 import PrivateRoute from "../../routes/PrivateRoutes";
+import ManageCurrencies from "./pages/ManageCurrencies";
 
 const MobileView = () => {
   return (
@@ -27,6 +28,7 @@ const MobileView = () => {
             <Route path="/deposit" element={<Deposit />} />
             <Route path="/profile/:id" element={<Profile />} />
             <Route path="/update-profile/:id" element={<UpdateProfile />} />
+            <Route path="/your-currencies/:id" element={<ManageCurrencies />} />
           </Route>
         </Routes>
       </div>

@@ -11,6 +11,7 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 
 const Dashboard = () => {
     const { id } = useParams()
+    const userId = localStorage.getItem("user_id");
 
     const [user, setUser] = useState(null);
     const [notificationIsTrue, setNotification] = useState(false); 
@@ -186,7 +187,12 @@ const Dashboard = () => {
             <div className="card border-0 custom-rounded px-3 pt-2 pb-3 mb-3 mt-4">
                 <div className="d-flex align-items-center justify-content-between pt-2">
                     <h6 className="fw-semibold fs-18">Your Currencies</h6>
-                    <h6 className="fw-semibold fs-18 d-flex align-items-center justify-content-center">Manage <MdKeyboardArrowRight className="ms-1"/></h6>
+                    <Link to={`/your-currencies/${userId}`} className="text-decoration-none text-dark">
+                    <h6 className="fw-semibold fs-18 d-flex align-items-center justify-content-center">
+                        Manage 
+                        <MdKeyboardArrowRight className="ms-1"/>
+                    </h6>
+                    </Link>
                 </div>
                 <hr style={{margin:"7px"}} />
                 <div className="d-flex align-items-center justify-content-between mt-2 me-4">
