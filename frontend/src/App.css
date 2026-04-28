@@ -15,6 +15,14 @@ Mobile View CSS
     object-fit: cover;
 }
 
+.swift.homepage .increase-icon-img {
+    height: 70px;
+    width: 70px;
+    border-radius: 50%;
+    margin-right: 8px;
+    object-fit: cover;
+}
+
 .swift.homepage.notifications-icon figure {
     margin: 0;
     background: var(--primary-color);
@@ -32,6 +40,26 @@ Mobile View CSS
 
 .swift.homepage .carousel-inner {
   text-align: center; 
+}
+
+span.currency-container {
+  padding: 25px;
+  color: #fff;
+  border-radius: 100px;
+  width: 30px;
+  height: 30px;
+}
+
+span.currency-container.first {
+  background-color: #82d682;
+}
+
+span.currency-container.second {
+  background-color: rgb(255, 174, 251);
+}
+
+span.currency-container.third {
+  background-color: rgb(144, 125, 255);
 }
 
 .swift.homepage .carousel-inner .carousel-item > * {
@@ -73,7 +101,7 @@ Mobile View CSS
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin: 30px auto 0; 
+  margin: 10px auto 0;
 }
 
 .swift.homepage .card-header {
@@ -124,7 +152,7 @@ Mobile View CSS
 }
 
 .swift.homepage.actions {
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .swift.homepage.actions a img {
@@ -232,6 +260,26 @@ Mobile View CSS
 
 .swift.homepage.footer-fixed img {
     height: 40px
+}
+
+.footer-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.footer-item img {
+  display: block;
+  object-fit: contain;
+}
+
+.footer-item span {
+  display: block;
+  line-height: 1;
+  font-size: 13px;
 }
 
 /* Homepage */

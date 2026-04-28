@@ -7,6 +7,8 @@ import axios from "axios";
 import Notification from "../../../components/dashboard/Notification";
 import cardLogo from '../../../../public/img/mastercard.png';
 
+import { MdKeyboardArrowRight } from "react-icons/md";
+
 const Dashboard = () => {
     const { id } = useParams()
 
@@ -91,14 +93,14 @@ const Dashboard = () => {
         )}
         {/* Homepage Elements start here  */}
        <div className="px-4">
-            <div className="card border-0 custom-rounded px-4 pt-2 pb-3">
+            <div className="card border-0 custom-rounded px-4 pt-2 pb-3 mb-3">
                 <div className="d-flex align-items-center justify-content-between pt-2">
                     <div className="account-balance">
                         <div className="d-flex align-items-center justify-content-center">
                             <img src={user?.profile_avatar ?? "/img/profile.png"} alt="User Profile" className="user-profile-img"/>
                             <div className="d-flex flex-column align-items-start">
-                                <p className="p-0 m-0 small text-capitalize">Total balance</p>
-                                <h4 className="m-0 fw-semibold">$123,456</h4>
+                                <p className="p-0 m-0 small text-capitalize fs-18">Total balance</p>
+                                <h4 className="m-0 fw-semibold fs-26">$20,456</h4>
                             </div>
                         </div>
                     </div>
@@ -106,6 +108,22 @@ const Dashboard = () => {
                         <figure>
                             <img src="/img/bell.png" alt="Notification Bell" />
                         </figure>
+                    </div>
+                </div>
+            </div>
+            <div className="card border-0 custom-rounded px-3 pt-2 pb-3 mb-3">
+                <div className="d-flex align-items-center justify-content-between pt-2">
+                    <div className="account-balance">
+                        <div className="d-flex align-items-center">
+                            <img src="/img/increase.png" alt="Increase Icon" className="increase-icon-img me-2"/>
+                            <div className="d-flex flex-column align-items-start">
+                                <p className="fs-18 ms-2 p-0 m-0 small text-capitalize d-flex align-items-center justify-content-center"> 
+                                    Smart Insight
+                                    <span className="badge bg-success ms-2 fs-10">New</span>
+                                </p>
+                                <p className="small ms-2 mt-2">USD → PHP conversion is good. <span className="d-block">You could get $40 more today.</span> </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -165,6 +183,27 @@ const Dashboard = () => {
                 </div>
             </div>
             <br />
+            <div className="card border-0 custom-rounded px-3 pt-2 pb-3 mb-3 mt-4">
+                <div className="d-flex align-items-center justify-content-between pt-2">
+                    <h6 className="fw-semibold fs-18">Your Currencies</h6>
+                    <h6 className="fw-semibold fs-18 d-flex align-items-center justify-content-center">Manage <MdKeyboardArrowRight className="ms-1"/></h6>
+                </div>
+                <hr style={{margin:"7px"}} />
+                <div className="d-flex align-items-center justify-content-between mt-2 me-4">
+                    <span className="d-flex align-items-center gap-2">
+                        <span className="currency-container ms-1 d-flex align-items-center justify-content-center border-0 fs-26 fw-normal first">$</span>
+                        <span className="fw-semibold">USD</span>
+                    </span>
+                    <span className="d-flex align-items-center gap-2">
+                        <span className="currency-container ms-1 d-flex align-items-center justify-content-center border-0 fs-26 fw-normal second">₱</span>
+                        <span className="fw-semibold">PHP</span>
+                    </span>
+                    <span className="d-flex align-items-center gap-2">
+                        <span className="currency-container ms-1 d-flex align-items-center justify-content-center border-0 fs-26 fw-normal third">€</span>
+                        <span className="fw-semibold">EUR</span>
+                    </span>
+                </div>
+            </div>
             <div className="swift homepage actions">
                 <div className="card border-0 custom-rounded px-4 py-3">
                     <div className="d-flex justify-content-between">
@@ -174,21 +213,21 @@ const Dashboard = () => {
                             <Link to="/currencies" className="text-decoration-none">
                                 <img src="/img/currency.png" alt="Withdraw Money Icon" />
                             </Link>
-                            <span className="fw-semibold mt-1">Currencies</span>
+                            <span className="fw-semibold fs-18 mt-1">Currencies</span>
                         </div>
 
                         <div className="d-flex flex-column align-items-center">
                             <Link to="/deposit" className="text-decoration-none">
                                 <img src="/img/deposit.png" alt="Deposit Money Icon" />
                             </Link>
-                            <span className="fw-semibold mt-1">Deposit</span>
+                            <span className="fw-semibold fs-18 mt-1">Deposit</span>
                         </div>
 
                         <div className="d-flex flex-column align-items-center">
                             <Link to="/transfer" className="text-decoration-none">
                                 <img src="/img/transfer.png" alt="Transfer Money Icon" />
                             </Link>
-                            <span className="fw-semibold mt-1">Transfer</span>
+                            <span className="fw-semibold fs-18 mt-1">Transfer</span>
                         </div>
                     </div>
                 </div>
@@ -200,13 +239,13 @@ const Dashboard = () => {
         <div className="swift homepage transaction-history">
             <div className="transactions card border-0 custom-rounded-top d-flex flex-column">
                 {/* Header */}
-                <div className="border-bottom d-flex align-items-center justify-content-between px-3 py-2">
-                <h6 className="mb-0 fw-semibold">Transactions</h6>
-                <a href="#" className="text-decoration-none m-0 p-0">
-                    <img src="/img/filter.png" alt="Filter" />
-                </a>
+                <div className="d-flex align-items-center justify-content-between px-3 py-2">
+                    <h6 className="mb-0 fw-semibold fs-18">Current Transactions </h6>
+                    <a href="#" className="text-decoration-none m-0 p-0">
+                        <img src="/img/filter.png" alt="Filter" />
+                    </a>
                 </div>
-
+                <hr style={{margin:"7px"}} />
                 {/* Scrollable wrapper */}
                 <div className="transaction-list-wrapper flex-1 overflow-auto px-3">
                     {transactions.map((t, index) => (
