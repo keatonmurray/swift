@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div className="swift desktop-view home bg-yellow-primary px-5">
-        <div className="px-5 py-4">
+    <div className="swift desktop-view home bg-yellow-primary vh-100 py-4">
+        <div className="p-0">
              {/* Navbar */}
             <nav className="navbar navbar-expand-lg navbar-dark px-5">
                 <Link to="/" className="navbar-brand" href="#">
@@ -39,56 +39,48 @@ const Home = () => {
                         </li>
                         <li className="nav-item">
                         <a className="nav-link fw-semibold text-white" href="#">
-                            Contact
+                            Careers
                         </a>
                         </li>
                     </ul>
                     <a className="btn btn-rounded px-4 btn-dark fw-semibold py-3 border-0 ms-lg-3" href="#">
-                        Get Started
+                        Get in touch
                     </a>
                 </div>
             </nav>
 
             {/* Hero Section */}
-            <section className="d-flex flex-column flex-lg-row align-items-center justify-content-between px-5 py-5 bg-yellow-primary text-light">
-                <div className="hero-text mb-4 mb-lg-0" style={{ maxWidth: "500px" }}>
-                    <h1 className="display-6 fw-bold hero-heading-title">
-                        The next-generation <br /> payment method.
+            <section className="d-flex px-5 flex-column flex-lg-row align-items-center justify-content-between px-5 py-5 bg-yellow-primary text-light">
+                <div className="hero-text mb-4 mb-lg-0" style={{ maxWidth: "700px" }}>
+                   <h1 className="display-6 fw-bold hero-heading-title">
+                        Get paid <span className="text-dark">globally.</span>
+                        <br />
+                        Manage money <span className="text-dark">intelligently.</span>
                     </h1>
-                    <p className="mt-3 hero-subheading">
-                        SecurePay's mobile application provides a seamless and secure platform
-                        for the next generation of payments.
+                    <p className="mt-4 hero-subheading text-muted">
+                        Create invoices, receive multi-currency payments, and automatically split, convert, and withdraw funds — all in one intelligent financial system.
                     </p>
-                    <a className="btn btn-rounded px-4 btn-dark fw-semibold py-3 border-0 mt-3" href="#">
-                        Get Started
-                    </a>
+                    <div className="d-flex align-items-center">
+                        <a className="btn btn-rounded px-4 d-flex align-items-center btn-dark fw-semibold py-3 border-0 mt-3 me-2" href="#">
+                            <img src="/img/google-play.png" className="google-play-img" alt="Google Play" />
+                            Download on Google Play
+                        </a>
+                        <a className="btn btn-rounded px-4 d-flex align-items-center btn-dark fw-semibold py-3 border-0 mt-3" href="#">
+                            <img src="/img/app-store.png" className="google-play-img" alt="Google Play" />
+                            Download on Apple Store
+                        </a>
+                    </div>
                 </div>
 
                 <div className="hero-image text-center">
                     <img
-                        src="./img/vector.png"
+                        src="./img/ui-preview.png"
                         alt="SecurePay App"
                         className="img-fluid"
-                        style={{ maxHeight: "500px" }}
                     />
                 </div>
             </section>
 
-            {/* Stats Section */}
-            <section className="d-flex flex-column flex-lg-row justify-content-around align-items-center bg-yellow-primary text-white px-5 py-5">
-                <div className="text-center mb-4 mb-lg-0">
-                    <h2 className="fw-bold">450k+</h2>
-                    <p>Total active users</p>
-                </div>
-                <div className="text-center mb-4 mb-lg-0">
-                    <h2 className="fw-bold">600k+</h2>
-                    <p>App downloads</p>
-                </div>
-                <div className="text-center">
-                    <h2 className="fw-bold">4.9 ⭐</h2>
-                    <p>Positive reviews</p>
-                </div>
-            </section>
         </div>
     </div>
   );

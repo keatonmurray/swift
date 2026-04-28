@@ -682,3 +682,9 @@ Desktop View CSS
 .swift.desktop-view.home .hero-subheading {
   font-size: 19px !important;
 }
+
+.swift.desktop-view.home .google-play-img {
+  height: 50px;
+  width: auto;
+  margin-right: 10px;
+}
