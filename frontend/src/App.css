@@ -192,7 +192,7 @@ span.currency-container.third {
 .swift.homepage.transaction-history .transaction-list-wrapper {
   flex-grow: 1;       
   overflow-y: auto; 
-  padding-bottom: 60px !important;
+  padding-bottom: 85px !important;
   padding-top: 18px;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
@@ -317,7 +317,7 @@ span.currency-container.third {
 /* Transfer Page */
 
 .swift.transfer {
-  margin-top: -40px;
+  margin-top: -80px;
 }
 
 .swift.transfer .card.account-details {
@@ -375,7 +375,7 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
 }
 
 .swift.transfer .set-amount button.send-money {
-  margin-bottom: 80px !important;
+  margin-bottom: 125px !important;
 }
 
 .swift.transfer .set-amount .keypad {
