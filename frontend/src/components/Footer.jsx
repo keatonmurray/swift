@@ -16,10 +16,11 @@ const Footer = () => {
             <span>Home</span>
           </Link>
 
-          <div className="footer-item text-decoration-none text-dark small fw-semibold pt-2">
+          <Link to='/transfer' 
+            className="footer-item text-decoration-none text-dark small fw-semibold pt-2">
             <img src="/img/transfer-solid.png" alt="Transfer" />
             <span>Transfer</span>
-          </div>
+          </Link>
 
           <Link
             to={`/profile/${userId}`}

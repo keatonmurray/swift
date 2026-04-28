@@ -224,10 +224,10 @@ const Dashboard = () => {
                         </div>
 
                         <div className="d-flex flex-column align-items-center">
-                            <Link to="/transfer" className="text-decoration-none">
-                                <img src="/img/transfer.png" alt="Transfer Money Icon" />
+                            <Link to="#" className="text-decoration-none">
+                                <img src="/img/invoice.png" alt="Transfer Money Icon" />
                             </Link>
-                            <span className="fw-semibold fs-18 mt-1">Transfer</span>
+                            <span className="fw-semibold fs-18 mt-1">Invoices</span>
                         </div>
                     </div>
                 </div>
