@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Accounts\Personal\WalletController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -16,5 +17,9 @@ Route::put('/update/{id}', [UserController::class, 'update']);
 
 // Profile Controler
 Route::get('/profile', [ProfileController::class, 'profile'])->middleware('auth:sanctum');
+
+// Create Wallet (Personal)
+
+Route::post('/create-personal-wallet/{id}', [WalletController::class, 'createWallet'])->middleware('auth:sanctum');
 
 

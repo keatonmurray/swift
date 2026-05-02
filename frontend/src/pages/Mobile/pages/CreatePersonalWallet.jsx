@@ -3,9 +3,13 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useState } from 'react'
 import { RiErrorWarningFill } from 'react-icons/ri'
+import { toast } from 'react-toastify'
+import axios from 'axios'
 
 const CreatePersonalWallet = () => {
   const { id } = useParams()
+  const userId = localStorage.getItem("user_id");
+  const token = localStorage.getItem("api_token");
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -210,6 +214,42 @@ const CreatePersonalWallet = () => {
     { code: "ZW", name: "Zimbabwe" }
   ];
 
+  const handleCreateWallet = async (e) => {
+    e.preventDefault(); 
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/create-personal-wallet/${userId}`,
+        {
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            date_of_birth: dateOfBirth,
+            country: country, 
+            nationality: nationality,
+            identification_number: identificationNumber
+        },
+        {
+            headers: {
+            Authorization: `Bearer ${token}`
+            }
+        }
+      );
+      // Success toast
+      toast.success("Wallet created successfully!");
+    } catch (error) {
+      // Dynamic error messages from backend
+      if (error.response && error.response.status !== 200) {
+        const errors = error.response.data.errors;
+        for (const key in errors) {
+          toast.error(errors[key]);
+        }
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
+    }
+  }
+
   return (
     <div className="swift personal-wallet d-flex justify-content-center h-100">
         <div className="px-4 w-100">
@@ -224,7 +264,7 @@ const CreatePersonalWallet = () => {
             </div>
 
             <div className="w-100 d-flex align-items-center justify-content-center my-4">
-                <div className="w-100">
+                <form onSubmit={handleCreateWallet} className="w-100">
 
                     <input
                     type="text"
@@ -296,7 +336,7 @@ const CreatePersonalWallet = () => {
                     Create Wallet
                     </button>
 
-                </div>
+                </form>
             </div>
 
         </div>

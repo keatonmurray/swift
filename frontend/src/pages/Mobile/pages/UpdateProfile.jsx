@@ -298,7 +298,7 @@ const UpdateProfile = () => {
       toast.success("Success! We'll be reviewing your profile.");
     } catch (error) {
       // Dynamic error messages from backend
-      if (error.response && error.response.status === 422) {
+      if (error.response && error.response.status !== 200) {
         const errors = error.response.data.errors;
         for (const key in errors) {
           toast.error(errors[key]); // display each field error
