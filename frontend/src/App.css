@@ -703,7 +703,20 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
 /* Create Personal Wallet Page */
 
 .swift.personal-wallet {
-  margin-top: -80px;
+  min-height: 100vh;
+  height: auto;
+  overflow-y: auto;
+  padding-bottom: 120px;
+  margin-top: -50px;
+}
+
+.swift.personal-wallet div.info {
+  background: white;
+  padding: 18px 14px 18px;
+}
+
+.swift.personal-wallet svg.warning-icon {
+  color: #ffbf00;
 }
 
 /**
