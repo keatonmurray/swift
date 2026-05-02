@@ -10,7 +10,7 @@ const AccountType = () => {
     <div className="swift auth account-type flex-column d-flex justify-content-center align-items-center min-vh-100">
         <div className="px-4">
             <p className="text-small text-uppercase text-center fw-bold welcome-text">Welcome!</p>
-            <h1 className="text-center mb-4 fw-semibold fs-36">Choose Your <span className="d-block">Account Type</span></h1>
+            <h1 className="text-center mb-4 fw-bold fs-36">Choose Your <span className="d-block">Account Type</span></h1>
             <p className="small text-center">Tell us a bit about yourself so we can customize your experience.</p>
             <br />
             <Link to="/register" className="w-100 btn btn-dark my-1 py-3 fw-semibold">
