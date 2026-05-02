@@ -50,7 +50,7 @@ const Login = () => {
             placeholder="Password"/>
           <button className="btn btn-dark w-100 py-3 fw-semibold mt-3 py-2">Login</button>
         </form>
-        <p className="fw-semibold small mt-3">Don't have an account yet? <Link to="/register" className="text-dark">Register instead</Link></p>
+        <p className="fw-semibold small mt-3">Don't have an account yet? <Link to="/select-account-type" className="text-dark">Register instead</Link></p>
       </div>
     </div>
   )
