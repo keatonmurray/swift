@@ -700,6 +700,12 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
   background-color: #eeeeee;
 }
 
+/* Create Personal Wallet Page */
+
+.swift.personal-wallet {
+  margin-top: -80px;
+}
+
 /**
 -------------------------------------------------------------------------------
 Desktop View CSS 

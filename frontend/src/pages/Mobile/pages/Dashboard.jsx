@@ -193,16 +193,24 @@ const Dashboard = () => {
             <div className="card border-0 custom-rounded px-3 pt-2 pb-3 mb-3 mt-4">
                 <div className="d-flex align-items-center justify-content-between pt-2">
                     <h6 className="fw-semibold fs-18">Your Currencies</h6>
-                    <Link to={`/your-currencies/${userId}`} className="text-decoration-none text-dark">
-                    <h6 className="fw-semibold fs-18 d-flex align-items-center justify-content-center">
-                        Manage 
-                        <MdKeyboardArrowRight className="ms-1"/>
-                    </h6>
+                   <Link
+                        to={yourCurrencies.length === 0 ? "#" : `/your-currencies/${userId}`}
+                        className={`text-decoration-none d-inline-block ${
+                            yourCurrencies.length === 0 ? "disabled-link text-muted" : "text-dark"
+                        }`}
+                        onClick={(e) => {
+                            if (yourCurrencies.length === 0) e.preventDefault();
+                        }}
+                        >
+                        <h6 className="fw-semibold fs-18 d-flex align-items-center justify-content-center">
+                            Manage
+                            <MdKeyboardArrowRight className="ms-1" size={25} />
+                        </h6>
                     </Link>
                 </div>
                 <hr style={{margin:"7px"}} />
                 <div className="d-flex align-items-center justify-content-center mt-2">
-                    <span className="d-flex align-items-center gap-2">
+                    <span className="d-flex align-items-center gap-2 w-100">
                         {yourCurrencies && yourCurrencies.length > 0 ? (
                         yourCurrencies.map((c, index) => (
                             <span key={index} className="d-flex align-items-center gap-2 me-2">
@@ -215,7 +223,10 @@ const Dashboard = () => {
                             </span>
                         ))
                         ) : (
-                            <Link to="#" className="btn btn-dark fw-semibold btn-rounded border-0 py-3 px-4" type="button">Create a wallet</Link>
+                            <div className="w-100">
+                                <p className="text-center small text-muted py-2">You have not opened any wallet</p>
+                                <Link to={`/create-personal-wallet/${userId}`} className="btn w-100 btn-dark fw-semibold btn-rounded border-0 py-3 px-4" type="button">Create a wallet</Link>
+                            </div>
                         )}
                     </span>
                     </div>
