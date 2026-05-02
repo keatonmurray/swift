@@ -36,17 +36,23 @@ const Dashboard = () => {
     }, []);
 
     const transactions = [
-        { name: "Jenny Wilson", initials: "JW", time: "Today, 12:30 pm", amount: "-$438", color: "#FDEBD0" },
-        { name: "Wade Warren", initials: "WW", time: "Today, 12:30 pm", amount: "+$1200", color: "#F5D3E0" },
-        { name: "Cameron Williamson", initials: "CW", time: "Today, 12:30 pm", amount: "+$786", color: "#CDE4F7" },
-        { name: "Esther Howard", initials: "EH", time: "Today, 12:30 pm", amount: "-$250", color: "#D0F7D0" },
-        { name: "Ralph Edwards", initials: "RE", time: "Today, 12:30 pm", amount: "+$500", color: "#F7D0D0" },
-        { name: "Alice Johnson", initials: "AJ", time: "Yesterday, 9:15 am", amount: "-$320", color: "#FFF3CD" },
-        { name: "Brian Smith", initials: "BS", time: "Yesterday, 2:45 pm", amount: "+$980", color: "#D1ECF1" },
-        { name: "Monica Reyes", initials: "MR", time: "Today, 8:05 am", amount: "-$150", color: "#F8D7DA" },
-        { name: "David Brown", initials: "DB", time: "Yesterday, 11:20 am", amount: "+$420", color: "#D4EDDA" },
-        { name: "Samantha Lee", initials: "SL", time: "Today, 1:50 pm", amount: "+$650", color: "#E2D6F7" },
+        // { name: "Jenny Wilson", initials: "JW", time: "Today, 12:30 pm", amount: "-$438", color: "#FDEBD0" },
+        // { name: "Wade Warren", initials: "WW", time: "Today, 12:30 pm", amount: "+$1200", color: "#F5D3E0" },
+        // { name: "Cameron Williamson", initials: "CW", time: "Today, 12:30 pm", amount: "+$786", color: "#CDE4F7" },
+        // { name: "Esther Howard", initials: "EH", time: "Today, 12:30 pm", amount: "-$250", color: "#D0F7D0" },
+        // { name: "Ralph Edwards", initials: "RE", time: "Today, 12:30 pm", amount: "+$500", color: "#F7D0D0" },
+        // { name: "Alice Johnson", initials: "AJ", time: "Yesterday, 9:15 am", amount: "-$320", color: "#FFF3CD" },
+        // { name: "Brian Smith", initials: "BS", time: "Yesterday, 2:45 pm", amount: "+$980", color: "#D1ECF1" },
+        // { name: "Monica Reyes", initials: "MR", time: "Today, 8:05 am", amount: "-$150", color: "#F8D7DA" },
+        // { name: "David Brown", initials: "DB", time: "Yesterday, 11:20 am", amount: "+$420", color: "#D4EDDA" },
+        // { name: "Samantha Lee", initials: "SL", time: "Today, 1:50 pm", amount: "+$650", color: "#E2D6F7" },
     ];
+
+    const yourCurrencies = [
+        // { currency: "USD", currencySymbol: "$" },
+        // { currency: "PHP", currencySymbol: "₱" },
+        // { currency: "EUR", currencySymbol: "€" },
+    ]
 
     useEffect(() => {
         const carousel = document.getElementById("carouselExample");
@@ -195,20 +201,24 @@ const Dashboard = () => {
                     </Link>
                 </div>
                 <hr style={{margin:"7px"}} />
-                <div className="d-flex align-items-center justify-content-between mt-2 me-4">
+                <div className="d-flex align-items-center justify-content-center mt-2">
                     <span className="d-flex align-items-center gap-2">
-                        <span className="currency-container ms-1 d-flex align-items-center justify-content-center border-0 fs-26 fw-normal first">$</span>
-                        <span className="fw-semibold">USD</span>
+                        {yourCurrencies && yourCurrencies.length > 0 ? (
+                        yourCurrencies.map((c, index) => (
+                            <span key={index} className="d-flex align-items-center gap-2 me-2">
+                            <span className="currency-container ms-1 d-flex align-items-center justify-content-center border-0 fs-26 fw-normal first">
+                                {c.currencySymbol || '$'}
+                            </span>
+                            <span className="fw-semibold">
+                                {c.currency || 'USD'}
+                            </span>
+                            </span>
+                        ))
+                        ) : (
+                            <Link to="#" className="btn btn-dark fw-semibold btn-rounded border-0 py-3 px-4" type="button">Create a wallet</Link>
+                        )}
                     </span>
-                    <span className="d-flex align-items-center gap-2">
-                        <span className="currency-container ms-1 d-flex align-items-center justify-content-center border-0 fs-26 fw-normal second">₱</span>
-                        <span className="fw-semibold">PHP</span>
-                    </span>
-                    <span className="d-flex align-items-center gap-2">
-                        <span className="currency-container ms-1 d-flex align-items-center justify-content-center border-0 fs-26 fw-normal third">€</span>
-                        <span className="fw-semibold">EUR</span>
-                    </span>
-                </div>
+                    </div>
             </div>
             <div className="swift homepage actions">
                 <div className="card border-0 custom-rounded px-4 py-3">
@@ -254,34 +264,43 @@ const Dashboard = () => {
                 <hr style={{margin:"7px"}} />
                 {/* Scrollable wrapper */}
                 <div className="transaction-list-wrapper flex-1 overflow-auto px-3">
-                    {transactions.map((t, index) => (
-                        <div
-                            key={index}
-                            className="transaction d-flex align-items-center justify-content-between py-2"
+                    <div className="h-100 d-flex align-items-center justify-content-center">
+                        {transactions && transactions.length > 0 ? (
+                            transactions.map((t, index) => (
+                            <div
+                                key={index}
+                                className="transaction d-flex align-items-center justify-content-between py-2"
                             >
-                            <div className="d-flex align-items-center">
+                                <div className="d-flex align-items-center">
                                 <div
-                                className="avatar me-3"
-                                style={{ backgroundColor: t.color }}
+                                    className="avatar me-3"
+                                    style={{ backgroundColor: t.color }}
                                 >
-                                {t.initials}
+                                    {t.initials}
                                 </div>
                                 <div>
-                                <div className="name">
+                                    <div className="name">
                                     <h6 className="fw-semibold mb-0">{t.name}</h6>
+                                    </div>
+                                    <div className="time">{t.time}</div>
                                 </div>
-                                <div className="time">{t.time}</div>
                                 </div>
-                            </div>
-                            <div
+
+                                <div
                                 className={`amount ${
-                                t.amount.startsWith('+') ? 'text-success' : 'text-danger'
+                                    t.amount.startsWith('+') ? 'text-success' : 'text-danger'
                                 }`}
-                            >
+                                >
                                 {t.amount}
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                            ))
+                        ) : (
+                            <p className="text-center py-3 text-muted">
+                                No current transaction history
+                            </p>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
