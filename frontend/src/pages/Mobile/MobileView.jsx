@@ -10,6 +10,7 @@ import Profile from "./pages/Profile";
 import UpdateProfile from "./pages/UpdateProfile";
 import PrivateRoute from "../../routes/PrivateRoutes";
 import ManageCurrencies from "./pages/ManageCurrencies";
+import AccountType from "./pages/AccountType";
 
 const MobileView = () => {
   return (
@@ -19,6 +20,7 @@ const MobileView = () => {
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/select-account-type" element={<AccountType/>}/>
 
           {/* Protected routes */}
           <Route element={<PrivateRoute />}>

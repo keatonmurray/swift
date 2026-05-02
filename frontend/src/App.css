@@ -314,6 +314,23 @@ span.currency-container.third {
   width: auto;
 }
 
+/* Choose Account Type Page */
+
+.swift.auth.account-type p.welcome-text {
+  letter-spacing: 4px;
+}
+
+
+.swift.auth.account-type .button-icon {
+  color: #fcca08;
+}
+
+.swift.auth.account-type figure img.logo {
+  height: 85px;
+  width: auto;
+}
+
+
 /* Transfer Page */
 
 .swift.transfer {

@@ -16,7 +16,7 @@ const Home = () => {
             <br />
             <div className="action-btn d-flex justify-content-center">
                 <Link to="/login" className="btn btn-rounded px-5 py-3 btn-light me-2 fw-semibold">Login</Link>
-                <Link to="/register" className="btn btn-rounded px-5 py-3 btn-dark fw-semibold">Register</Link>
+                <Link to="/select-account-type" className="btn btn-rounded px-5 py-3 btn-dark fw-semibold">Register</Link>
             </div>
         </div>
     </div>
