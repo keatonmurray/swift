@@ -218,7 +218,7 @@ const CreatePersonalWallet = () => {
                 <div className="text-center">
                     <RiErrorWarningFill size={35} className="warning-icon mb-1" />
                     <p className="fw-semibold text-center mb-0">
-                        KYC verification is required. Once approved, you can select your wallet currency.
+                        KYC verification is required. Once approved, you can select your receiving currency.
                     </p>
                 </div>
             </div>
