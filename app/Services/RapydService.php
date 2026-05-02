@@ -12,7 +12,7 @@ class RapydService
     public function __construct(RapydSignatureService $signer)
     {
         $this->signer = $signer;
-        $this->baseUrl = config('services.rapyd.base_url', 'https://sandboxapi.rapyd.net');
+        $this->baseUrl = config('services.rapyd.base_url');
     }
 
     /**

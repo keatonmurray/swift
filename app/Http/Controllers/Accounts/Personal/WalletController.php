@@ -69,6 +69,10 @@ class WalletController extends Controller
 
     public function retrieveWallet() 
     {
-        
+        // TODO:
+        // 1. Pass the wallet reference ID as param
+        // 2. Write logic to retrieve wallet
+        // 3. Feed JSON for client-side consumption
     }
+
 }
