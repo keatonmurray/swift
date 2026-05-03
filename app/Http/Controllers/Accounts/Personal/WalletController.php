@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Accounts\Personal;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Accounts\Personal\Wallet;
+use App\Models\User;
 use App\Services\RapydService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WalletController extends Controller
 {
@@ -50,12 +53,14 @@ class WalletController extends Controller
         ];
 
         try {
-            $response = $this->rapyd->createWallet($payload);
+            $rapydServerResponse = $this->rapyd->createWallet($payload);
+
+            $this->storeWalletIntoDB($rapydServerResponse);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Wallet created successfully',
-                'data'    => $response,
+                'data'    => $rapydServerResponse,
             ], 201);
 
         } catch (\Throwable $e) {
@@ -67,12 +72,52 @@ class WalletController extends Controller
         }
     }
 
-    public function retrieveWallet() 
+    private function storeWalletIntoDB($rapydServerResponse)
     {
-        // TODO:
-        // 1. Pass the wallet reference ID as param
-        // 2. Write logic to retrieve wallet
-        // 3. Feed JSON for client-side consumption
+        $user = Auth::user();
+        $walletToken = $rapydServerResponse['data']['id'] ?? null;
+
+        if (!$walletToken) {
+            throw new \Exception('Wallet ID missing from Rapyd response');
+        }
+
+        $dbData = [
+            'user_id' => $user->id,
+            'rapyd_ewallet_token' => $walletToken
+        ];
+
+        Wallet::create($dbData);
+    }
+
+    public function retrieveWallet(string $user_id)
+    {
+        $user = User::with('wallets')->findOrFail($user_id);
+
+        $wallet = $user->wallets->first();
+
+        if (!$wallet) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Wallet not found'
+            ], 404);
+        }
+
+        if (!$wallet->rapyd_ewallet_token) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Wallet token missing'
+            ], 404);
+        }
+
+        $rapydWallet = $this->rapyd->retrieveWallet($wallet->rapyd_ewallet_token);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'wallet_db'   => $wallet,
+                'wallet_rapyd' => $rapydWallet['data'] ?? null,
+            ]
+        ]);
     }
 
 }

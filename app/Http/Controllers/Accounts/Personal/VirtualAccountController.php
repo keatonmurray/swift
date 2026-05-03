@@ -10,7 +10,7 @@ class VirtualAccountController extends Controller
     public function createVirtualAccount()
     {
         // TODO: 
-        // 1. Retrieve wallet reference id
+        // 1. Retrieve e-wallet number
         // 2. Write logic to create a virtual currency account for the specified wallet
     }
 }

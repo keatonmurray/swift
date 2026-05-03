@@ -221,6 +221,7 @@ const CreatePersonalWallet = () => {
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/create-personal-wallet/${userId}`,
         {
+            user_id: userId,
             first_name: firstName,
             last_name: lastName,
             email: email,

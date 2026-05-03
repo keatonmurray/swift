@@ -15,6 +15,7 @@ const Dashboard = () => {
 
     const [user, setUser] = useState(null);
     const [notificationIsTrue, setNotification] = useState(false); 
+    const [wallet, setWallet] = useState(null);
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -48,11 +49,33 @@ const Dashboard = () => {
         // { name: "Samantha Lee", initials: "SL", time: "Today, 1:50 pm", amount: "+$650", color: "#E2D6F7" },
     ];
 
-    const yourCurrencies = [
-        // { currency: "USD", currencySymbol: "$" },
-        // { currency: "PHP", currencySymbol: "₱" },
-        // { currency: "EUR", currencySymbol: "€" },
-    ]
+    const handleRetrieveWallet = async () => {
+        const token = localStorage.getItem("api_token");
+
+        try {
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-wallet/${userId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            setWallet(response.data.data.wallet_rapyd);
+        } catch (error) {
+            console.error(
+                "Error retrieving wallet:",
+                error.response?.data || error.message
+            );
+        }
+    };
+
+    useEffect(() => {
+        if (userId) {
+            handleRetrieveWallet();
+        }
+    }, [userId]);
 
     useEffect(() => {
         const carousel = document.getElementById("carouselExample");
@@ -194,12 +217,12 @@ const Dashboard = () => {
                 <div className="d-flex align-items-center justify-content-between pt-2">
                     <h6 className="fw-semibold fs-18">Your Currencies</h6>
                    <Link
-                        to={yourCurrencies.length === 0 ? "#" : `/your-currencies/${userId}`}
+                        to={wallet ? "#" : `/your-currencies/${userId}`}
                         className={`text-decoration-none d-inline-block ${
-                            yourCurrencies.length === 0 ? "disabled-link text-muted" : "text-dark"
+                            wallet ? "disabled-link text-muted" : "text-dark"
                         }`}
                         onClick={(e) => {
-                            if (yourCurrencies.length === 0) e.preventDefault();
+                            if (wallet) e.preventDefault();
                         }}
                         >
                         <h6 className="fw-semibold fs-18 d-flex align-items-center justify-content-center">
@@ -211,25 +234,47 @@ const Dashboard = () => {
                 <hr style={{margin:"7px"}} />
                 <div className="d-flex align-items-center justify-content-center mt-2">
                     <span className="d-flex align-items-center gap-2 w-100">
-                        {yourCurrencies && yourCurrencies.length > 0 ? (
-                        yourCurrencies.map((c, index) => (
-                            <span key={index} className="d-flex align-items-center gap-2 me-2">
-                            <span className="currency-container ms-1 d-flex align-items-center justify-content-center border-0 fs-26 fw-normal first">
-                                {c.currencySymbol || '$'}
-                            </span>
-                            <span className="fw-semibold">
-                                {c.currency || 'USD'}
-                            </span>
-                            </span>
-                        ))
+
+                        {!wallet ? (
+                            <div className="w-100">
+                                <p className="text-center text-muted py-2">
+                                    You have not opened any wallet
+                                </p>
+
+                                <Link
+                                    to={`/create-personal-wallet/${userId}`}
+                                    className="btn w-100 btn-dark fw-semibold btn-rounded border-0 py-3 px-4"
+                                >
+                                    Create a wallet
+                                </Link>
+                            </div>
+                        ) : wallet.accounts?.length > 0 ? (
+                            wallet.accounts.map((c, index) => (
+                                <span key={index} className="d-flex align-items-center gap-2 me-2">
+                                    <span className="currency-container ms-1 d-flex align-items-center justify-content-center border-0 fs-26 fw-normal first">
+                                        {c.currency || "$"}
+                                    </span>
+                                    <span className="fw-semibold">
+                                        {c.balance || "0.00"}
+                                    </span>
+                                </span>
+                            ))
                         ) : (
                             <div className="w-100">
-                                <p className="text-center small text-muted py-2">You have not opened any wallet</p>
-                                <Link to={`/create-personal-wallet/${userId}`} className="btn w-100 btn-dark fw-semibold btn-rounded border-0 py-3 px-4" type="button">Create a wallet</Link>
+                                <p className="text-center text-muted py-2">
+                                    Your wallet is ready! Open your first currency account to start using it.
+                                </p>
+                                <Link
+                                    to={`/create-personal-wallet/${userId}`}
+                                    className="btn w-100 btn-dark fw-semibold btn-rounded border-0 py-3 px-4"
+                                >
+                                    Open a currency
+                                </Link>
                             </div>
                         )}
+
                     </span>
-                    </div>
+                </div>
             </div>
             <div className="swift homepage actions">
                 <div className="card border-0 custom-rounded px-4 py-3">

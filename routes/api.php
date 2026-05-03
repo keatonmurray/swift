@@ -4,6 +4,7 @@ use App\Http\Controllers\Accounts\Personal\WalletController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Models\Accounts\Business\Wallet;
 use Illuminate\Support\Facades\Route;
 
 // Login Controller
@@ -18,8 +19,6 @@ Route::put('/update/{id}', [UserController::class, 'update']);
 // Profile Controler
 Route::get('/profile', [ProfileController::class, 'profile'])->middleware('auth:sanctum');
 
-// Create Wallet (Personal)
-
+// Wallet Controller (Personal)
 Route::post('/create-personal-wallet/{id}', [WalletController::class, 'createWallet'])->middleware('auth:sanctum');
-
-
+Route::get('/retrieve-personal-wallet/{id}', [WalletController::class, 'retrieveWallet']);
