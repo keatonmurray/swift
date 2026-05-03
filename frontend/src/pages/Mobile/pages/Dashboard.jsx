@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Carousel } from "bootstrap";
 import { useParams } from "react-router-dom";
+import Spinner from "react-bootstrap/Spinner";
 import axios from "axios";
 
 import Notification from "../../../components/dashboard/Notification";
@@ -16,6 +17,7 @@ const Dashboard = () => {
     const [user, setUser] = useState(null);
     const [notificationIsTrue, setNotification] = useState(false); 
     const [wallet, setWallet] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -64,10 +66,9 @@ const Dashboard = () => {
 
             setWallet(response.data.data.wallet_rapyd);
         } catch (error) {
-            console.error(
-                "Error retrieving wallet:",
-                error.response?.data || error.message
-            );
+            console.error(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -235,7 +236,11 @@ const Dashboard = () => {
                 <div className="d-flex align-items-center justify-content-center mt-2">
                     <span className="d-flex align-items-center gap-2 w-100">
 
-                        {!wallet ? (
+                        {loading ? (
+                            <div className="w-100 d-flex justify-content-center py-3">
+                                <Spinner />
+                            </div>
+                        ) : !wallet ? (
                             <div className="w-100">
                                 <p className="text-center text-muted py-2">
                                     You have not opened any wallet
@@ -264,8 +269,9 @@ const Dashboard = () => {
                                 <p className="text-center text-muted py-2">
                                     Your wallet is ready! Open your first currency account to start using it.
                                 </p>
+
                                 <Link
-                                    to={`/create-personal-wallet/${userId}`}
+                                    to={`/create-personal-currency/${userId}`}
                                     className="btn w-100 btn-dark fw-semibold btn-rounded border-0 py-3 px-4"
                                 >
                                     Open a currency

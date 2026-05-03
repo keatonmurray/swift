@@ -707,7 +707,7 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
   height: auto;
   overflow-y: auto;
   padding-bottom: 120px;
-  margin-top: -50px;
+  margin-top: -25px;
 }
 
 .swift.personal-wallet div.info {
@@ -717,6 +717,10 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
 
 .swift.personal-wallet svg.warning-icon {
   color: #ffbf00;
+}
+
+.swift.personal-wallet svg.currency-icon {
+  color: #63ff63;
 }
 
 /**
