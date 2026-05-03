@@ -48,6 +48,8 @@ span.currency-container {
   border-radius: 100px;
   width: 30px;
   height: 30px;
+  font-size: 15px !important;
+  font-weight: 500 !important;
 }
 
 span.currency-container.first {
@@ -721,6 +723,30 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
 
 .swift.personal-wallet svg.currency-icon {
   color: #63ff63;
+}
+
+.currency-scroll {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    overflow-x: auto;
+    white-space: nowrap;
+    flex-wrap: nowrap;
+
+    padding: 4px 0;
+
+    /* smooth scrolling on touch devices */
+    -webkit-overflow-scrolling: touch;
+
+    /* hide scrollbar (Firefox) */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+/* hide scrollbar (Chrome, Safari, Edge) */
+.currency-scroll::-webkit-scrollbar {
+    display: none;
 }
 
 /**

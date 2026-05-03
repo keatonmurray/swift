@@ -17,6 +17,7 @@ const Dashboard = () => {
     const [user, setUser] = useState(null);
     const [notificationIsTrue, setNotification] = useState(false); 
     const [wallet, setWallet] = useState(null);
+    const [bankAccounts, setBankAccounts] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -75,6 +76,36 @@ const Dashboard = () => {
     useEffect(() => {
         if (userId) {
             handleRetrieveWallet();
+        }
+    }, [userId]);
+
+    const handleRetrieveBankAccounts = async () => {
+
+        const token = localStorage.getItem("api_token");
+
+        try {
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-currency/${userId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+           const accounts = response.data.data.wallet_rapyd.bank_accounts;
+
+            setBankAccounts(accounts);
+            
+            
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+   useEffect(() => {
+        if (userId) {
+            handleRetrieveBankAccounts();
         }
     }, [userId]);
 
@@ -234,53 +265,40 @@ const Dashboard = () => {
                 </div>
                 <hr style={{margin:"7px"}} />
                 <div className="d-flex align-items-center justify-content-center mt-2">
-                    <span className="d-flex align-items-center gap-2 w-100">
+                <span className="d-flex align-items-center gap-2 w-100">
 
-                        {loading ? (
-                            <div className="w-100 d-flex justify-content-center py-3">
-                                <Spinner />
-                            </div>
-                        ) : !wallet ? (
-                            <div className="w-100">
-                                <p className="text-center text-muted py-2">
-                                    You have not opened any wallet
-                                </p>
+                    {loading ? (
+                        <div className="w-100 d-flex justify-content-center py-3">
+                            <Spinner />
+                        </div>
+                    ) : !bankAccounts || bankAccounts.length === 0 ? (
+                        <div className="w-100">
+                            <p className="text-center text-muted py-2">
+                                You have not opened any currency account
+                            </p>
 
-                                <Link
-                                    to={`/create-personal-wallet/${userId}`}
-                                    className="btn w-100 btn-dark fw-semibold btn-rounded border-0 py-3 px-4"
+                            <Link
+                                to={`/create-personal-wallet/${userId}`}
+                                className="btn w-100 btn-dark fw-semibold btn-rounded border-0 py-3 px-4"
+                            >
+                                Create a wallet
+                            </Link>
+                        </div>
+                    ) : (
+                        <div className="currency-scroll d-flex align-items-center gap-2 w-100">
+                            {bankAccounts.map((acc, index) => (
+                                <span
+                                    key={index}
+                                    className="currency-container ms-1 d-flex align-items-center justify-content-center border-0 fs-26 fw-normal first"
                                 >
-                                    Create a wallet
-                                </Link>
-                            </div>
-                        ) : wallet.accounts?.length > 0 ? (
-                            wallet.accounts.map((c, index) => (
-                                <span key={index} className="d-flex align-items-center gap-2 me-2">
-                                    <span className="currency-container ms-1 d-flex align-items-center justify-content-center border-0 fs-26 fw-normal first">
-                                        {c.currency || "$"}
-                                    </span>
-                                    <span className="fw-semibold">
-                                        {c.balance || "0.00"}
-                                    </span>
+                                    {acc.currency}
                                 </span>
-                            ))
-                        ) : (
-                            <div className="w-100">
-                                <p className="text-center text-muted py-2">
-                                    Your wallet is ready! Open your first currency account to start using it.
-                                </p>
+                            ))}
+                        </div>
+                    )}
 
-                                <Link
-                                    to={`/create-personal-currency/${userId}`}
-                                    className="btn w-100 btn-dark fw-semibold btn-rounded border-0 py-3 px-4"
-                                >
-                                    Open a currency
-                                </Link>
-                            </div>
-                        )}
-
-                    </span>
-                </div>
+                </span>
+            </div>
             </div>
             <div className="swift homepage actions">
                 <div className="card border-0 custom-rounded px-4 py-3">

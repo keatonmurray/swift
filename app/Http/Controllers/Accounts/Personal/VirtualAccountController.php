@@ -82,11 +82,23 @@ class VirtualAccountController extends Controller
 
         $rapydVirtualAccount = $this->rapyd->listVirtualAccountsByWallet($virtualAccount->rapyd_ewallet_token);
 
+        $bankAccounts = $rapydVirtualAccount['data']['bank_accounts'] ?? [];
+
+        // only ACTIVE accounts
+        $activeAccounts = array_values(array_filter($bankAccounts, function ($account) {
+            return ($account['status'] ?? null) === 'ACT';
+        }));
+
         return response()->json([
             'success' => true,
             'data' => [
-                'wallet_db'   => $virtualAccount,
-                'wallet_rapyd' => $rapydVirtualAccount['data'] ?? null,
+                'wallet_db'     => $virtualAccount,
+                'wallet_rapyd'  => array_merge(
+                    $rapydVirtualAccount['data'] ?? [],
+                    [
+                        'bank_accounts' => $activeAccounts
+                    ]
+                ),
             ]
         ]);
     }
