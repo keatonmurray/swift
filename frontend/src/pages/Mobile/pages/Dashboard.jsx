@@ -249,14 +249,16 @@ const Dashboard = () => {
                 <div className="d-flex align-items-center justify-content-between pt-2">
                     <h6 className="fw-semibold fs-18">Your Currencies</h6>
                    <Link
-                        to={wallet ? "#" : `/your-currencies/${userId}`}
+                        to={bankAccounts?.length ? `/your-currencies/${userId}` : "#"}
                         className={`text-decoration-none d-inline-block ${
-                            wallet ? "disabled-link text-muted" : "text-dark"
+                            bankAccounts?.length ? "text-dark" : "disabled-link text-muted"
                         }`}
                         onClick={(e) => {
-                            if (wallet) e.preventDefault();
+                            if (!bankAccounts?.length) {
+                                e.preventDefault();
+                            }
                         }}
-                        >
+                    >
                         <h6 className="fw-semibold fs-18 d-flex align-items-center justify-content-center">
                             Manage
                             <MdKeyboardArrowRight className="ms-1" size={25} />
