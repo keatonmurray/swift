@@ -424,6 +424,37 @@ const CreatePersonalCurrency = () => {
         { code: "ZW", name: "Zimbabwe" }
     ];
 
+    // const handleRetrieveWallet = async () => {
+    //     const token = localStorage.getItem("api_token");
+
+    //     try {
+    //         const response = await axios.get(
+    //             `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-wallet/${userId}`,
+    //             {
+    //                 headers: {
+    //                     Authorization: `Bearer ${token}`,
+    //                 },
+    //             }
+    //         );
+
+    //         const walletData = response.data?.data?.wallet_rapyd;
+    //         const walletId = walletData?.id;
+
+    //         // Pass the wallet ID as param
+    //         handleOpenCurrency(walletId);
+
+    //         setWallet(walletData || null);
+    //         setEwalletId(walletId)
+
+    //     } catch (error) {
+    //         console.error(error);
+    //         setWallet(null);
+    //         setEwalletId("");
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
     const handleRetrieveWallet = async () => {
         const token = localStorage.getItem("api_token");
 
@@ -440,11 +471,8 @@ const CreatePersonalCurrency = () => {
             const walletData = response.data?.data?.wallet_rapyd;
             const walletId = walletData?.id;
 
-            // Pass the wallet ID as param
-            handleOpenCurrency(walletId);
-
             setWallet(walletData || null);
-            setEwalletId(walletId)
+            setEwalletId(walletId);
 
         } catch (error) {
             console.error(error);
@@ -454,7 +482,7 @@ const CreatePersonalCurrency = () => {
             setLoading(false);
         }
     };
-
+    
     useEffect(() => {
         if (userId) {
             handleRetrieveWallet();
