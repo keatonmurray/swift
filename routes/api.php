@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Accounts\Personal\VirtualAccountController;
 use App\Http\Controllers\Accounts\Personal\WalletController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
@@ -22,3 +23,6 @@ Route::get('/profile', [ProfileController::class, 'profile'])->middleware('auth:
 // Wallet Controller (Personal)
 Route::post('/create-personal-wallet/{id}', [WalletController::class, 'createWallet'])->middleware('auth:sanctum');
 Route::get('/retrieve-personal-wallet/{id}', [WalletController::class, 'retrieveWallet']);
+
+// Virtual Account Controller (Personal) 
+Route::post('/create-personal-currency-account', [VirtualAccountController::class, 'createVirtualAccount']);
