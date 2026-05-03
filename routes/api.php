@@ -25,4 +25,5 @@ Route::post('/create-personal-wallet/{id}', [WalletController::class, 'createWal
 Route::get('/retrieve-personal-wallet/{id}', [WalletController::class, 'retrieveWallet']);
 
 // Virtual Account Controller (Personal) 
-Route::post('/create-personal-currency-account', [VirtualAccountController::class, 'createVirtualAccount']);
+Route::post('/create-personal-currency-account', [VirtualAccountController::class, 'createVirtualAccount'])->middleware('auth:sanctum');
+Route::get('/retrieve-personal-currency/{id}', [VirtualAccountController::class, 'retrieveVirtualAccount']);

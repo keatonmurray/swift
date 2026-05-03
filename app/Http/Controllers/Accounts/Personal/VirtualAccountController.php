@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Accounts\Personal;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Accounts\Personal\VirtualAccount;
+use App\Models\User;
 use App\Services\RapydService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VirtualAccountController extends Controller
 {
@@ -28,19 +31,64 @@ class VirtualAccountController extends Controller
             'requested_currency' => 'required|string',
         ]);
 
-        $response = $this->rapyd->issueVirtualAccountToWallet($data);
+        $rapydServerResponse = $this->rapyd->issueVirtualAccountToWallet($data);
 
+        $this->storeVirtualAccountIntoDb($rapydServerResponse);
+        
         return response()->json([
             'success' => true,
             'message' => 'Virtual account issued successfully',
-            'data' => $response
+            'data' => $rapydServerResponse
         ]);
     }
 
-    public function retrieveVirtualAccount(string $id)
+    private function storeVirtualAccountIntoDb($rapydServerResponse)
     {
-        // TODO: 
-        // 1.
+        $user = Auth::user();
+
+        $walletToken = $rapydServerResponse['data']['ewallet'] ?? null;
+
+        if (!$walletToken) {
+            throw new \Exception('Wallet ID missing from Rapyd response');
+        }
+
+        $dbData = [
+            'user_id' => $user->id,
+            'rapyd_ewallet_token' => $walletToken
+        ];
+
+        VirtualAccount::create($dbData);
+    }
+
+    public function retrieveVirtualAccount(string $user_id)
+    {
+        $user = User::with('wallets')->findOrFail($user_id);
+
+        $virtualAccount = $user->virtualAccounts->first();
+
+        if(!$virtualAccount) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Virtual account not found'
+            ]);
+        }
+
+        if(!$virtualAccount->rapyd_ewallet_token) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Wallet token missing'
+            ], 404);
+        }
+
+        $rapydVirtualAccount = $this->rapyd->listVirtualAccountsByWallet($virtualAccount->rapyd_ewallet_token);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'wallet_db'   => $virtualAccount,
+                'wallet_rapyd' => $rapydVirtualAccount['data'] ?? null,
+            ]
+        ]);
     }
 
 }
