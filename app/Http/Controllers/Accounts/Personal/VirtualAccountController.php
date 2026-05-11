@@ -21,6 +21,7 @@ class VirtualAccountController extends Controller
 
     public function createVirtualAccount(Request $request)
     {
+
         $data = $request->validate([
             'country' => 'required|string',
             'currency' => 'required|string',
@@ -44,9 +45,6 @@ class VirtualAccountController extends Controller
 
     private function storeVirtualAccountIntoDb($rapydServerResponse)
     {
-
-        dd($rapydServerResponse);
-
         $user = Auth::user();
 
         $walletToken = $rapydServerResponse['data']['ewallet'] ?? null;
