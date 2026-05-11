@@ -1,13 +1,76 @@
-const currencyData = [
-  { name: "Canadian Dollar", flag: "/img/canada.png", value: "+10.012" },
-  { name: "British Pounds", flag: "/img/uk.png", value: "+16.012" },
-  { name: "Euro", flag: "/img/euro.png", value: "+13.012" },
-  { name: "Australian Dollar", flag: "/img/australia.png", value: "+10.012" },
-  { name: "Korean Won", flag: "/img/korea.png", value: "+16.012" },
-  { name: "Japanese Yen", flag: "/img/japan.png", value: "+13.012" },
-];
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import axios from 'axios'
+import Spinner from "react-bootstrap/Spinner";
 
 const Currencies = () => {
+
+  const token = localStorage.getItem("api_token");
+  const [currencies, setCurrencies] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+
+  const handleRetrieveCurrencies = async () => {
+    try {
+        const response = await axios.get(
+            `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-currencies`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+        const currencies = response?.data?.currencies?.data ?? [];
+        console.log(currencies)
+        setCurrencies(currencies ?? []);
+    } catch (error) {
+        console.error(error);
+    } finally {
+        setLoading(false);
+    }
+  }
+
+  useEffect(()=> {
+    console.log(currencies)
+  })
+
+  useEffect(() => {
+    handleRetrieveCurrencies();
+  }, []);
+
+  // TO DO: 
+  // Download flag images for all countries we support and replace the images with it according to case
+
+  const getFlag = (code) => {
+      switch (code) {
+          case "CAD":
+              return "/img/canada.png";
+          case "GBP":
+              return "/img/uk.png";
+          case "EUR":
+              return "/img/euro.png";
+          case "AUD":
+              return "/img/australia.png";
+          case "KRW":
+              return "/img/korea.png";
+          case "JPY":
+              return "/img/japan.png";
+          case "AED":
+              return "/img/uae.png";
+          case "USD":
+              return "/img/us.png";
+          default:
+              return "/img/default.png";
+      }
+  };
+
+  const currencyData = (currencies ?? []).map((currency) => ({
+    name: currency.name,
+    flag: getFlag(currency.code),
+    symbol: currency.symbol,
+}));
+
   return (
     <div className="swift currencies mx-auto">
       <div className="px-4">

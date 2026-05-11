@@ -44,6 +44,9 @@ class VirtualAccountController extends Controller
 
     private function storeVirtualAccountIntoDb($rapydServerResponse)
     {
+
+        dd($rapydServerResponse);
+
         $user = Auth::user();
 
         $walletToken = $rapydServerResponse['data']['ewallet'] ?? null;

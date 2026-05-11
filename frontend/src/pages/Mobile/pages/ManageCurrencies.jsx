@@ -35,7 +35,7 @@ const ManageCurrencies = () => {
         }
     }
 
-     useEffect(() => {
+    useEffect(() => {
         if (userId) {
             handleRetrieveCurrencies();
         }

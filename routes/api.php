@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Accounts\Personal\VirtualAccountController;
 use App\Http\Controllers\Accounts\Personal\WalletController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -27,3 +28,6 @@ Route::get('/retrieve-personal-wallet/{id}', [WalletController::class, 'retrieve
 // Virtual Account Controller (Personal) 
 Route::post('/create-personal-currency-account', [VirtualAccountController::class, 'createVirtualAccount'])->middleware('auth:sanctum');
 Route::get('/retrieve-personal-currency/{id}', [VirtualAccountController::class, 'retrieveVirtualAccount'])->middleware('auth:sanctum');
+
+// Currencies
+Route::get('/retrieve-currencies', [CurrencyController::class, 'retrieveCurrencies']);

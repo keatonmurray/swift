@@ -476,7 +476,7 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
   overflow-y: auto;        /* Make it scrollable */
   -ms-overflow-style: none;
   scrollbar-width: none;
-  padding-bottom: 80px;
+  padding-bottom: 120px;
 }
 
 .currency-list-wrapper::-webkit-scrollbar {

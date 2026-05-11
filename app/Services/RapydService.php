@@ -105,4 +105,25 @@ class RapydService
 
         return $response->json();
     }
+
+    public function listCurrencies() 
+    {
+        $endpoint = $this->endpoint . '/data/currencies';
+
+        $signature = $this->signer->generate(
+            'GET',
+            $endpoint,
+            ''
+        );
+
+        $response = Http::withHeaders([
+            'access_key'   => $signature['access_key'],
+            'salt'         => $signature['salt'],
+            'timestamp'    => $signature['timestamp'],
+            'signature'    => $signature['signature'],
+            'Content-Type' => 'application/json',
+        ])->get($this->baseUrl . $endpoint);
+
+        return $response->json();
+    }
 }
