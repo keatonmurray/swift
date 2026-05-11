@@ -84,7 +84,6 @@ class VirtualAccountController extends Controller
 
         $bankAccounts = $rapydVirtualAccount['data']['bank_accounts'] ?? [];
 
-        // only ACTIVE accounts
         $activeAccounts = array_values(array_filter($bankAccounts, function ($account) {
             return ($account['status'] ?? null) === 'ACT';
         }));

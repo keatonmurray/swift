@@ -22,8 +22,8 @@ Route::get('/profile', [ProfileController::class, 'profile'])->middleware('auth:
 
 // Wallet Controller (Personal)
 Route::post('/create-personal-wallet/{id}', [WalletController::class, 'createWallet'])->middleware('auth:sanctum');
-Route::get('/retrieve-personal-wallet/{id}', [WalletController::class, 'retrieveWallet']);
+Route::get('/retrieve-personal-wallet/{id}', [WalletController::class, 'retrieveWallet'])->middleware('auth:sanctum');
 
 // Virtual Account Controller (Personal) 
 Route::post('/create-personal-currency-account', [VirtualAccountController::class, 'createVirtualAccount'])->middleware('auth:sanctum');
-Route::get('/retrieve-personal-currency/{id}', [VirtualAccountController::class, 'retrieveVirtualAccount']);
+Route::get('/retrieve-personal-currency/{id}', [VirtualAccountController::class, 'retrieveVirtualAccount'])->middleware('auth:sanctum');

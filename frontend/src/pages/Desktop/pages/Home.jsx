@@ -53,12 +53,12 @@ const Home = () => {
             <section className="d-flex px-5 flex-column flex-lg-row align-items-center justify-content-between px-5 py-5 bg-yellow-primary text-light">
                 <div className="hero-text mb-4 mb-lg-0" style={{ maxWidth: "700px" }}>
                    <h1 className="display-6 fw-bold hero-heading-title">
-                        Get paid <span className="text-dark">globally.</span>
+                        Global banking for <span className="text-dark">the AI era.</span>
                         <br />
-                        Manage money <span className="text-dark">intelligently.</span>
+                        Operate finance <span className="text-dark">intelligently.</span>
                     </h1>
                     <p className="mt-4 hero-subheading text-muted">
-                        Create invoices, receive multi-currency payments, and automatically split, convert, and withdraw funds — all in one intelligent financial system.
+                        Rebuilding banking for the internet era with AI-driven financial automation, borderless multi-currency accounts, and biometric access to money movement.
                     </p>
                     <div className="d-flex align-items-center">
                         <a className="btn btn-rounded px-4 d-flex align-items-center btn-dark fw-semibold py-3 border-0 mt-3 me-2" href="#">

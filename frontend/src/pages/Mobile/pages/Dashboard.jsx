@@ -93,7 +93,7 @@ const Dashboard = () => {
                 }
             );
 
-           const accounts = response.data.data.wallet_rapyd.bank_accounts;
+            const accounts = response?.data?.data?.wallet_rapyd?.bank_accounts ?? [];
 
             setBankAccounts(accounts);
             
@@ -267,40 +267,59 @@ const Dashboard = () => {
                 </div>
                 <hr style={{margin:"7px"}} />
                 <div className="d-flex align-items-center justify-content-center mt-2">
-                <span className="d-flex align-items-center gap-2 w-100">
+                    <span className="d-flex align-items-center gap-2 w-100">
 
-                    {loading ? (
-                        <div className="w-100 d-flex justify-content-center py-3">
-                            <Spinner />
-                        </div>
-                    ) : !bankAccounts || bankAccounts.length === 0 ? (
-                        <div className="w-100">
-                            <p className="text-center text-muted py-2">
-                                You have not opened any currency account
-                            </p>
+                        {loading ? (
+                            <div className="w-100 d-flex justify-content-center py-3">
+                                <Spinner />
+                            </div>
+                        ) : !wallet ? (
+                            <div className="w-100">
+                                <p className="text-center text-muted py-2">
+                                    You have not opened any currency account
+                                </p>
 
-                            <Link
-                                to={`/create-personal-wallet/${userId}`}
-                                className="btn w-100 btn-dark fw-semibold btn-rounded border-0 py-3 px-4"
-                            >
-                                Create a wallet
-                            </Link>
-                        </div>
-                    ) : (
-                        <div className="currency-scroll d-flex align-items-center gap-2 w-100">
-                            {bankAccounts.map((acc, index) => (
-                                <span
-                                    key={index}
-                                    className="currency-container ms-1 d-flex align-items-center justify-content-center border-0 fs-26 fw-normal first"
+                                <Link
+                                    to={`/create-personal-wallet/${userId}`}
+                                    className="btn w-100 btn-dark fw-semibold btn-rounded border-0 py-3 px-4"
                                 >
-                                    {acc.currency}
-                                </span>
-                            ))}
-                        </div>
-                    )}
+                                    Create a wallet
+                                </Link>
+                            </div>
+                        ) : (
+                            <div className="currency-scroll d-flex align-items-center gap-2 w-100">
 
-                </span>
-            </div>
+                                {/* currencies (only if exist) */}
+                                {(bankAccounts ?? []).map((acc, index) => (
+                                    <span
+                                        key={index}
+                                        className="currency-container ms-1 d-flex align-items-center justify-content-center border-0 fs-26 fw-normal first"
+                                    >
+                                        {acc.currency}
+                                    </span>
+                                ))}
+
+                                {/* ONLY show message when NO accounts */}
+                                {!(bankAccounts ?? []).length && (
+                                    <div className="w-100">
+                                        <p className="text-center text-muted py-2">
+                                            You have an available wallet! <span className="d-block">You can now add a currency into it.</span>
+                                        </p>
+
+                                        <Link
+                                            to={`/create-personal-currency/${userId}`}
+                                            className="btn w-100 btn-dark fw-semibold btn-rounded border-0 py-3 px-4"
+                                        >
+                                            Open currency
+                                        </Link>
+                                    </div>
+                                )}
+
+                            </div>
+                        )}
+
+                    </span>
+                </div>
             </div>
             <div className="swift homepage actions">
                 <div className="card border-0 custom-rounded px-4 py-3">
