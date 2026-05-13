@@ -248,7 +248,7 @@ const Dashboard = () => {
                 <div className="d-flex align-items-center justify-content-between pt-2">
                     <h6 className="fw-semibold fs-18">Your Currencies</h6>
                    <Link
-                        to={bankAccounts?.length ? `/your-currencies/${userId}` : "#"}
+                        to={`/currency-details/${userId}`}
                         className={`text-decoration-none d-inline-block ${
                             bankAccounts?.length ? "text-dark" : "disabled-link text-muted"
                         }`}

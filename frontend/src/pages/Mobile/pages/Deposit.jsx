@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react"
+
 const Deposit = () => {
   return (
     <div className="swift deposit">
