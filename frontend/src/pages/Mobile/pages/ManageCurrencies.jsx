@@ -96,25 +96,27 @@ const ManageCurrencies = () => {
                             </div>
                         ) : (
                             currencyData.map((currency, index) => (
-                                <div
-                                    key={index}
-                                    className="card border-0 shadow-0 custom-rounded-x w-100 px-3 py-3 mt-2"
-                                >
-                                    <div className="d-flex align-items-center justify-content-between mt-1">
-                                        <span className="fw-semibold">
-                                            <img
-                                                src={currency.flag}
-                                                className="flag me-2"
-                                                alt="Flag"
-                                            />
-                                            {currency.name}
-                                        </span>
+                                <Link to={`/currency-details/${userId}`} className="text-decoration-none">
+                                    <div
+                                        key={index}
+                                        className="card border-0 shadow-0 custom-rounded-x w-100 px-3 py-3 mt-2"
+                                    >
+                                        <div className="d-flex align-items-center justify-content-between mt-1">
+                                            <span className="fw-semibold">
+                                                <img
+                                                    src={currency.flag}
+                                                    className="flag me-2"
+                                                    alt="Flag"
+                                                />
+                                                {currency.name}
+                                            </span>
 
-                                        <span className="text-success small fw-semibold">
-                                            {currency.balance} {currency.name}
-                                        </span>
+                                            <span className="text-success small fw-semibold">
+                                                {currency.balance} {currency.name}
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
+                                </Link>
                             ))
                         )}
 

@@ -13,6 +13,7 @@ import ManageCurrencies from "./pages/ManageCurrencies";
 import AccountType from "./pages/AccountType";
 import CreatePersonalWallet from "./pages/CreatePersonalWallet";
 import CreatePersonalCurrency from "./pages/CreatePersonalCurrency";
+import CurrencyDetails from "./pages/CurrencyDetails";
 
 const MobileView = () => {
   return (
@@ -29,6 +30,7 @@ const MobileView = () => {
             <Route path="/dashboard/:id" element={<Dashboard />} />
             <Route path="/transfer" element={<Transfer />} />
             <Route path="/currencies" element={<Currencies />} />
+            <Route path="/currency-details/:id" element={<CurrencyDetails />} />
             <Route path="/deposit" element={<Deposit />} />
             <Route path="/profile/:id" element={<Profile />} />
             <Route path="/update-profile/:id" element={<UpdateProfile />} />

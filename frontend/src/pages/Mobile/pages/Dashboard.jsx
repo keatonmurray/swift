@@ -259,7 +259,7 @@ const Dashboard = () => {
                         }}
                     >
                         <h6 className="fw-semibold fs-18 d-flex align-items-center justify-content-center">
-                            Manage
+                            See all
                             <MdKeyboardArrowRight className="ms-1" size={25} />
                         </h6>
                     </Link>
@@ -290,12 +290,14 @@ const Dashboard = () => {
 
                                 {/* currencies (only if exist) */}
                                 {(bankAccounts ?? []).map((acc, index) => (
-                                    <span
-                                        key={index}
-                                        className="currency-container ms-1 d-flex align-items-center justify-content-center border-0 fs-26 fw-normal first"
-                                    >
-                                        {acc.currency}
-                                    </span>
+                                    <Link to={`/currency-details/${userId}`} className="text-decoration-none">
+                                        <span
+                                            key={index}
+                                            className="currency-container ms-1 d-flex align-items-center justify-content-center border-0 fs-26 bg-yellow-primary text-dark fw-semibold"
+                                        >
+                                            {acc.currency}
+                                        </span>
+                                    </Link>
                                 ))}
 
                                 {/* ONLY show message when NO accounts */}

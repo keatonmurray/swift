@@ -49,11 +49,6 @@ span.currency-container {
   width: 30px;
   height: 30px;
   font-size: 15px !important;
-  font-weight: 500 !important;
-}
-
-span.currency-container.first {
-  background-color: #82d682;
 }
 
 span.currency-container.second {
@@ -752,6 +747,49 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
 /* hide scrollbar (Chrome, Safari, Edge) */
 .currency-scroll::-webkit-scrollbar {
     display: none;
+}
+
+/* Currency Details Page */
+
+.swift.currency-details {
+  background-color: #fff;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  margin: 0;
+}
+
+.swift.currency-details .bank-account-details .card {
+  border-radius: 0;
+}
+
+svg.wallet-svg {
+  width: 50px;
+  height: 50px;
+  color: #ffffff;
+  padding: 13px;
+  border-radius: 50px;
+  background: #000;
+  margin-right: 10px;
+}
+
+svg.atm-svg {
+  width: 35px;
+  height: 35px;
+  padding: 8px;
+}
+
+.ewallet-info p {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.issuing-id {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 /**

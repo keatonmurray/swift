@@ -31,10 +31,6 @@ const Currencies = () => {
     }
   }
 
-  useEffect(()=> {
-    console.log(currencies)
-  })
-
   useEffect(() => {
     handleRetrieveCurrencies();
   }, []);
@@ -107,20 +103,37 @@ const Currencies = () => {
 
         {/* Scrollable wrapper */}
         <div className="currency-list-wrapper">
-          {currencyData.map((currency, index) => (
-            <div
-              key={index}
-              className="card border-0 shadow-0 custom-rounded-x w-100 px-3 py-3 mt-2"
-            >
-              <div className="d-flex align-items-center justify-content-between mt-1">
-                <span className="fw-semibold">
-                  <img src={currency.flag} className="flag me-1" alt="Flag" />
-                  {currency.name}
-                </span>
-                <span className="text-success small fw-semibold">{currency.value}</span>
-              </div>
+
+          {loading ? (
+            <div className="d-flex justify-content-center align-items-center py-5">
+              <Spinner animation="border" role="status" variant="dark">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
             </div>
-          ))}
+          ) : currencyData.length === 0 ? (
+            <div className="text-center text-muted py-4">
+              No currencies available
+            </div>
+          ) : (
+            currencyData.map((currency, index) => (
+              <div
+                key={index}
+                className="card border-0 shadow-0 custom-rounded-x w-100 px-3 py-3 mt-2"
+              >
+                <div className="d-flex align-items-center justify-content-between mt-1">
+                  <span className="fw-semibold">
+                    <img src={currency.flag} className="flag me-1" alt="Flag" />
+                    {currency.name}
+                  </span>
+
+                  <span className="text-success small fw-semibold">
+                    {currency.value}
+                  </span>
+                </div>
+              </div>
+            ))
+          )}
+
         </div>
       </div>
     </div>
