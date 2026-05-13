@@ -19,6 +19,11 @@ const CreatePersonalWallet = () => {
   const [nationality, setNationality] = useState("");
   const [identificationNumber, setIdentificationNumber] = useState("");
 
+  // TODO: 
+  // Auto retrieve name and email of logged in user
+  // Set the name and email fields as read-only
+  // Add redirection to homepage after signup
+
   const countries = [
     { code: "AF", name: "Afghanistan" },
     { code: "AL", name: "Albania" },

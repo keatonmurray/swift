@@ -52,16 +52,10 @@ const Currencies = () => {
               return "/img/euro.png";
           case "AUD":
               return "/img/australia.png";
-          case "KRW":
-              return "/img/korea.png";
-          case "JPY":
-              return "/img/japan.png";
-          case "AED":
-              return "/img/uae.png";
           case "USD":
-              return "/img/us.png";
+              return "/img/usa.png";
           default:
-              return "/img/default.png";
+              return "/img/usa.png";
       }
   };
 

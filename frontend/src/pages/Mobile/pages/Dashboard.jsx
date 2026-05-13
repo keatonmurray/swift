@@ -64,7 +64,6 @@ const Dashboard = () => {
                     },
                 }
             );
-
             setWallet(response.data.data.wallet_rapyd);
         } catch (error) {
             console.error(error);

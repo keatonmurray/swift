@@ -11,29 +11,26 @@ const ManageCurrencies = () => {
     const token = localStorage.getItem("api_token");
     const userId = localStorage.getItem("user_id");
 
-    const [currencies, setCurrencies] = useState("");
+    const [currencies, setCurrencies] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const handleRetrieveCurrencies = async () => {
         try {
-           const response = await axios.get(
-                `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-currency/${userId}`,
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-wallet/${userId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 }
             );
-
-            const accounts = response?.data?.data?.wallet_rapyd?.bank_accounts ?? [];
-            setCurrencies(accounts ?? []);
-
+            setCurrencies(response.data.data.wallet_rapyd.accounts ?? []);
         } catch (error) {
             console.error(error);
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     useEffect(() => {
         if (userId) {
@@ -47,7 +44,7 @@ const ManageCurrencies = () => {
     const getFlag = (currency) => {
         switch (currency) {
             case "USD":
-                return "/img/uk.png";
+                return "/img/usa.png";
             case "CAD":
                 return "/img/canada.png";
             case "GBP":
@@ -59,31 +56,31 @@ const ManageCurrencies = () => {
         }
     };
 
-    const safeCurrencies = Array.isArray(currencies) ? currencies : [];
 
-    const currencyData = (safeCurrencies ?? []).map((acc) => ({
-        name: acc.currency,
-        flag: getFlag(acc.currency),
-        value: acc.balance ?? "0.00",
-    }));
+    const currencyData = Array.isArray(currencies)
+        ? currencies.map((acc) => ({
+            name: acc?.currency,
+            flag: getFlag(acc?.currency),
+            balance: Number(acc?.balance ?? 0).toFixed(2),
+        }))
+    : [];
 
     return (
         <div className="swift manage-currencies">
             <div className="d-flex align-items-center justify-content-center py-4 my-4">
-                <div>
+                <div className="w-100 px-4">
                     <div className="mb-4">
-                        <div className="border-bottom w-100">
-                            <h5 className="my-4 fw-semibold">Your Currencies</h5>
+                        <div className="my-4 w-100 d-flex justify-content-between align-items-center">
+                            <h5 className=" fw-semibold m-0">Your Currencies</h5>
+                            <Link to="/currencies">
+                                <figure className="settings-icon m-0">
+                                    <img src="/img/settings.png" alt="Settings" />
+                                </figure>
+                            </Link>
                         </div>
                     </div>
 
-                    <div className="w-100 mb-4">
-                        <input
-                            type="text"
-                            className="form-control py-2"
-                            placeholder="Search here"
-                        />
-                    </div>
+                    <br />
 
                     <div className="currency-list-wrapper">
 
@@ -114,7 +111,7 @@ const ManageCurrencies = () => {
                                         </span>
 
                                         <span className="text-success small fw-semibold">
-                                            {currency.value}
+                                            {currency.balance} {currency.name}
                                         </span>
                                     </div>
                                 </div>

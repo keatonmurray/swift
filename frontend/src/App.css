@@ -691,6 +691,11 @@ button.btn.cancel-btn.fw-semibold.border-0.px-3.py-2 {
     margin: 0;
 }
 
+.swift.manage-currencies figure.settings-icon img {
+  height: 30px;
+  width: auto;
+}
+
 .swift.manage-currencies img.flag {
   height: 40px;
   width: auto;
