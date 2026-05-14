@@ -18,6 +18,7 @@ const Dashboard = () => {
     const [notificationIsTrue, setNotification] = useState(false); 
     const [wallet, setWallet] = useState(null);
     const [bankAccounts, setBankAccounts] = useState(null);
+    // TODO: To add dynamic real time conversion rates
     const [fxRates] = useState({
         USD: 1,
         AUD: 0.65,
