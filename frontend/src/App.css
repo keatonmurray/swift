@@ -842,3 +842,34 @@ Desktop View CSS
   width: auto;
   margin-right: 10px;
 }
+
+/* Dashboard (Personal) */
+
+.swift.desktop-view.homepage header {
+  height: 100px;
+}
+
+.swift.desktop-view.homepage header img.dashboard-logo {
+  height: 35px;
+  width: auto;
+}
+
+.swift.desktop-view.homepage ul.sidebar-items li {
+  height: 65px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.swift.desktop-view.homepage ul.sidebar-items li.active {
+  background: #101113;
+  border-radius: 12px;
+}
+
+.swift.desktop-view.homepage ul.sidebar-items li.active a {
+  font-weight: 600;
+}
+
+.swift.desktop-view.homepage ul.sidebar-items li:hover {
+  background: #101113;
+  border-radius: 12px;
+}
