@@ -845,6 +845,12 @@ Desktop View CSS
 
 /* Dashboard (Personal) */
 
+.swift.desktop-view.homepage {
+  min-height: 100vh;
+  height: 100%;
+  flex-shrink: 0;
+}
+
 .swift.desktop-view.homepage header {
   height: 100px;
 }
