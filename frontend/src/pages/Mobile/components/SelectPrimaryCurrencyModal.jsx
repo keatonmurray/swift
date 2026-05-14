@@ -45,7 +45,7 @@ const SelectPrimaryCurrencyModal = ({
           </h4>
 
           <p className="text-muted small mb-0">
-            This will be your main account for transactions and balance overview.
+            Incoming transfers are auto-converted to your primary currency.
           </p>
         </div>
 

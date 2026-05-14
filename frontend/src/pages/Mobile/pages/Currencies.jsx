@@ -22,7 +22,6 @@ const Currencies = () => {
         );
 
         const currencies = response?.data?.currencies?.data ?? [];
-        console.log(currencies)
         setCurrencies(currencies ?? []);
     } catch (error) {
         console.error(error);
