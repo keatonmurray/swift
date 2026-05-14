@@ -63,33 +63,6 @@ const Currencies = () => {
 
   return (
     <div className="swift currencies mx-auto">
-      <div className="px-4">
-        <div className="card border-0 custom-rounded px-4 pb-4 pt-3">
-          <div className="d-flex align-items-center justify-content-between pt-2">
-            <div className="account-balance">
-              <div className="d-flex align-items-center justify-content-center gap-2">
-                <img
-                  src="./img/usa.png"
-                  alt="User Profile"
-                  className="user-profile-img"
-                />
-                <div className="d-flex flex-column align-items-start">
-                  <p className="p-0 m-0 small text-capitalize">Primary Currency</p>
-                  <h4 className="m-0 fw-semibold">USD</h4>
-                </div>
-              </div>
-            </div>
-            <div className="swift homepage notifications-icon">
-              <figure>
-                <img src="./img/settings.png" alt="Settings" />
-              </figure>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <br />
-
       <div className="card border-0 custom-rounded-top px-4 pt-2 pb-4 mt-4 available-currencies">
         <div className="mb-4">
           <div className="border-bottom w-100">

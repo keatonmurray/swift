@@ -72,11 +72,16 @@ const Dashboard = () => {
         }
     };
 
+   const totalBalance = wallet?.accounts?.reduce((sum, acc) => {
+        return sum + Number(acc.balance || 0) + " " + acc.currency;
+    }, 0) || 0;
+
     useEffect(() => {
         if (userId) {
             handleRetrieveWallet();
         }
     }, [userId]);
+
 
     const handleRetrieveBankAccounts = async () => {
 
@@ -161,7 +166,7 @@ const Dashboard = () => {
                             <img src={user?.profile_avatar ?? "/img/profile.png"} alt="User Profile" className="user-profile-img"/>
                             <div className="d-flex flex-column align-items-start">
                                 <p className="p-0 m-0 small text-capitalize fs-18">Total balance</p>
-                                <h4 className="m-0 fw-semibold fs-26">$20,456</h4>
+                                <h4 className="m-0 fw-semibold fs-26">{totalBalance}</h4>
                             </div>
                         </div>
                     </div>

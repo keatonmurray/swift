@@ -10,6 +10,10 @@ const SelectPrimaryCurrencyModal = ({
 }) => {
   const [selectedPrimary, setSelectedPrimary] = useState("primary_currency");
 
+  const handleSelection = (value) => {
+    setSelectedPrimary(value);
+  };
+
   return (
     <Modal
       show={show}
@@ -52,7 +56,7 @@ const SelectPrimaryCurrencyModal = ({
               ? "border-success bg-success bg-opacity-10"
               : ""
           }`}
-          onClick={() => setSelectedPrimary("primary_currency")}
+          onClick={() => handleSelection("primary_currency")}
           style={{
             cursor: "pointer",
             borderRadius: "18px",
@@ -60,6 +64,7 @@ const SelectPrimaryCurrencyModal = ({
         >
           <div className="card-body py-3">
             <div className="d-flex align-items-center justify-content-between">
+
               <div className="d-flex align-items-center gap-3">
                 <div className="wallet-icon">
                   <LuWallet className="wallet-svg" />
@@ -69,6 +74,7 @@ const SelectPrimaryCurrencyModal = ({
                   <div className="fw-semibold">
                     Primary Currency Account
                   </div>
+
                   <div className="small text-muted">
                     Main eWallet balance
                   </div>
@@ -77,60 +83,64 @@ const SelectPrimaryCurrencyModal = ({
 
               <Form.Check
                 type="radio"
+                name="primaryAccount"
+                value="primary_currency"
                 checked={selectedPrimary === "primary_currency"}
-                readOnly
+                onChange={(e) => handleSelection(e.target.value)}
               />
             </div>
           </div>
         </div>
 
         {/* Bank Accounts */}
-        {account?.map((bankAccount, index) => (
-          <div
-            key={index}
-            className={`card border mb-3 ${
-              selectedPrimary === `bank_${bankAccount.account_id}`
-                ? "border-success bg-success bg-opacity-10"
-                : ""
-            }`}
-            onClick={() =>
-              setSelectedPrimary(`bank_${bankAccount.account_id}`)
-            }
-            style={{
-              cursor: "pointer",
-              borderRadius: "18px",
-            }}
-          >
-            <div className="card-body py-3">
-              <div className="d-flex align-items-center justify-content-between">
+        {account?.map((bankAccount, index) => {
+          const value = bankAccount.account_id;
 
-                <div className="d-flex align-items-center gap-3">
-                  <div className="wallet-icon">
-                    <LuWallet className="wallet-svg" />
-                  </div>
+          return (
+            <div
+              key={index}
+              className={`card border mb-3 ${
+                selectedPrimary === value
+                  ? "border-success bg-success bg-opacity-10"
+                  : ""
+              }`}
+              onClick={() => handleSelection(value)}
+              style={{
+                cursor: "pointer",
+                borderRadius: "18px",
+              }}
+            >
+              <div className="card-body py-3">
+                <div className="d-flex align-items-center justify-content-between">
 
-                  <div>
-                    <div className="fw-semibold">
-                      {bankAccount.account_id}
+                  <div className="d-flex align-items-center gap-3">
+                    <div className="wallet-icon">
+                      <LuWallet className="wallet-svg" />
                     </div>
 
-                    <div className="small text-muted">
-                      {bankAccount.currency} • {bankAccount.country_iso}
+                    <div>
+                      <div className="fw-semibold">
+                        {bankAccount.account_id}
+                      </div>
+
+                      <div className="small text-muted">
+                        {bankAccount.currency} • {bankAccount.country_iso}
+                      </div>
                     </div>
                   </div>
+
+                  <Form.Check
+                    type="radio"
+                    name="primaryAccount"
+                    value={value}
+                    checked={selectedPrimary === value}
+                    onChange={(e) => handleSelection(e.target.value)}
+                  />
                 </div>
-
-                <Form.Check
-                  type="radio"
-                  checked={
-                    selectedPrimary === `bank_${bankAccount.account_id}`
-                  }
-                  readOnly
-                />
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         {/* Button */}
         <button
