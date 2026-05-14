@@ -128,8 +128,8 @@ span.currency-container.third {
 }
 
 .swift.homepage .chip img {
-  height: 45px;
-  width: 45px;
+  height: 35px;
+  width: 90px;
 }
 
 .swift.homepage .card-number {
@@ -302,7 +302,7 @@ span.currency-container.third {
 }
 
 .swift.auth.login img {
-  height: 130px;
+  height: 50px;
   width: auto;
 }
 
@@ -821,7 +821,7 @@ Desktop View CSS
 **/
 
 .swift.desktop-view.home nav.navbar .navbar-brand img {
-  height: 100px;
+  height: 55px;
   width: auto;
 }
 
