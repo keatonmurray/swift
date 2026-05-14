@@ -18,6 +18,12 @@ const Dashboard = () => {
     const [notificationIsTrue, setNotification] = useState(false); 
     const [wallet, setWallet] = useState(null);
     const [bankAccounts, setBankAccounts] = useState(null);
+    const [fxRates] = useState({
+        USD: 1,
+        AUD: 0.65,
+        GBP: 1.27,
+        CAD: 0.74,
+    });
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -38,6 +44,50 @@ const Dashboard = () => {
 
         fetchProfile();
     }, []);
+
+// ---------------- WALLET FETCH ----------------
+    const fetchWallet = async () => {
+        try {
+            const token = localStorage.getItem("api_token");
+
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-wallet/${localStorage.getItem("user_id")}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            setWallet(response.data.data.wallet_rapyd);
+
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    useEffect(() => {
+        fetchWallet();
+    }, []);
+
+    // ---------------- TOTAL BALANCE (USD CONVERSION) ----------------
+    const totalBalance =
+        wallet?.accounts?.reduce((sum, acc) => {
+            if (!fxRates) return sum;
+
+            const balance = Number(acc.balance || 0);
+            const rate = fxRates?.[acc.currency] ?? 0;
+
+            return sum + balance * rate;
+        }, 0) || 0;
+
+    // ---------------- FORMAT ----------------
+    const formattedTotal = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    }).format(totalBalance);
 
     const transactions = [
         // { name: "Jenny Wilson", initials: "JW", time: "Today, 12:30 pm", amount: "-$438", color: "#FDEBD0" },
@@ -71,10 +121,6 @@ const Dashboard = () => {
             setLoading(false);
         }
     };
-
-   const totalBalance = wallet?.accounts?.reduce((sum, acc) => {
-        return sum + Number(acc.balance || 0) + " " + acc.currency;
-    }, 0) || 0;
 
     useEffect(() => {
         if (userId) {
@@ -166,7 +212,7 @@ const Dashboard = () => {
                             <img src={user?.profile_avatar ?? "/img/profile.png"} alt="User Profile" className="user-profile-img"/>
                             <div className="d-flex flex-column align-items-start">
                                 <p className="p-0 m-0 small text-capitalize fs-18">Total balance</p>
-                                <h4 className="m-0 fw-semibold fs-26">{totalBalance}</h4>
+                                <h4 className="m-0 fw-semibold fs-26">{formattedTotal}</h4>
                             </div>
                         </div>
                     </div>
@@ -177,7 +223,7 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
-            <div className="card border-0 custom-rounded px-3 pt-2 pb-3 mb-3">
+            {/* <div className="card border-0 custom-rounded px-3 pt-2 pb-3 mb-3">
                 <div className="d-flex align-items-center justify-content-between pt-2">
                     <div className="account-balance">
                         <div className="d-flex align-items-center">
@@ -192,7 +238,7 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
             <div className="swift homepage card-container">
                 <div
                     id="carouselExample"
