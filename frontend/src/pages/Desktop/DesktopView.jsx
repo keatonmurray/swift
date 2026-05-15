@@ -13,7 +13,7 @@ const DesktopView = () => {
       <Route path="/business/dashboard" element={<BusinessDashboard />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
-  )
-}
+  );
+};
 
 export default DesktopView

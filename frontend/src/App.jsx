@@ -1,34 +1,26 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import MobileView from "./pages/Mobile/MobileView";
 import DesktopView from "./pages/Desktop/DesktopView";
 
-
 const App = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 480);
+  const getIsMobile = () => window.innerWidth <= 480;
+
+  const [isMobile, setIsMobile] = useState(getIsMobile);
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 480);
+    const mediaQuery = window.matchMedia("(max-width: 480px)");
+
+    const handleChange = (e) => {
+      window.location.reload();
     };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    mediaQuery.addEventListener("change", handleChange);
+
+    return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
-  if (isMobile) {
-    return (
-      <div className="page-wrapper">
-        <MobileView />
-      </div>
-    );
-  } else {
-    return (
-      <div className="desktop-wrapper">
-        <DesktopView />
-      </div>
-    );
-  }
+  return isMobile ? <MobileView /> : <DesktopView />;
 };
 
 export default App;

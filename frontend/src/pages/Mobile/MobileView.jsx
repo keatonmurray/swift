@@ -47,6 +47,7 @@ const MobileView = () => {
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </div>
+
       {isAuthenticated && <Footer />}
     </div>
   );
