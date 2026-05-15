@@ -1,32 +1,41 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 
 const PageNotFound = () => {
   return (
-    <div className="page-404 container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-main-pallette">
-      
-      <div className="text-center px-3">
-        
-        {/* Big 404 */}
-        <div className="page-not-found">
-            <img src="/img/404.png" alt="404 Page Not Found" />
-        </div>
+    <div className="bg-main-palette min-h-screen flex items-center justify-center page-x font-sans">
+      <div className="text-center max-w-md">
+
+        {/* 404 illustration */}
+        <img
+          src="/img/404.png"
+          alt="404 Page Not Found"
+          className="h-72 w-auto mx-auto mb-8"
+        />
+
+        {/* Heading */}
+        <h1
+          className="font-display text-white mb-3"
+          style={{ fontSize: "clamp(1.75rem, 3vw, 2.5rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
+        >
+          Device switch detected
+        </h1>
 
         {/* Message */}
-        <h1 className="mb-2 text-white fw-semibold">Device switch detected</h1>
-
-        <p className="mb-4 text-white">
+        <p className="text-white/60 text-base leading-relaxed mb-8">
           It looks like you've switched devices. You may have to re-login to enter desktop mode.
         </p>
 
-        {/* Action buttons */}
-        <div className="d-flex justify-content-center flex-wrap">
-          <Link to="/" className="btn fw-semibold px-5 border-0 py-3 btn-bg-primary">
-            Go Home
-          </Link>
-        </div>
+        {/* CTA */}
+        <Link
+          to="/"
+          className="inline-flex items-center justify-center px-7 py-3 rounded-full bg-white text-black font-semibold hover:bg-[#e8e8e8] transition-colors duration-200"
+          style={{ fontSize: "0.875rem" }}
+        >
+          Go Home
+        </Link>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PageNotFound;
+export default PageNotFound
