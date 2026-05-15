@@ -87,3 +87,17 @@ body {
 .fs-36 {
   font-size: 36px !important;
 }
+
+.page-404 {
+  position: absolute;
+  top: 0;
+  overflow-x: hidden;
+}
+
+.page-not-found img {
+  height: 400px;
+}
+
+.page-404 button, .page-404 a {
+  border-radius: 30px;  
+}

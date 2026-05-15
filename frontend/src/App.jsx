@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 
 import MobileView from "./pages/Mobile/MobileView";
 import DesktopView from "./pages/Desktop/DesktopView";
-import Footer from "./components/Footer";
 
 
 const App = () => {
@@ -21,7 +20,6 @@ const App = () => {
     return (
       <div className="page-wrapper">
         <MobileView />
-        <Footer />
       </div>
     );
   } else {

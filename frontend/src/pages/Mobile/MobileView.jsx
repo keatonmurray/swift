@@ -14,16 +14,21 @@ import AccountType from "./pages/AccountType";
 import CreatePersonalWallet from "./pages/CreatePersonalWallet";
 import CreatePersonalCurrency from "./pages/CreatePersonalCurrency";
 import CurrencyDetails from "./pages/CurrencyDetails";
+import Footer from "../../components/Footer";
+import PageNotFound from "./pages/PageNotFound";
 
 const MobileView = () => {
+  const isAuthenticated = !!localStorage.getItem("token");
+
   return (
-    <div className="page-wrapper">
+    <div>
+      <div className="page-wrapper">
         <Routes>
           {/* Public routes */}
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/select-account-type" element={<AccountType/>}/>
+          <Route path="/select-account-type" element={<AccountType />} />
 
           {/* Protected routes */}
           <Route element={<PrivateRoute />}>
@@ -38,9 +43,13 @@ const MobileView = () => {
             <Route path="/create-personal-wallet/:id" element={<CreatePersonalWallet />} />
             <Route path="/create-personal-currency/:id" element={<CreatePersonalCurrency />} />
           </Route>
+
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </div>
-  )
-}
+      {isAuthenticated && <Footer />}
+    </div>
+  );
+};
 
 export default MobileView
