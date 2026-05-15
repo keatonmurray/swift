@@ -860,6 +860,10 @@ Desktop View CSS
   width: auto;
 }
 
+.swift.desktop-view .sidebar {
+  width: 320px;
+}
+
 .swift.desktop-view.homepage ul.sidebar-items li {
   height: 65px;
   font-weight: 500;
