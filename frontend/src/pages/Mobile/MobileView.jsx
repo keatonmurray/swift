@@ -18,7 +18,7 @@ import Footer from "../../components/Footer";
 import PageNotFound from "./pages/PageNotFound";
 
 const MobileView = () => {
-  const isAuthenticated = !!localStorage.getItem("token");
+  const isAuthenticated = !!localStorage.getItem("user_id");
 
   return (
     <div>

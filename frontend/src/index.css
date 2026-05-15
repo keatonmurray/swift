@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 :root {
-  --primary-color: #f5eded;
+  --primary-color: #e9e9e9;
   --secondary-color: #f7f7f7;
 }
 
@@ -16,6 +16,28 @@ body {
 .page-wrapper {
   padding: 40px 0 0;
   height: 100%;
+}
+
+.bg-main-pallette {
+  background: 
+    radial-gradient(circle at 20% 85%,
+      rgba(0, 255, 140, 0.45) 0%,
+      rgba(0, 255, 140, 0.18) 18%,
+      transparent 40%),
+
+    radial-gradient(circle at 55% 100%,
+      rgba(157, 255, 0, 0.45) 0%,
+      rgba(157, 255, 0, 0.15) 20%,
+      transparent 42%),
+
+    radial-gradient(circle at 88% 42%,
+      rgba(0, 255, 255, 0.18) 0%,
+      transparent 28%),
+
+    radial-gradient(circle at 45% 30%,
+      rgba(80, 120, 255, 0.08) 0%,
+      transparent 35%),
+    #000000;;
 }
 
 .bg-yellow-primary {
@@ -51,6 +73,14 @@ body {
 
 .btn-dark {
   background-color: #000 !important;
+}
+
+.btn-bg-primary {
+  background-color: #D9FF43 !important;
+}
+
+.text-custom-primary {
+  color: #D9FF43 !important;
 }
 
 .modal-backdrop-blur {
@@ -100,4 +130,23 @@ body {
 
 .page-404 button, .page-404 a {
   border-radius: 30px;  
+}
+
+.form-control, .form-select {
+  border: 0 !important;
+  border-radius: 0;
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
+}
+
+button {
+  border-radius: 30px !important;
+}
+
+.card {
+  border: 0;
+}
+
+nav {
+  padding: 2rem 0;
 }

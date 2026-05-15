@@ -286,8 +286,8 @@ const Dashboard = () => {
                                 </div>
                                 <div className="card-number">{c.cardNumber}</div>
                                     <div className="card-footer">
-                                        <span className="fw-bold">{c.currencyType}</span>
-                                        <span className="fw-bold">{c.expirationDate}</span>
+                                        <span className="fw-bold text-white">{c.currencyType}</span>
+                                        <span className="fw-bold text-white">{c.expirationDate}</span>
                                     </div>
                                 </div>
                             </div>
@@ -345,7 +345,7 @@ const Dashboard = () => {
                                     <Link to={`/currency-details/${userId}`} className="text-decoration-none">
                                         <span
                                             key={index}
-                                            className="currency-container ms-1 d-flex align-items-center justify-content-center border-0 fs-26 bg-yellow-primary text-dark fw-semibold"
+                                            className="currency-container ms-1 d-flex align-items-center justify-content-center border-0 fs-26 btn-bg-primary text-dark fw-semibold"
                                         >
                                             {acc.currency}
                                         </span>

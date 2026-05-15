@@ -239,9 +239,9 @@ const Register = () => {
   }
 
   return (
-    <div className="swift auth register flex-column d-flex justify-content-center align-items-center">
+    <div className="swift auth register flex-column d-flex justify-content-center align-items-center bg-main-pallette">
         <div>
-          <img src="./img/logo.png" alt="Logo" />
+          <img src="./img/logo-inverted.png" alt="Logo" />
         </div>
         <div className="d-flex flex-column align-items-center mt-5">
           <form className="register-form" onSubmit={handleSubmit}>
@@ -332,12 +332,12 @@ const Register = () => {
               />
             </div>
 
-            <button type="submit" className="btn btn-dark w-100 py-3 fw-semibold mt-3">
+            <button type="submit" className="btn btn-bg-primary w-100 py-3 fw-semibold mt-3 border-0">
               Register
             </button>
           </form>
 
-          <p className="fw-semibold small mt-3">Already have an account? <Link to="/login" className="text-dark">Login instead</Link></p>
+          <p className="fw-semibold small mt-3 text-white">Already have an account? <Link to="/login" className="text-white text-decoration-none">Login instead</Link></p>
         </div>
     </div>
   )

@@ -32,9 +32,9 @@ const Login = () => {
     }
   };
   return (
-    <div className="swift auth login flex-column d-flex justify-content-center align-items-center">
+    <div className="swift auth login flex-column d-flex justify-content-center align-items-center bg-main-pallette">
       <div>
-        <img src="./img/logo.png" alt="Logo" />
+        <img src="./img/logo-inverted.png" alt="Logo" />
       </div>
       <div className="d-flex flex-column align-items-center mt-5">
         <form onSubmit={handleLogin}>
@@ -48,9 +48,9 @@ const Login = () => {
             value={password}
             onChange={(e)=> setPassword(e.target.value)}
             placeholder="Password"/>
-          <button className="btn btn-dark w-100 py-3 fw-semibold mt-3 py-2">Login</button>
+          <button className="btn w-100 py-3 fw-semibold mt-3 py-2 border-0 btn-bg-primary text-dark">Login</button>
         </form>
-        <p className="fw-semibold small mt-3">Don't have an account yet? <Link to="/select-account-type" className="text-dark">Register instead</Link></p>
+        <p className="fw-semibold small mt-3 text-white">Don't have an account yet? <Link to="/select-account-type" className="text-white text-decoration-none">Register instead</Link></p>
       </div>
     </div>
   )

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const PageNotFound = () => {
   return (
-    <div className="page-404 container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-yellow-primary">
+    <div className="page-404 container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-main-pallette">
       
       <div className="text-center px-3">
         
@@ -12,15 +12,15 @@ const PageNotFound = () => {
         </div>
 
         {/* Message */}
-        <h1 className="mb-2 text-dark fw-semibold">Device switch detected</h1>
+        <h1 className="mb-2 text-white fw-semibold">Device switch detected</h1>
 
-        <p className="mb-4 text-dark">
+        <p className="mb-4 text-white">
           It looks like you've switched devices. You may have to re-login to enter desktop mode.
         </p>
 
         {/* Action buttons */}
         <div className="d-flex justify-content-center flex-wrap">
-          <Link to="/" className="btn fw-semibold px-5 border-0 py-3 btn-dark">
+          <Link to="/" className="btn fw-semibold px-5 border-0 py-3 btn-bg-primary">
             Go Home
           </Link>
         </div>
