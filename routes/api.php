@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Accounts\Personal\TransactionsController;
 use App\Http\Controllers\Accounts\Personal\VirtualAccountController;
 use App\Http\Controllers\Accounts\Personal\WalletController;
 use App\Http\Controllers\CurrencyController;
@@ -31,3 +32,6 @@ Route::get('/retrieve-personal-currency/{id}', [VirtualAccountController::class,
 
 // Currencies
 Route::get('/retrieve-currencies', [CurrencyController::class, 'retrieveCurrencies']);
+
+// Transactions (Personal)
+Route::get('/get-wallet-transactions', [TransactionsController::class, 'getTransactionsByWallet'])->middleware('auth:sanctum');

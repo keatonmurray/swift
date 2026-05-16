@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Accounts\Personal\Transaction;
 use App\Models\Accounts\Personal\VirtualAccount;
 use App\Models\Accounts\Personal\Wallet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -63,5 +64,10 @@ class User extends Authenticatable
     public function virtualAccounts()
     {
         return $this->hasMany(VirtualAccount::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
     }
 }
