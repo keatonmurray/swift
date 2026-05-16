@@ -54,7 +54,7 @@ const Dashboard = () => {
             const token = localStorage.getItem("api_token");
 
             const response = await axios.get(
-                `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-wallet/${localStorage.getItem("user_id")}`,
+                `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-wallet`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -132,7 +132,7 @@ const Dashboard = () => {
 
         try {
             const response = await axios.get(
-                `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-wallet/${userId}`,
+                `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-wallet`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

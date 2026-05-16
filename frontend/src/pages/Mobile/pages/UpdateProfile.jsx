@@ -8,16 +8,25 @@ import { toast } from "react-toastify";
 
 const UpdateProfile = () => {
   const [userProfile, setUserProfile] = useState(null);
+
   const [avatarSrc, setAvatarSrc] = useState("/img/profile.png");
-  const [file, setFile] = useState(null);
+  const [avatarFile, setAvatarFile] = useState(null); // ✅ FIX
+
+  const [file, setFile] = useState(null); // preview ONLY
+  const [idFile, setIdFile] = useState(null); // ✅ FIX real file
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [country, setCountry] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
   const avatarPickerRef = useRef(null);
   const idPickerRef = useRef(null);
+
+  const userId = localStorage.getItem("user_id");
+
 
   const countries = [
     { code: "AF", name: "Afghanistan" },
@@ -214,8 +223,6 @@ const UpdateProfile = () => {
     { code: "ZW", name: "Zimbabwe" }
   ];
 
-  const userId = localStorage.getItem("user_id");
-
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -233,7 +240,6 @@ const UpdateProfile = () => {
     fetchProfile();
   }, []);
 
-  // Initialize user profile when it loads
   useEffect(() => {
     if (userProfile) {
       setFirstName(userProfile.first_name);
@@ -241,11 +247,14 @@ const UpdateProfile = () => {
       setEmail(userProfile.email);
       setCountry(userProfile.country);
       setAvatarSrc(userProfile.profile_avatar || "/img/profile.png");
-      setFile(userProfile.id_photo || "");
+
+      // ⚠️ DO NOT store file path as file object
+      setFile(null);
+      setIdFile(null);
     }
   }, [userProfile]);
 
-  // Avatar handlers
+  // ---------------- AVATAR ----------------
   const triggerFileSelect = () => avatarPickerRef.current.click();
 
   const handleAvatarChange = (e) => {
@@ -257,10 +266,11 @@ const UpdateProfile = () => {
       return;
     }
 
-    setAvatarSrc(URL.createObjectURL(selectedFile));
+    setAvatarFile(selectedFile); // ✅ real file
+    setAvatarSrc(URL.createObjectURL(selectedFile)); // preview
   };
 
-  // ID handlers
+  // ---------------- ID ----------------
   const triggerIdSelect = () => idPickerRef.current.click();
 
   const handleIdFileChange = (e) => {
@@ -272,37 +282,64 @@ const UpdateProfile = () => {
       return;
     }
 
-    setFile(URL.createObjectURL(selectedFile));
+    setIdFile(selectedFile); // ✅ real file
+    setFile(URL.createObjectURL(selectedFile)); // preview
   };
 
-  // Update profile
+  // ---------------- SUBMIT ----------------
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL}/api/update/${userId}`,
+      console.log("🔥 SUBMIT FIRED");
+
+      const formData = new FormData();
+
+      formData.append("first_name", firstName);
+      formData.append("last_name", lastName);
+      formData.append("email", email);
+      formData.append("country", country);
+      formData.append("kyc_status", "pending");
+
+      // ✅ FIXED FILES
+      if (idFile) {
+        formData.append("id_photo", idFile);
+      }
+
+      if (avatarFile) {
+        formData.append("profile_avatar", avatarFile);
+      }
+
+      // optional password
+      if (password) {
+        formData.append("password", password);
+        formData.append("password_confirmation", confirmPassword);
+      }
+
+      formData.append("_method", "PUT");
+
+      const token = localStorage.getItem("api_token");
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/update`,
+        formData,
         {
-          first_name: firstName,
-          last_name: lastName,
-          email: email,
-          country: country,
-          profile_avatar: avatarSrc,
-          kyc_status: "pending", //pending by default
-          id_photo: file,
-          password: password,
-          password_confirmation: confirmPassword
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
 
-      // Success toast
-      toast.success("Success! We'll be reviewing your profile.");
+      toast.success("Profile updated successfully!");
+      console.log(response.data);
     } catch (error) {
-      // Dynamic error messages from backend
-      if (error.response && error.response.status !== 200) {
-        const errors = error.response.data.errors;
-        for (const key in errors) {
-          toast.error(errors[key]); // display each field error
-        }
+      console.log(error);
+
+      if (error.response?.data?.errors) {
+        Object.values(error.response.data.errors).forEach((msg) => {
+          toast.error(msg);
+        });
       } else {
         toast.error("Something went wrong. Please try again.");
       }
@@ -341,18 +378,22 @@ const UpdateProfile = () => {
 
         <div className="text-center mt-2 mb-4">
           <div className="d-flex align-items-center gap-1 justify-content-center m-0">
-              {(userProfile.kyc_status === "pending" || userProfile.kyc_status === "rejected") && (
-                  <GoUnverified size={20} style={{ color: "orange" }} />
-              )}
-              {userProfile.kyc_status === "approved" && (
-                  <MdVerified size={20} style={{ color: "green" }} />
-              )}
-              <h4 className="fw-semibold mb-0">
-                  {userProfile.first_name} {userProfile.last_name}
-              </h4>
+            {(userProfile.kyc_status === "pending" ||
+              userProfile.kyc_status === "rejected") && (
+              <GoUnverified size={20} style={{ color: "orange" }} />
+            )}
+            {userProfile.kyc_status === "approved" && (
+              <MdVerified size={20} style={{ color: "green" }} />
+            )}
+            <h4 className="fw-semibold mb-0">
+              {userProfile.first_name} {userProfile.last_name}
+            </h4>
           </div>
+
           <p className="text-secondary">
-              {userProfile.kyc_status === "approved" ? "Verified Account" : "Unverified Account"}
+            {userProfile.kyc_status === "approved"
+              ? "Verified Account"
+              : "Unverified Account"}
           </p>
         </div>
 
@@ -400,6 +441,7 @@ const UpdateProfile = () => {
                 </option>
               ))}
             </select>
+
             <input
               type="password"
               className="form-control py-3 mb-2"
@@ -415,11 +457,15 @@ const UpdateProfile = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
 
-            {/* --- ID Upload Block --- */}
+            {/* ID UPLOAD */}
             <div
               onClick={triggerIdSelect}
               className="border custom-rounded-x p-4 text-center mb-3"
-              style={{ borderStyle: "dashed", cursor: "pointer", background: "#f8f9fa" }}
+              style={{
+                borderStyle: "dashed",
+                cursor: "pointer",
+                background: "#f8f9fa",
+              }}
             >
               <input
                 type="file"
@@ -428,11 +474,12 @@ const UpdateProfile = () => {
                 onChange={handleIdFileChange}
                 style={{ display: "none" }}
               />
-              <div className="fw-semibold">{file ? "ID Selected" : "Tap to upload your ID"}</div>
+              <div className="fw-semibold">
+                {file ? "ID Selected" : "Tap to upload your ID"}
+              </div>
               <small className="text-muted">JPG, PNG (max 5MB)</small>
             </div>
 
-            {/* Preview */}
             {file && (
               <div className="d-flex align-items-center justify-content-center w-100">
                 <img

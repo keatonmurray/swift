@@ -17,14 +17,14 @@ Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:san
 // User Controller
 Route::post('/register', [UserController::class, 'store']);
 Route::get('/user', [UserController::class, 'index'])->middleware('auth:sanctum');
-Route::put('/update/{id}', [UserController::class, 'update']);
+Route::put('/update', [UserController::class, 'update']);
 
 // Profile Controler
 Route::get('/profile', [ProfileController::class, 'profile'])->middleware('auth:sanctum');
 
 // Wallet Controller (Personal)
 Route::post('/create-personal-wallet', [WalletController::class, 'createWallet'])->middleware('auth:sanctum');
-Route::get('/retrieve-personal-wallet/{id}', [WalletController::class, 'retrieveWallet'])->middleware('auth:sanctum');
+Route::get('/retrieve-personal-wallet', [WalletController::class, 'retrieveWallet'])->middleware('auth:sanctum');
 
 // Virtual Account Controller (Personal) 
 Route::post('/create-personal-currency-account', [VirtualAccountController::class, 'createVirtualAccount'])->middleware('auth:sanctum');
