@@ -61,27 +61,39 @@ class VirtualAccountController extends Controller
         VirtualAccount::create($dbData);
     }
 
-    public function retrieveVirtualAccount(string $user_id)
+   public function retrieveVirtualAccount()
     {
-        $user = User::with('wallets')->findOrFail($user_id);
+        $user = auth('sanctum')->user();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthenticated'
+            ], 401);
+        }
+
+        // Load relations properly
+        $user->load(['wallets', 'virtualAccounts']);
 
         $virtualAccount = $user->virtualAccounts->first();
 
-        if(!$virtualAccount) {
+        if (!$virtualAccount) {
             return response()->json([
                 'success' => false,
                 'message' => 'Virtual account not found'
-            ]);
+            ], 404);
         }
 
-        if(!$virtualAccount->rapyd_ewallet_token) {
+        if (!$virtualAccount->rapyd_ewallet_token) {
             return response()->json([
                 'success' => false,
                 'message' => 'Wallet token missing'
             ], 404);
         }
 
-        $rapydVirtualAccount = $this->rapyd->listVirtualAccountsByWallet($virtualAccount->rapyd_ewallet_token);
+        $rapydVirtualAccount = $this->rapyd->listVirtualAccountsByWallet(
+            $virtualAccount->rapyd_ewallet_token
+        );
 
         $bankAccounts = $rapydVirtualAccount['data']['bank_accounts'] ?? [];
 
@@ -92,8 +104,8 @@ class VirtualAccountController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'wallet_db'     => $virtualAccount,
-                'wallet_rapyd'  => array_merge(
+                'wallet_db' => $virtualAccount,
+                'wallet_rapyd' => array_merge(
                     $rapydVirtualAccount['data'] ?? [],
                     [
                         'bank_accounts' => $activeAccounts
