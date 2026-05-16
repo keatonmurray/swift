@@ -19,10 +19,14 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [
-        'http://localhost:5173',
-        'https://swift-peach-two.vercel.app'
-    ],
+    // Set to all temporarily
+    
+  'allowed_origins' => ['*'],
+  
+    // 'allowed_origins' => [
+    //     'http://localhost:5173',
+    //     'https://swift-peach-two.vercel.app'
+    // ],
 
     'allowed_origins_patterns' => [],
 
