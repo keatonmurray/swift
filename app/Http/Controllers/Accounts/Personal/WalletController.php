@@ -75,7 +75,6 @@ class WalletController extends Controller
     private function storeWalletIntoDB($rapydServerResponse)
     {
         $user = auth('sanctum')->id();
-        dd($rapydServerResponse);
         $walletToken = $rapydServerResponse['data']['id'] ?? null;
 
         if (!$walletToken) {
