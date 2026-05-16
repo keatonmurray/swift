@@ -18,6 +18,8 @@ const Dashboard = () => {
     const [notificationIsTrue, setNotification] = useState(false); 
     const [wallet, setWallet] = useState(null);
     const [bankAccounts, setBankAccounts] = useState(null);
+    const [walletTransactions, setWalletTransactions] = useState([]);
+
     // TODO: To add dynamic real time conversion rates
     const [fxRates] = useState({
         USD: 1,
@@ -52,7 +54,7 @@ const Dashboard = () => {
             const token = localStorage.getItem("api_token");
 
             const response = await axios.get(
-                `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-wallet/${localStorage.getItem("user_id")}`,
+                `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-wallet`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -90,25 +92,47 @@ const Dashboard = () => {
         maximumFractionDigits: 2,
     }).format(totalBalance);
 
-    const transactions = [
-        // { name: "Jenny Wilson", initials: "JW", time: "Today, 12:30 pm", amount: "-$438", color: "#FDEBD0" },
-        // { name: "Wade Warren", initials: "WW", time: "Today, 12:30 pm", amount: "+$1200", color: "#F5D3E0" },
-        // { name: "Cameron Williamson", initials: "CW", time: "Today, 12:30 pm", amount: "+$786", color: "#CDE4F7" },
-        // { name: "Esther Howard", initials: "EH", time: "Today, 12:30 pm", amount: "-$250", color: "#D0F7D0" },
-        // { name: "Ralph Edwards", initials: "RE", time: "Today, 12:30 pm", amount: "+$500", color: "#F7D0D0" },
-        // { name: "Alice Johnson", initials: "AJ", time: "Yesterday, 9:15 am", amount: "-$320", color: "#FFF3CD" },
-        // { name: "Brian Smith", initials: "BS", time: "Yesterday, 2:45 pm", amount: "+$980", color: "#D1ECF1" },
-        // { name: "Monica Reyes", initials: "MR", time: "Today, 8:05 am", amount: "-$150", color: "#F8D7DA" },
-        // { name: "David Brown", initials: "DB", time: "Yesterday, 11:20 am", amount: "+$420", color: "#D4EDDA" },
-        // { name: "Samantha Lee", initials: "SL", time: "Today, 1:50 pm", amount: "+$650", color: "#E2D6F7" },
-    ];
+    // ---------------- WALLET TRANSACTIONS ----------------
+    const fetchWalletTransactions = async () => {
+        try {
+            const token = localStorage.getItem("api_token");
+
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_BASE_URL}/api/get-wallet-transactions`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            setWalletTransactions(response.data.transactions);
+
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    useEffect(() => {
+        fetchWalletTransactions();
+    }, []);
+
+    const transactions = walletTransactions.map((transaction) => ({
+        name: transaction.type
+        .replaceAll("_", " ")
+        .replace(/\b\w/g, (char) => char.toUpperCase()),
+        initials: transaction.currency,
+        time: new Date(transaction.created_at * 1000).toLocaleString(),
+        amount: `${transaction.type.includes("in") ? "+" : "-"}$${transaction.amount}`,
+        color: transaction.type.includes("in") ? "#D4EDDA" : "#F8D7DA",
+    }));
 
     const handleRetrieveWallet = async () => {
         const token = localStorage.getItem("api_token");
 
         try {
             const response = await axios.get(
-                `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-wallet/${userId}`,
+                `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-wallet`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -136,7 +160,7 @@ const Dashboard = () => {
 
         try {
             const response = await axios.get(
-                `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-currency/${userId}`,
+                `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-currency`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -331,7 +355,7 @@ const Dashboard = () => {
                                 </p>
 
                                 <Link
-                                    to={`/create-personal-wallet/${userId}`}
+                                    to={`/create-personal-wallet`}
                                     className="btn w-100 btn-dark fw-semibold btn-rounded border-0 py-3 px-4"
                                 >
                                     Create a wallet
@@ -418,7 +442,7 @@ const Dashboard = () => {
                 <hr style={{margin:"7px"}} />
                 {/* Scrollable wrapper */}
                 <div className="transaction-list-wrapper flex-1 overflow-auto px-3">
-                    <div className="h-100 d-flex align-items-center justify-content-center">
+                    <div className="h-100">
                         {transactions && transactions.length > 0 ? (
                             transactions.map((t, index) => (
                             <div
@@ -450,9 +474,9 @@ const Dashboard = () => {
                             </div>
                             ))
                         ) : (
-                            <p className="text-center py-3 text-muted">
-                                No current transaction history
-                            </p>
+                            <div class="d-flex align-items-center justify-content-center h-100">
+                                <p class="text-center py-3 text-muted">No current transaction history</p>  
+                            </div>
                         )}
                     </div>
                 </div>

@@ -6,11 +6,13 @@ class RapydSignatureService
 {
     protected string $accessKey;
     protected string $secretKey;
+    protected string $baseUrl;
 
     public function __construct()
     {
         $this->accessKey = config('services.rapyd.access_key');
         $this->secretKey = config('services.rapyd.secret_key');
+        $this->baseUrl   = config('services.rapyd.base_url');
     }
 
     /**

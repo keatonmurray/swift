@@ -74,7 +74,7 @@ class WalletController extends Controller
 
     private function storeWalletIntoDB($rapydServerResponse)
     {
-        $user = Auth::user();
+        $user = auth('sanctum')->id();
         $walletToken = $rapydServerResponse['data']['id'] ?? null;
 
         if (!$walletToken) {
@@ -82,15 +82,16 @@ class WalletController extends Controller
         }
 
         $dbData = [
-            'user_id' => $user->id,
+            'user_id' => $user,
             'rapyd_ewallet_token' => $walletToken
         ];
 
         Wallet::create($dbData);
     }
 
-    public function retrieveWallet(string $user_id)
+    public function retrieveWallet()
     {
+        $user_id = auth('sanctum')->id();
         $user = User::with('wallets')->findOrFail($user_id);
 
         $wallet = $user->wallets->first();

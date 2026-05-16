@@ -126,4 +126,25 @@ class RapydService
 
         return $response->json();
     }
+
+    public function listWalletTransactions($walletId) 
+    {
+        $endpoint = $this->endpoint . '/ewallets/' . $walletId . '/transactions';
+
+        $signature = $this->signer->generate(
+            'GET',
+            $endpoint,
+            ''
+        );
+
+        $response = Http::withHeaders([
+            'access_key'   => $signature['access_key'],
+            'salt'         => $signature['salt'],
+            'timestamp'    => $signature['timestamp'],
+            'signature'    => $signature['signature'],
+            'Content-Type' => 'application/json',
+        ])->get($this->baseUrl . $endpoint);
+
+        return $response->json();
+    }
 }
