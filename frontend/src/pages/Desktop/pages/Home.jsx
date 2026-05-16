@@ -233,7 +233,7 @@ const Home = () => {
                     className="font-display text-[#D9FF43]"
                     style={{ fontSize: "clamp(2.4rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", lineHeight: 1 }}
                   >
-                    98%
+                    <CountUp value={98} suffix="%" duration={1800} />
                   </p>
                   <p className="text-white/35 text-xs mt-2 tracking-wide uppercase" style={{ letterSpacing: "0.08em" }}>
                     Manual work eliminated
@@ -244,7 +244,7 @@ const Home = () => {
                     className="font-display text-[#D9FF43]"
                     style={{ fontSize: "clamp(2.4rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", lineHeight: 1 }}
                   >
-                    150+
+                    <CountUp value={150} suffix="+" duration={1800} />
                   </p>
                   <p className="text-white/35 text-xs mt-2 tracking-wide uppercase" style={{ letterSpacing: "0.08em" }}>
                     Countries supported
@@ -263,7 +263,7 @@ const Home = () => {
           ============================================================ */}
       <section className="bg-[#080808] py-28 page-x">
         <div className="max-w-[1200px] mx-auto">
-          <div className="max-w-2xl mb-16">
+          <div className="max-w-2xl mb-16" data-reveal="up">
             <p
               className="text-[#D9FF43] font-semibold uppercase mb-5"
               style={{ fontSize: "0.7rem", letterSpacing: "0.22em" }}
@@ -278,7 +278,7 @@ const Home = () => {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 relative">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 relative" data-reveal-stagger>
             {[
               {
                 step: "01",
@@ -338,7 +338,7 @@ const Home = () => {
         style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
       >
         <div className="max-w-[1200px] mx-auto">
-          <div className="max-w-2xl mb-20">
+          <div className="max-w-2xl mb-20" data-reveal="up">
             <p
               className="text-[#D9FF43] font-semibold uppercase mb-5"
               style={{ fontSize: "0.7rem", letterSpacing: "0.22em" }}
@@ -353,7 +353,7 @@ const Home = () => {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5" data-reveal-stagger>
             {[
               {
                 icon: TbSparkles,
@@ -413,7 +413,7 @@ const Home = () => {
         style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
       >
         <div className="max-w-[1200px] mx-auto">
-          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-5">
+          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-5" data-reveal="up">
             {[
               { icon: TbLockSquare, label: "SOC 2 Type II" },
               { icon: TbCertificate, label: "PCI DSS Level 1" },
@@ -482,7 +482,7 @@ const Home = () => {
           ============================================================ */}
       <section className="bg-[#080808] page-x">
         <div className="max-w-[1200px] mx-auto pt-28 pb-20">
-          <div className="max-w-2xl mb-4">
+          <div className="max-w-2xl mb-4" data-reveal="up">
             <p
               className="text-[#D9FF43] font-semibold uppercase mb-5"
               style={{ fontSize: "0.7rem", letterSpacing: "0.22em" }}
@@ -626,7 +626,7 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
 
             {/* Left — copy */}
-            <div className="md:col-span-5">
+            <div className="md:col-span-5" data-reveal="left">
               <p
                 className="text-[#D9FF43] font-semibold uppercase mb-5"
                 style={{ fontSize: "0.7rem", letterSpacing: "0.22em" }}
@@ -664,7 +664,7 @@ const Home = () => {
             </div>
 
             {/* Right — terminal-style feed */}
-            <div className="md:col-span-7">
+            <div className="md:col-span-7" data-reveal="right">
               <div
                 className="rounded-2xl overflow-hidden"
                 style={{
@@ -776,7 +776,7 @@ const Home = () => {
         style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
       >
         <div className="max-w-[1200px] mx-auto">
-          <div className="max-w-2xl mb-16">
+          <div className="max-w-2xl mb-16" data-reveal="up">
             <p
               className="text-[#D9FF43] font-semibold uppercase mb-5"
               style={{ fontSize: "0.7rem", letterSpacing: "0.22em" }}
@@ -791,7 +791,7 @@ const Home = () => {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5" data-reveal-stagger>
             {[
               {
                 quote: "Our month-end close went from 9 days to 2. The agent reconciles everything overnight — I just review the exceptions in the morning.",
@@ -854,7 +854,7 @@ const Home = () => {
       >
         <div className="max-w-[1200px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16">
-            <div>
+            <div data-reveal="left">
               <p
                 className="text-[#D9FF43] font-semibold uppercase mb-5"
                 style={{ fontSize: "0.7rem", letterSpacing: "0.22em" }}
@@ -878,7 +878,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-6 gap-3">
+            <div className="grid grid-cols-6 gap-3" data-reveal="scale">
               {[
                 { code: "US", name: "United States" },
                 { code: "GB", name: "United Kingdom" },
@@ -937,7 +937,7 @@ const Home = () => {
         style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
       >
         <div className="max-w-[800px] mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16" data-reveal="up">
             <p
               className="text-[#D9FF43] font-semibold uppercase mb-5"
               style={{ fontSize: "0.7rem", letterSpacing: "0.22em" }}
@@ -952,7 +952,7 @@ const Home = () => {
             </h2>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-3" data-reveal-stagger>
             {[
               {
                 q: "What can the autonomous agent actually do?",
@@ -1020,6 +1020,7 @@ const Home = () => {
       >
         <div className="max-w-[1200px] mx-auto">
           <div
+            data-reveal="scale"
             className="rounded-3xl my-28 px-12 py-20 text-center relative overflow-hidden"
             style={{
               background:
@@ -1067,7 +1068,7 @@ const Home = () => {
         style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
       >
         <div className="max-w-[1200px] mx-auto">
-          <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
+          <div className="flex items-end justify-between mb-12 flex-wrap gap-4" data-reveal="up">
             <div className="max-w-2xl">
               <p
                 className="text-[#D9FF43] font-semibold uppercase mb-5"
@@ -1091,7 +1092,7 @@ const Home = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5" data-reveal-stagger>
             {[
               {
                 tag: "Engineering",
