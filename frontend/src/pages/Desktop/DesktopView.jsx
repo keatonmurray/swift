@@ -14,6 +14,7 @@ import PersonalSidebar from "./personal/components/PersonalSidebar"
 
 // Business pages
 import BusinessOverview from "./business/overview/Overview"
+import BusinessPayments from "./business/payments/Payments"
 
 // Personal pages
 import PersonalOverview from "./personal/overview/Overview"
@@ -30,10 +31,10 @@ const DesktopView = () => {
       {/* Business Dashboard */}
       <Route path="/business" element={<DashboardLayout sidebar={<BusinessSidebar />} />}>
         <Route index element={<BusinessOverview />} />
+        <Route path="payments" element={<BusinessPayments />} />
         {/* Add sub-routes here as pages are built */}
         {/* <Route path="accounts" element={<Accounts />} /> */}
         {/* <Route path="transactions" element={<Transactions />} /> */}
-        {/* <Route path="payments" element={<Payments />} /> */}
         {/* <Route path="payouts" element={<Payouts />} /> */}
         {/* <Route path="reports" element={<Reports />} /> */}
         {/* <Route path="ai-insights" element={<AiInsights />} /> */}
