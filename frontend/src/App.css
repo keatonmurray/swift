@@ -323,6 +323,11 @@ span.currency-container.third {
   width: auto;
 }
 
+.swift.auth .mobile-view-logo {
+  height: 40px;
+  width: auto;
+}
+
 .swift.auth.register img {
   height: 65px;
   width: auto;

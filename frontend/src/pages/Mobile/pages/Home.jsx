@@ -5,8 +5,10 @@ const Home = () => {
     <div className="swift auth bg-main-pallette d-flex align-items-center justify-content-center">
         <div className="content text-center px-3 px-md-0">
             <div className="content text-center px-3 px-md-0 mt-4">
-                <img src="/img/logo-inverted.png" height="35" alt="Logo" />
-                <h4 className="display-4-custom fw-bold mb-3 text-white mt-4">
+                <div className="w-100 d-flex align-items-center justify-content-center">
+                    <img src="/img/logo-inverted.png" className="mobile-view-logo" alt="Logo" />
+                </div>
+                <h4 className="display-4-custom fw-bold mb-3 text-white mt-3">
                     Move money. Track finances. 
                 </h4>
                 <p className="text-white small">
