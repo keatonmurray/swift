@@ -16,6 +16,8 @@ import { HiOutlineUserGroup } from "react-icons/hi"
 import DashboardShell from "@/pages/Desktop/components/DashboardShell"
 import AnimatedValue from "@/pages/Desktop/components/AnimatedValue"
 import StatusBadge from "@/pages/Desktop/components/StatusBadge"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import ReactCountryFlag from "react-country-flag"
 
 /* -------------------------------------------------------------------------- */
 /*  Mock data                                                                  */
@@ -103,10 +105,62 @@ const bills = [
 const billUSD    = { 1: 4200, 2: 1250, 3: 850, 4: 18350 }
 
 const employees = [
-  { id: 1, name: "Sarah Chen",    initials: "SC", avatarBg: "bg-rose-100 text-rose-700",    role: "Product Designer",   country: "Singapore",     flag: "ðŸ‡¸ðŸ‡¬", amount: "S$5,200.00",  currency: "SGD", method: "Bank Transfer", selected: true  },
-  { id: 2, name: "Miguel Santos", initials: "MS", avatarBg: "bg-blue-100 text-blue-700",    role: "Software Engineer",  country: "Philippines",   flag: "ðŸ‡µðŸ‡­", amount: "â‚±85,000.00", currency: "PHP", method: "Bank Transfer", selected: true  },
-  { id: 3, name: "John Doe",      initials: "JD", avatarBg: "bg-amber-100 text-amber-700",  role: "Marketing Manager",  country: "United States", flag: "ðŸ‡ºðŸ‡¸", amount: "$6,000.00",  currency: "USD", method: "Wallet",        selected: true  },
-  { id: 4, name: "Emma Williams", initials: "EW", avatarBg: "bg-emerald-100 text-emerald-700", role: "Customer Success", country: "United Kingdom",flag: "ðŸ‡¬ðŸ‡§", amount: "Â£4,200.00",  currency: "GBP", method: "Bank Transfer", selected: false },
+  {
+    id: 1,
+    name: "Sarah Chen",
+    initials: "SC",
+    avatarBg: "bg-rose-100 text-rose-700",
+    imageSrc: "https://i.pravatar.cc/80?img=47",
+    role: "Product Designer",
+    country: "Singapore",
+    countryCode: "SG",
+    amount: "S$5,200.00",
+    currency: "SGD",
+    method: "Bank Transfer",
+    selected: true,
+  },
+  {
+    id: 2,
+    name: "Miguel Santos",
+    initials: "MS",
+    avatarBg: "bg-blue-100 text-blue-700",
+    imageSrc: "https://i.pravatar.cc/80?img=12",
+    role: "Software Engineer",
+    country: "Philippines",
+    countryCode: "PH",
+    amount: "\u20B185,000.00",
+    currency: "PHP",
+    method: "Bank Transfer",
+    selected: true,
+  },
+  {
+    id: 3,
+    name: "John Doe",
+    initials: "JD",
+    avatarBg: "bg-amber-100 text-amber-700",
+    imageSrc: "https://i.pravatar.cc/80?img=33",
+    role: "Marketing Manager",
+    country: "United States",
+    countryCode: "US",
+    amount: "$6,000.00",
+    currency: "USD",
+    method: "Wallet",
+    selected: true,
+  },
+  {
+    id: 4,
+    name: "Emma Williams",
+    initials: "EW",
+    avatarBg: "bg-emerald-100 text-emerald-700",
+    imageSrc: "https://i.pravatar.cc/80?img=45",
+    role: "Customer Success",
+    country: "United Kingdom",
+    countryCode: "GB",
+    amount: "\u00A34,200.00",
+    currency: "GBP",
+    method: "Bank Transfer",
+    selected: false,
+  },
 ]
 
 // USD equivalents for total calculation
@@ -264,15 +318,25 @@ const EmployeesTable = ({ rows, selected, toggle, toggleAll, allSelected }) => (
               </td>
               <td className="py-3 pr-4">
                 <div className="flex items-center gap-2.5">
-                  <span className={`h-8 w-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0 ${e.avatarBg}`}>
-                    {e.initials}
-                  </span>
+                  <Avatar size="sm">
+                    {e.imageSrc && <AvatarImage src={e.imageSrc} alt={e.name} />}
+                    <AvatarFallback className={e.avatarBg}>
+                      {e.initials}
+                    </AvatarFallback>
+                  </Avatar>
                   <span className="text-[13px] font-semibold text-gray-900">{e.name}</span>
                 </div>
               </td>
               <td className="py-3 pr-4 text-[13px] text-gray-400">{e.role}</td>
-              <td className="py-3 pr-4 text-[13px] text-gray-400">
-                <span className="mr-1.5">{e.flag}</span>{e.country}
+              <td className="py-3 pr-4 text-[13px] text-gray-500">
+                <span className="inline-flex items-center gap-1.5">
+                  <ReactCountryFlag
+                    countryCode={e.countryCode}
+                    svg
+                    style={{ width: "1.1em", height: "0.8em", borderRadius: "2px" }}
+                  />
+                  {e.country}
+                </span>
               </td>
               <td className="py-3 pr-4 text-[13px] font-semibold text-gray-900 tabular-nums">{e.amount}</td>
               <td className="py-3 pr-4 text-[13px] text-gray-400">{e.currency}</td>
