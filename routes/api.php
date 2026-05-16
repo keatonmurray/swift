@@ -23,7 +23,7 @@ Route::put('/update/{id}', [UserController::class, 'update']);
 Route::get('/profile', [ProfileController::class, 'profile'])->middleware('auth:sanctum');
 
 // Wallet Controller (Personal)
-Route::post('/create-personal-wallet/{id}', [WalletController::class, 'createWallet'])->middleware('auth:sanctum');
+Route::post('/create-personal-wallet', [WalletController::class, 'createWallet'])->middleware('auth:sanctum');
 Route::get('/retrieve-personal-wallet/{id}', [WalletController::class, 'retrieveWallet'])->middleware('auth:sanctum');
 
 // Virtual Account Controller (Personal) 

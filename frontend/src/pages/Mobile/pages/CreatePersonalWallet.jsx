@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import { useState } from 'react'
 import { RiErrorWarningFill } from 'react-icons/ri'
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 const CreatePersonalWallet = () => {
@@ -224,7 +225,7 @@ const CreatePersonalWallet = () => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/create-personal-wallet/${userId}`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/create-personal-wallet`,
         {
             user_id: userId,
             first_name: firstName,
@@ -243,6 +244,7 @@ const CreatePersonalWallet = () => {
       );
       // Success toast
       toast.success("Wallet created successfully!");
+      navigate(`/dashboard/${userId}`);
     } catch (error) {
       // Dynamic error messages from backend
       if (error.response && error.response.status !== 200) {

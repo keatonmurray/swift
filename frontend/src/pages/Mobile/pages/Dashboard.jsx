@@ -355,7 +355,7 @@ const Dashboard = () => {
                                 </p>
 
                                 <Link
-                                    to={`/create-personal-wallet/${userId}`}
+                                    to={`/create-personal-wallet`}
                                     className="btn w-100 btn-dark fw-semibold btn-rounded border-0 py-3 px-4"
                                 >
                                     Create a wallet
