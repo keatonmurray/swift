@@ -45,7 +45,7 @@ const MobileView = () => {
             <Route path="/profile/:id" element={<Profile />} />
             <Route path="/update-profile/:id" element={<UpdateProfile />} />
             <Route path="/your-currencies/:id" element={<ManageCurrencies />} />
-            <Route path="/create-personal-wallet/:id" element={<CreatePersonalWallet />} />
+            <Route path="/create-personal-wallet" element={<CreatePersonalWallet />} />
             <Route path="/create-personal-currency/:id" element={<CreatePersonalCurrency />} />
           </Route>
 

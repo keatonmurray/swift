@@ -72,24 +72,29 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
+        $id = auth('sanctum')->id();
+
         $validator = Validator::make($request->all(), [
-            'first_name'     => 'required|string|max:50',
-            'last_name'      => 'required|string|max:50',
-            'country'        => 'required|string|max:100',
-            'email'          => 'required|email|max:100|unique:users,email,' . $id,
-            'profile_avatar' => 'nullable|string',
-            'id_photo'       => 'nullable|string',
-            'kyc_status'     => 'nullable|in:pending,approved,rejected',
+            'first_name' => 'required|string|max:50',
+            'last_name'  => 'required|string|max:50',
+            'country'    => 'required|string|max:100',
+            'email'      => 'required|email|max:100|unique:users,email,' . $id,
+
+            'profile_avatar' => 'nullable|file|image|max:2048',
+            'id_photo'       => 'nullable|file|image|max:4096',
+
+            'kyc_status' => 'nullable|in:pending,approved,rejected',
+
             'password' => [
-                'required', 
+                'nullable',
                 'string',
                 'min:8',
                 'confirmed',
-                'regex:/[a-z]/',      
-                'regex:/[A-Z]/',      
-                'regex:/[0-9]/',      
+                'regex:/[a-z]/',
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/',
                 'regex:/[@$!%*?&#]/'
             ],
         ]);

@@ -24,7 +24,7 @@ const CurrencyDetails = () => {
   const handleRetrieveAccountDetails = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-currency/${userId}`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-currency`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
