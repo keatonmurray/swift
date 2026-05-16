@@ -1,19 +1,65 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom"
 
-import Home from "./pages/Home";
-import Dashboard from "./pages/personal/Dashboard";
-import BusinessDashboard from "./pages/business/BusinessDashboard";
-import PageNotFound from "./pages/PageNotFound";
+import Home from "./pages/Home"
+import PageNotFound from "./pages/PageNotFound"
+
+// Auth pages
+import Login from "./auth/Login"
+import Register from "./auth/Register"
+
+// Layouts & Sidebars
+import DashboardLayout from "@/layouts/DashboardLayout"
+import BusinessSidebar from "./business/components/BusinessSidebar"
+import PersonalSidebar from "./personal/components/PersonalSidebar"
+
+// Business pages
+import BusinessOverview from "./business/overview/Overview"
+
+// Personal pages
+import PersonalOverview from "./personal/overview/Overview"
 
 const DesktopView = () => {
   return (
     <Routes>
+      {/* Public */}
       <Route path="/" element={<Home />} />
-      <Route path="/personal/dashboard" element={<Dashboard />} />
-      <Route path="/business/dashboard" element={<BusinessDashboard />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/select-account-type" element={<Register />} />
+
+      {/* Business Dashboard */}
+      <Route path="/business" element={<DashboardLayout sidebar={<BusinessSidebar />} />}>
+        <Route index element={<BusinessOverview />} />
+        {/* Add sub-routes here as pages are built */}
+        {/* <Route path="accounts" element={<Accounts />} /> */}
+        {/* <Route path="transactions" element={<Transactions />} /> */}
+        {/* <Route path="payments" element={<Payments />} /> */}
+        {/* <Route path="payouts" element={<Payouts />} /> */}
+        {/* <Route path="reports" element={<Reports />} /> */}
+        {/* <Route path="ai-insights" element={<AiInsights />} /> */}
+        {/* <Route path="automations" element={<Automations />} /> */}
+        {/* <Route path="recipients" element={<Recipients />} /> */}
+        {/* <Route path="settings" element={<Settings />} /> */}
+      </Route>
+
+      {/* Personal Dashboard */}
+      <Route path="/personal" element={<DashboardLayout sidebar={<PersonalSidebar />} />}>
+        <Route index element={<PersonalOverview />} />
+        {/* Add sub-routes here as pages are built */}
+        {/* <Route path="pay" element={<Pay />} /> */}
+        {/* <Route path="transactions" element={<Transactions />} /> */}
+        {/* <Route path="cards" element={<Cards />} /> */}
+        {/* <Route path="expenses" element={<Expenses />} /> */}
+        {/* <Route path="reports" element={<Reports />} /> */}
+        {/* <Route path="documents" element={<Documents />} /> */}
+        {/* <Route path="goals" element={<Goals />} /> */}
+        {/* <Route path="settings" element={<Settings />} /> */}
+      </Route>
+
+      {/* 404 */}
       <Route path="*" element={<PageNotFound />} />
     </Routes>
-  );
-};
+  )
+}
 
 export default DesktopView

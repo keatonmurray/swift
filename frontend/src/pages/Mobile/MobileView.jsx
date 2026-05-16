@@ -1,4 +1,9 @@
 import { Routes, Route } from "react-router-dom";
+
+// Bootstrap is scoped to Mobile only — Desktop is pure Tailwind
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Transfer from "./pages/Transfer";

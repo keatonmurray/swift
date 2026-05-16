@@ -1,17 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 
-import MobileView from "./pages/Mobile/MobileView";
 import DesktopView from "./pages/Desktop/DesktopView";
+
+// Mobile is lazy-loaded so its Bootstrap CSS only enters the bundle for mobile users
+const MobileView = lazy(() => import("./pages/Mobile/MobileView"));
 
 const App = () => {
   const getIsMobile = () => window.innerWidth <= 480;
 
-  const [isMobile, setIsMobile] = useState(getIsMobile);
+  const [isMobile] = useState(getIsMobile);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 480px)");
 
-    const handleChange = (e) => {
+    const handleChange = () => {
       window.location.reload();
     };
 
@@ -20,7 +22,15 @@ const App = () => {
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
-  return isMobile ? <MobileView /> : <DesktopView />;
+  if (isMobile) {
+    return (
+      <Suspense fallback={<div />}>
+        <MobileView />
+      </Suspense>
+    );
+  }
+
+  return <DesktopView />;
 };
 
 export default App;
