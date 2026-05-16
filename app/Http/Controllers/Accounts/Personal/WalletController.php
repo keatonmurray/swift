@@ -73,21 +73,34 @@ class WalletController extends Controller
     }
 
     private function storeWalletIntoDB($rapydServerResponse)
-    {
-        $user = auth('sanctum')->id();
-        $walletToken = $rapydServerResponse['data']['id'] ?? null;
+{
+    $user = auth('sanctum')->id();
 
-        if (!$walletToken) {
-            throw new \Exception('Wallet ID missing from Rapyd response');
-        }
+    // 🔥 LOG FULL RESPONSE FIRST (critical)
+    logger()->error('RAPYD RESPONSE', $rapydServerResponse);
 
-        $dbData = [
-            'user_id' => $user,
-            'rapyd_ewallet_token' => $walletToken
-        ];
+    // 🔥 Check success explicitly
+    $status = $rapydServerResponse['status']['status'] ?? null;
 
-        Wallet::create($dbData);
+    if ($status !== 'SUCCESS') {
+        throw new \Exception(
+            'Rapyd failed: ' . json_encode($rapydServerResponse)
+        );
     }
+
+    $walletToken = $rapydServerResponse['data']['id'] ?? null;
+
+    if (!$walletToken) {
+        throw new \Exception(
+            'Wallet ID missing even on SUCCESS: ' . json_encode($rapydServerResponse)
+        );
+    }
+
+    Wallet::create([
+        'user_id' => $user,
+        'rapyd_ewallet_token' => $walletToken
+    ]);
+}
 
     public function retrieveWallet()
     {
