@@ -27,12 +27,11 @@ const BusinessSidebar = () => {
     <div className="flex flex-col h-full px-4 py-5">
       {/* Logo */}
       <header className="flex items-center gap-2 px-3 mb-8">
-        <span className="h-8 w-8 rounded-lg bg-white text-black font-bold flex items-center justify-center text-base">
-          S
-        </span>
-        <span className="text-white font-semibold text-lg tracking-tight">
-          Swift
-        </span>
+        <img
+          src="/img/logo-inverted.png"
+          alt="Swift"
+          className="h-8 w-auto"
+        />
       </header>
 
       {/* Navigation */}
