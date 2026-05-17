@@ -121,9 +121,8 @@ const ManageCurrencies = () => {
                         )}
 
                         <Link to={`/create-personal-currency/${userId}`}
-                            className="mt-4 btn btn-dark w-100 py-3 btn-rounded border-0 px-4 fw-semibold"
-                            disabled={loading}
                             className={loading ? "d-none" : "mt-4 btn btn-dark w-100 py-3 btn-rounded border-0 px-4 fw-semibold"}
+                            disabled={loading}
                         >
                             Add more currencies
                         </Link>

@@ -151,7 +151,6 @@ const CreatePersonalCurrency = () => {
         TJ: "TJS",
         TL: "USD",
         TM: "TMT",
-        TR: "TRY",
         TW: "TWD",
         UZ: "UZS",
         VN: "VND",
