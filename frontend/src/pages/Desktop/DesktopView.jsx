@@ -25,6 +25,7 @@ import BusinessAutomations from "./business/automations/Automations";
 
 // Personal pages
 import PersonalOverview from "./personal/overview/Overview";
+import Account from "./personal/account";
 
 const DesktopView = () => {
   return (
@@ -99,6 +100,8 @@ const DesktopView = () => {
           }
         >
           <Route index element={<PersonalOverview />} />
+
+          <Route path="account" element={<Account />} />
 
           {/* Future Routes */}
           {/* <Route path="pay" element={<Pay />} /> */}
