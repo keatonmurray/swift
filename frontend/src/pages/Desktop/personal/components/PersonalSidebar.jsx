@@ -69,15 +69,15 @@ const PersonalSidebar = () => {
       </div>
 
       {/* NAVIGATION */}
-      <nav className="flex-1">
-        <ul className="space-y-2">
+      <nav className="flex-1 overflow-y-auto">
+        <ul className="space-y-1">
           {navItems.map((item) => (
             <li key={item.label}>
               <NavLink
                 to={item.to}
                 end={item.to === "/personal"}
                 className={({ isActive }) =>
-                  `group flex items-center gap-4 rounded-2xl px-4 py-4 text-[15px] font-medium transition-all duration-200 ${
+                  `group flex items-center gap-3 rounded-2xl px-4 py-3 text-[14px] font-medium transition-all duration-200 ${
                     isActive
                       ? "bg-white/10 text-white shadow-lg"
                       : "text-zinc-400 hover:bg-white/5 hover:text-white"
@@ -85,7 +85,7 @@ const PersonalSidebar = () => {
                 }
               >
                 <item.icon
-                  size={21}
+                  size={19}
                   className="transition-transform duration-200 group-hover:scale-105"
                 />
 
@@ -101,29 +101,27 @@ const PersonalSidebar = () => {
         <div className="group relative">
           <button
             onClick={() => setAccountMenuOpen((prev) => !prev)}
-            className="flex w-full items-center justify-between rounded-2xl bg-white/5 p-3 transition-all hover:bg-white/10"
+            className="flex w-full items-center gap-3 rounded-2xl bg-white/5 p-3 transition-all hover:bg-white/10"
           >
-            <div className="flex items-center gap-3">
-              <img
-                src="https://i.pravatar.cc/100"
-                alt="avatar"
-                className="h-12 w-12 rounded-full object-cover"
-              />
+            <img
+              src="https://i.pravatar.cc/100"
+              alt="avatar"
+              className="h-10 w-10 flex-shrink-0 rounded-full object-cover"
+            />
 
-              <div className="text-left">
-                <p className="text-sm font-semibold text-white">
-                  Alex Morgan
-                </p>
+            <div className="min-w-0 flex-1 text-left">
+              <p className="truncate text-sm font-semibold text-white">
+                Alex Morgan
+              </p>
 
-                <p className="text-xs text-zinc-400">
-                  Personal Account
-                </p>
-              </div>
+              <p className="truncate text-xs text-zinc-400">
+                Personal Account
+              </p>
             </div>
 
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className={`h-4 w-4 text-zinc-400 transition-transform duration-200 ${
+              className={`h-4 w-4 flex-shrink-0 text-zinc-400 transition-transform duration-200 ${
                 accountMenuOpen ? "rotate-180" : ""
               }`}
               fill="none"
@@ -141,7 +139,7 @@ const PersonalSidebar = () => {
 
           {/* DROPDOWN */}
           {accountMenuOpen && (
-            <div className="absolute bottom-[78px] left-0 z-50 w-full overflow-hidden rounded-2xl border border-white/10 bg-[#111827] shadow-2xl backdrop-blur-xl">
+            <div className="absolute bottom-full left-0 z-50 mb-2 w-full overflow-hidden rounded-2xl border border-white/10 bg-[#111827] shadow-2xl backdrop-blur-xl">
               <button
                 onClick={() => navigate("/settings")}
                 className="flex w-full items-center gap-3 px-4 py-3 text-sm text-zinc-300 transition-all hover:bg-white/5 hover:text-white"
