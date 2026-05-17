@@ -217,27 +217,27 @@ const SummaryCard = ({
   iconBg,
   iconColor,
 }) => (
-  <div className="flex min-w-0 items-center justify-between gap-4 rounded-3xl border border-zinc-200 bg-white p-6">
+  <div className="flex min-w-0 items-center justify-between gap-3 rounded-3xl border border-zinc-200 bg-white p-5">
     <div className="min-w-0 flex-1">
-      <p className="mb-3 truncate text-sm text-zinc-500">
+      <p className="mb-2 truncate text-xs text-zinc-500">
         {label}
       </p>
 
       <AnimatedValue
         value={value}
         duration={1400}
-        className="mb-3 block text-2xl font-semibold tracking-tight text-zinc-900"
+        className="mb-2 block truncate text-xl font-semibold tracking-tight text-zinc-900"
       />
 
-      <p className="text-sm text-zinc-500">
+      <p className="truncate text-xs text-zinc-500">
         {sub}
       </p>
     </div>
 
     <span
-      className={`flex h-14 w-14 items-center justify-center rounded-2xl ${iconBg} ${iconColor}`}
+      className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl ${iconBg} ${iconColor}`}
     >
-      <Icon size={22} />
+      <Icon size={18} />
     </span>
   </div>
 )
@@ -840,9 +840,9 @@ const EmployeePayrollDetail = () => {
       </Link>
 
       {/* Header */}
-      <div className="mb-6 flex items-stretch gap-6">
+      <div className="mb-6 grid grid-cols-1 gap-6 xl:grid-cols-[280px_1fr]">
         {/* Employee */}
-        <div className="flex min-w-[260px] flex-shrink-0 items-center gap-4 rounded-3xl border border-zinc-200 bg-white p-6">
+        <div className="flex items-center gap-4 rounded-3xl border border-zinc-200 bg-white p-6">
           <Avatar className="h-14 w-14 flex-shrink-0">
             {emp.imageSrc && (
               <AvatarImage
@@ -860,7 +860,7 @@ const EmployeePayrollDetail = () => {
 
           <div className="min-w-0">
             <div className="mb-1 flex flex-wrap items-center gap-2">
-              <h2 className="text-xl font-semibold tracking-tight text-zinc-900">
+              <h2 className="text-lg font-semibold tracking-tight text-zinc-900">
                 {emp.name}
               </h2>
 
@@ -881,7 +881,7 @@ const EmployeePayrollDetail = () => {
         </div>
 
         {/* Summary */}
-        <div className="grid flex-1 grid-cols-2 gap-6 xl:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
           <SummaryCard
             label="Total Payroll Amount"
             value={emp.totalPay}

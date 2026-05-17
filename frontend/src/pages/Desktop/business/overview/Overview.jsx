@@ -1,18 +1,11 @@
 import {
-  Bell,
-  ChevronDown,
   CircleAlert,
   CircleCheck,
-  CreditCard,
-  FileText,
-  Home,
-  Landmark,
-  Menu,
-  Search,
-  Settings,
   Sparkles,
   Users,
   Wallet,
+  ChevronDown,
+  ArrowRight,
 } from "lucide-react"
 
 import {
@@ -28,6 +21,12 @@ import {
   YAxis,
 } from "recharts"
 
+import DashboardShell from "@/pages/Desktop/components/DashboardShell"
+
+/* -------------------------------------------------------------------------- */
+/*  Mock data                                                                  */
+/* -------------------------------------------------------------------------- */
+
 const spendTrend = [
   { month: "Dec 2024", amount: 58000 },
   { month: "Jan 2025", amount: 45000 },
@@ -39,563 +38,284 @@ const spendTrend = [
 
 const payrollStatus = [
   { name: "Completed", value: 12, color: "#22c55e" },
-  { name: "Scheduled", value: 4, color: "#4f46e5" },
-  { name: "Draft", value: 2, color: "#e5e7eb" },
+  { name: "Scheduled", value: 4,  color: "#4f46e5" },
+  { name: "Draft",     value: 2,  color: "#e5e7eb" },
 ]
 
 const payrolls = [
-  {
-    date: "May 30, 2025",
-    name: "Monthly Payroll – May 2025",
-    amount: "$80,700.00",
-    employees: 18,
-    status: "Scheduled",
-  },
-  {
-    date: "Apr 30, 2025",
-    name: "Monthly Payroll – Apr 2025",
-    amount: "$78,150.00",
-    employees: 18,
-    status: "Completed",
-  },
-  {
-    date: "Mar 31, 2025",
-    name: "Monthly Payroll – Mar 2025",
-    amount: "$75,600.00",
-    employees: 17,
-    status: "Completed",
-  },
-  {
-    date: "Feb 28, 2025",
-    name: "Monthly Payroll – Feb 2025",
-    amount: "$73,200.00",
-    employees: 17,
-    status: "Completed",
-  },
-  {
-    date: "Jan 31, 2025",
-    name: "Monthly Payroll – Jan 2025",
-    amount: "$72,100.00",
-    employees: 16,
-    status: "Completed",
-  },
+  { date: "May 30, 2025", name: "Monthly Payroll \u2013 May 2025", amount: "$80,700.00", employees: 18, status: "Scheduled" },
+  { date: "Apr 30, 2025", name: "Monthly Payroll \u2013 Apr 2025", amount: "$78,150.00", employees: 18, status: "Completed" },
+  { date: "Mar 31, 2025", name: "Monthly Payroll \u2013 Mar 2025", amount: "$75,600.00", employees: 17, status: "Completed" },
+  { date: "Feb 28, 2025", name: "Monthly Payroll \u2013 Feb 2025", amount: "$73,200.00", employees: 17, status: "Completed" },
+  { date: "Jan 31, 2025", name: "Monthly Payroll \u2013 Jan 2025", amount: "$72,100.00", employees: 16, status: "Completed" },
 ]
 
 const notifications = [
-  {
-    title: "Payroll for April 30, 2025 was approved",
-    time: "2 hours ago",
-    color: "bg-green-500",
-  },
-  {
-    title: "New employee Emma Williams added",
-    time: "5 hours ago",
-    color: "bg-indigo-500",
-  },
+  { title: "Payroll for April 30, 2025 was approved", time: "2 hours ago", color: "bg-green-500"  },
+  { title: "New employee Emma Williams added",         time: "5 hours ago", color: "bg-indigo-500" },
 ]
 
-const sidebarItems = [
-  { label: "Overview", icon: Home, active: true },
-  { label: "Accounts", icon: Wallet },
-  { label: "Transactions", icon: Landmark },
-  { label: "Payments", icon: CreditCard },
-  { label: "Payouts", icon: Wallet },
-  { label: "Payroll", icon: Users },
-  { label: "Reports", icon: FileText },
-  { label: "AI Insights", icon: Sparkles },
-  { label: "Automations", icon: Sparkles },
-  { label: "Recipients", icon: Users },
-  { label: "Settings", icon: Settings },
-]
+/* -------------------------------------------------------------------------- */
+/*  Stat card — matches established card style across the dashboard           */
+/* -------------------------------------------------------------------------- */
 
-const StatCard = ({ title, value, subtitle, icon, iconBg }) => {
-  const Icon = icon
-
-  return (
-    <div className="rounded-3xl border border-zinc-200 bg-white p-6">
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-sm font-medium text-zinc-500">{title}</p>
-
-          <h3 className="mt-2 text-4xl font-semibold tracking-tight text-zinc-900">
-            {value}
-          </h3>
-
-          <p className="mt-2 text-sm text-zinc-500">{subtitle}</p>
-        </div>
-
-        <div
-          className={`flex h-14 w-14 items-center justify-center rounded-2xl ${iconBg}`}
-        >
-          <Icon className="h-6 w-6 text-zinc-900" />
-        </div>
-      </div>
+const StatCard = ({ title, value, subtitle, icon: Icon, iconBg, iconColor }) => (
+  <div className="bg-white border border-gray-200 rounded-[20px] px-5 py-4 flex items-center justify-between gap-4">
+    <div className="min-w-0 flex-1">
+      <p className="text-[13px] text-gray-500 leading-none mb-2">{title}</p>
+      <p className="text-[22px] font-semibold text-gray-900 tracking-tight leading-none mb-2">{value}</p>
+      <p className="text-[12px] text-gray-400">{subtitle}</p>
     </div>
-  )
-}
+    <span className={`h-10 w-10 rounded-xl flex items-center justify-center flex-shrink-0 ${iconBg}`}>
+      <Icon size={18} className={iconColor} />
+    </span>
+  </div>
+)
 
-const Overview = () => {
-  return (
-    <div className="min-h-screen bg-[#f6f7fb]">
-      <div className="flex">
-        {/* MAIN */}
-        <main className="flex-1">
-          {/* HEADER */}
-          <div className="border-b border-zinc-200 bg-white px-5 py-5 sm:px-8">
-            <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
-              <div className="flex items-center gap-3">
-                <button className="flex h-11 w-11 items-center justify-center rounded-2xl border border-zinc-200 bg-white lg:hidden">
-                  <Menu className="h-5 w-5" />
-                </button>
+/* -------------------------------------------------------------------------- */
+/*  Page                                                                       */
+/* -------------------------------------------------------------------------- */
 
-                <div>
-                  <h1 className="text-4xl font-semibold tracking-tight text-zinc-900">
-                    Overview
-                  </h1>
+const Overview = () => (
+  <DashboardShell
+    title="Overview"
+    subtitle="Get a summary of your payroll operations"
+  >
+    {/* ── Stat cards ───────────────────────────────────────────────────── */}
+    <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-5">
+      <StatCard
+        title="Total Payroll Amount"
+        value="$80,700.00"
+        subtitle="18 employees \u00B7 6 countries"
+        icon={Users}
+        iconBg="bg-violet-50"
+        iconColor="text-violet-500"
+      />
+      <StatCard
+        title="This Month's Payrolls"
+        value="2"
+        subtitle="May 1 \u2013 May 31, 2025"
+        icon={Wallet}
+        iconBg="bg-emerald-50"
+        iconColor="text-emerald-500"
+      />
+      <StatCard
+        title="Total Employees"
+        value="18"
+        subtitle="Across 6 countries"
+        icon={Users}
+        iconBg="bg-amber-50"
+        iconColor="text-amber-500"
+      />
+      <StatCard
+        title="Upcoming Payroll"
+        value="May 30, 2025"
+        subtitle="2 days from now"
+        icon={Wallet}
+        iconBg="bg-sky-50"
+        iconColor="text-sky-500"
+      />
+    </section>
 
-                  <p className="mt-1 text-base text-zinc-500">
-                    Get a summary of your payroll operations
-                  </p>
-                </div>
-              </div>
+    {/* ── Main grid: lg:8/4 columns — same fix as every other page ─────── */}
+    <section className="grid grid-cols-12 gap-4">
 
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                <div className="relative w-full sm:w-[360px]">
-                  <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-zinc-400" />
+      {/* LEFT */}
+      <div className="col-span-12 lg:col-span-8 space-y-4">
 
-                  <input
-                    type="text"
-                    placeholder="Search anything..."
-                    className="h-14 w-full rounded-2xl border border-zinc-200 bg-white pl-12 pr-20 text-[15px] outline-none transition-all focus:border-zinc-400"
+        {/* Charts row */}
+        <div className="grid grid-cols-12 gap-4">
+
+          {/* Spend trend */}
+          <div className="col-span-12 lg:col-span-7 bg-white border border-gray-200 rounded-[20px] p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-[14px] font-semibold text-gray-900">Payroll Spend Trend</h2>
+              <button className="inline-flex items-center gap-1.5 text-[12px] text-gray-600 bg-white border border-gray-200 rounded-full px-3 py-1.5 hover:bg-gray-50 transition-colors">
+                Last 6 months
+                <ChevronDown size={12} className="text-gray-400" />
+              </button>
+            </div>
+            <div className="h-[200px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={spendTrend} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="colorAmt" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%"  stopColor="#4f46e5" stopOpacity={0.18} />
+                      <stop offset="95%" stopColor="#4f46e5" stopOpacity={0}    />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                  <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
+                  <YAxis tickFormatter={(v) => `$${v / 1000}K`} tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
+                  <Tooltip
+                    contentStyle={{ fontSize: 12, borderRadius: 10, border: "1px solid #e5e7eb", boxShadow: "none" }}
+                    formatter={(v) => [`$${v.toLocaleString()}`, "Amount"]}
                   />
-
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg border border-zinc-200 px-2 py-1 text-xs font-medium text-zinc-500">
-                    ⌘ K
-                  </div>
-                </div>
-
-                <button className="flex h-14 w-14 items-center justify-center rounded-2xl border border-zinc-200 bg-white">
-                  <Bell className="h-5 w-5 text-zinc-700" />
-                </button>
-
-                <button className="flex h-14 w-14 items-center justify-center rounded-2xl bg-black text-white">
-                  <Sparkles className="h-5 w-5" />
-                </button>
-              </div>
+                  <Area type="monotone" dataKey="amount" stroke="#4f46e5" strokeWidth={2} fillOpacity={1} fill="url(#colorAmt)" />
+                </AreaChart>
+              </ResponsiveContainer>
             </div>
           </div>
 
-          {/* CONTENT */}
-          <div className="space-y-6 p-5 sm:p-8">
-            {/* STATS */}
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-              <StatCard
-                title="Total Payroll Amount"
-                value="$80,700.00"
-                subtitle="18 employees · 6 countries"
-                icon={Users}
-                iconBg="bg-indigo-100"
-              />
-
-              <StatCard
-                title="This Month's Payrolls"
-                value="2"
-                subtitle="May 1 – May 31, 2025"
-                icon={Wallet}
-                iconBg="bg-green-100"
-              />
-
-              <StatCard
-                title="Total Employees"
-                value="18"
-                subtitle="Across 6 countries"
-                icon={Users}
-                iconBg="bg-amber-100"
-              />
-
-              <StatCard
-                title="Upcoming Payroll"
-                value="May 30, 2025"
-                subtitle="2 days from now"
-                icon={Wallet}
-                iconBg="bg-green-100"
-              />
+          {/* Payroll status donut */}
+          <div className="col-span-12 lg:col-span-5 bg-white border border-gray-200 rounded-[20px] p-5">
+            <h2 className="text-[14px] font-semibold text-gray-900 mb-3">Payroll Status</h2>
+            <div className="relative h-[130px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie data={payrollStatus} dataKey="value" innerRadius={42} outerRadius={58} paddingAngle={3}>
+                    {payrollStatus.map((e, i) => <Cell key={i} fill={e.color} />)}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <p className="text-[20px] font-bold text-gray-900 leading-none">18</p>
+                <p className="text-[11px] text-gray-400 mt-0.5">Total</p>
+              </div>
             </div>
-
-            {/* MAIN GRID */}
-            <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
-              {/* LEFT */}
-              <div className="space-y-6 xl:col-span-9">
-                {/* CHARTS */}
-                <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-                  {/* TREND */}
-                  <div className="rounded-3xl border border-zinc-200 bg-white p-6 lg:col-span-8">
-                    <div className="mb-6 flex items-center justify-between">
-                      <h2 className="text-2xl font-semibold text-zinc-900">
-                        Payroll Spend Trend
-                      </h2>
-
-                      <button className="flex items-center gap-2 rounded-xl border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-700">
-                        Last 6 months
-                        <ChevronDown className="h-4 w-4" />
-                      </button>
-                    </div>
-
-                    <div className="h-[340px]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart data={spendTrend}>
-                          <defs>
-                            <linearGradient
-                              id="colorAmount"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="#4f46e5"
-                                stopOpacity={0.25}
-                              />
-
-                              <stop
-                                offset="95%"
-                                stopColor="#4f46e5"
-                                stopOpacity={0}
-                              />
-                            </linearGradient>
-                          </defs>
-
-                          <CartesianGrid
-                            strokeDasharray="3 3"
-                            vertical={false}
-                            stroke="#e4e4e7"
-                          />
-
-                          <XAxis
-                            dataKey="month"
-                            tick={{ fontSize: 13 }}
-                            axisLine={false}
-                            tickLine={false}
-                          />
-
-                          <YAxis
-                            tickFormatter={(value) => `$${value / 1000}K`}
-                            tick={{ fontSize: 13 }}
-                            axisLine={false}
-                            tickLine={false}
-                          />
-
-                          <Tooltip />
-
-                          <Area
-                            type="monotone"
-                            dataKey="amount"
-                            stroke="#4f46e5"
-                            strokeWidth={3}
-                            fillOpacity={1}
-                            fill="url(#colorAmount)"
-                          />
-                        </AreaChart>
-                      </ResponsiveContainer>
-                    </div>
+            <div className="mt-3 space-y-2.5">
+              {payrollStatus.map((item) => (
+                <div key={item.name} className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }} />
+                    <span className="text-[13px] text-gray-600">{item.name}</span>
                   </div>
-
-                  {/* STATUS */}
-                  <div className="rounded-3xl border border-zinc-200 bg-white p-6 lg:col-span-4">
-                    <h2 className="text-2xl font-semibold text-zinc-900">
-                      Payroll Status
-                    </h2>
-
-                    <div className="mt-8 flex flex-col items-center">
-                      <div className="relative h-[220px] w-full">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <PieChart>
-                            <Pie
-                              data={payrollStatus}
-                              dataKey="value"
-                              innerRadius={65}
-                              outerRadius={90}
-                              paddingAngle={4}
-                            >
-                              {payrollStatus.map((entry, index) => (
-                                <Cell
-                                  key={`cell-${index}`}
-                                  fill={entry.color}
-                                />
-                              ))}
-                            </Pie>
-                          </PieChart>
-                        </ResponsiveContainer>
-
-                        <div className="absolute inset-0 flex flex-col items-center justify-center">
-                          <h3 className="text-5xl font-bold text-zinc-900">
-                            18
-                          </h3>
-
-                          <p className="mt-1 text-sm text-zinc-500">
-                            Total Payrolls
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="mt-8 w-full space-y-4">
-                        {payrollStatus.map((item) => (
-                          <div
-                            key={item.name}
-                            className="flex items-center justify-between"
-                          >
-                            <div className="flex items-center gap-3">
-                              <div
-                                className="h-3 w-3 rounded-full"
-                                style={{ backgroundColor: item.color }}
-                              />
-
-                              <span className="text-sm font-medium text-zinc-700">
-                                {item.name}
-                              </span>
-                            </div>
-
-                            <span className="text-sm text-zinc-500">
-                              {item.value}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+                  <span className="text-[13px] text-gray-400 tabular-nums">{item.value}</span>
                 </div>
-
-                {/* TABLE */}
-                <div className="rounded-3xl border border-zinc-200 bg-white p-6">
-                  <div className="mb-6 flex items-center justify-between">
-                    <h2 className="text-2xl font-semibold text-zinc-900">
-                      Recent Payrolls
-                    </h2>
-
-                    <button className="rounded-xl border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-700">
-                      View all
-                    </button>
-                  </div>
-
-                  <div className="overflow-x-auto">
-                    <table className="w-full min-w-[850px]">
-                      <thead>
-                        <tr className="border-b border-zinc-200">
-                          <th className="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wide text-zinc-500">
-                            Payroll Date
-                          </th>
-
-                          <th className="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wide text-zinc-500">
-                            Payroll Name
-                          </th>
-
-                          <th className="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wide text-zinc-500">
-                            Total Amount
-                          </th>
-
-                          <th className="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wide text-zinc-500">
-                            Employees
-                          </th>
-
-                          <th className="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wide text-zinc-500">
-                            Status
-                          </th>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        {payrolls.map((payroll) => (
-                          <tr
-                            key={payroll.date}
-                            className="border-b border-zinc-100 transition-all hover:bg-zinc-50"
-                          >
-                            <td className="px-4 py-5 text-[15px] font-medium text-zinc-800">
-                              {payroll.date}
-                            </td>
-
-                            <td className="px-4 py-5 text-[15px] text-zinc-700">
-                              {payroll.name}
-                            </td>
-
-                            <td className="px-4 py-5 text-[15px] font-medium text-zinc-800">
-                              {payroll.amount}
-                            </td>
-
-                            <td className="px-4 py-5 text-[15px] text-zinc-700">
-                              {payroll.employees}
-                            </td>
-
-                            <td className="px-4 py-5">
-                              <span
-                                className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                                  payroll.status === "Completed"
-                                    ? "bg-green-100 text-green-700"
-                                    : "bg-indigo-100 text-indigo-700"
-                                }`}
-                              >
-                                {payroll.status}
-                              </span>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-
-              {/* RIGHT */}
-              <div className="space-y-6 xl:col-span-3">
-                {/* AI INSIGHTS */}
-                <div className="rounded-3xl border border-zinc-200 bg-white p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Sparkles className="h-5 w-5 text-indigo-500" />
-
-                      <h2 className="text-xl font-semibold text-zinc-900">
-                        AI Insights
-                      </h2>
-                    </div>
-
-                    <span className="rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-700">
-                      Beta
-                    </span>
-                  </div>
-
-                  <p className="mt-3 text-sm text-zinc-500">
-                    Here's what AI found for you.
-                  </p>
-
-                  <div className="mt-6 space-y-4">
-                    <div className="rounded-2xl border border-green-200 bg-green-50 p-4">
-                      <div className="flex gap-3">
-                        <CircleCheck className="mt-0.5 h-5 w-5 text-green-600" />
-
-                        <div>
-                          <h3 className="text-sm font-semibold text-zinc-900">
-                            Payroll is on track
-                          </h3>
-
-                          <p className="mt-1 text-sm text-zinc-600">
-                            All scheduled payrolls are on track for this
-                            month.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="rounded-2xl border border-orange-200 bg-orange-50 p-4">
-                      <div className="flex gap-3">
-                        <CircleAlert className="mt-0.5 h-5 w-5 text-orange-500" />
-
-                        <div>
-                          <h3 className="text-sm font-semibold text-zinc-900">
-                            3 employees have changes
-                          </h3>
-
-                          <p className="mt-1 text-sm text-zinc-600">
-                            Review salary or details changes before May
-                            30 payroll.
-                          </p>
-
-                          <button className="mt-4 rounded-xl border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700">
-                            Review Changes
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* APPROVALS */}
-                <div className="rounded-3xl border border-zinc-200 bg-white p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h2 className="text-xl font-semibold text-zinc-900">
-                        Approvals
-                      </h2>
-
-                      <h3 className="mt-3 text-5xl font-bold tracking-tight text-zinc-900">
-                        2
-                      </h3>
-
-                      <p className="mt-1 text-sm text-zinc-500">
-                        Pending Approvals
-                      </p>
-                    </div>
-
-                    <button className="flex h-11 w-11 items-center justify-center rounded-xl border border-zinc-200">
-                      →
-                    </button>
-                  </div>
-                </div>
-
-                {/* AUDIT */}
-                <div className="rounded-3xl border border-zinc-200 bg-white p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h2 className="text-xl font-semibold text-zinc-900">
-                        Audit Logs
-                      </h2>
-
-                      <h3 className="mt-3 text-5xl font-bold tracking-tight text-zinc-900">
-                        12
-                      </h3>
-
-                      <p className="mt-1 text-sm text-zinc-500">
-                        Activities this week
-                      </p>
-                    </div>
-
-                    <button className="flex h-11 w-11 items-center justify-center rounded-xl border border-zinc-200">
-                      →
-                    </button>
-                  </div>
-                </div>
-
-                {/* NOTIFICATIONS */}
-                <div className="rounded-3xl border border-zinc-200 bg-white p-6">
-                  <div className="mb-6 flex items-center justify-between">
-                    <h2 className="text-xl font-semibold text-zinc-900">
-                      Notifications
-                    </h2>
-
-                    <button className="text-sm font-semibold text-indigo-600">
-                      View all
-                    </button>
-                  </div>
-
-                  <div className="space-y-5">
-                    {notifications.map((notification) => (
-                      <div
-                        key={notification.title}
-                        className="flex items-start gap-3"
-                      >
-                        <div
-                          className={`mt-1 h-3 w-3 rounded-full ${notification.color}`}
-                        />
-
-                        <div>
-                          <p className="text-sm font-medium leading-6 text-zinc-800">
-                            {notification.title}
-                          </p>
-
-                          <p className="mt-1 text-xs text-zinc-500">
-                            {notification.time}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
-        </main>
+        </div>
+
+        {/* Recent payrolls table */}
+        <div className="bg-white border border-gray-200 rounded-[20px] p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-[14px] font-semibold text-gray-900">Recent Payrolls</h2>
+            <button className="text-[12px] text-gray-400 hover:text-gray-700 font-medium transition-colors">View all</button>
+          </div>
+          <div className="overflow-x-auto -mx-1 px-1">
+            <table className="w-full whitespace-nowrap">
+              <thead>
+                <tr className="text-left">
+                  {["Payroll Date", "Payroll Name", "Total Amount", "Employees", "Status"].map((h) => (
+                    <th key={h} className="pb-3 pr-6 text-[11px] font-semibold uppercase tracking-wider text-gray-400">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {payrolls.map((p) => (
+                  <tr key={p.date} className="border-t border-gray-50 hover:bg-gray-50/60 transition-colors">
+                    <td className="py-3 pr-6 text-[13px] text-gray-400 whitespace-nowrap">{p.date}</td>
+                    <td className="py-3 pr-6 text-[13px] text-gray-800 font-medium">{p.name}</td>
+                    <td className="py-3 pr-6 text-[13px] font-semibold text-gray-900 tabular-nums">{p.amount}</td>
+                    <td className="py-3 pr-6 text-[13px] text-gray-400">{p.employees}</td>
+                    <td className="py-3">
+                      <span className={`inline-flex items-center text-[11px] font-semibold rounded-full px-2.5 py-1 ${
+                        p.status === "Completed"
+                          ? "bg-emerald-50 text-emerald-700"
+                          : "bg-indigo-50 text-indigo-700"
+                      }`}>
+                        {p.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-    </div>
-  )
-}
+
+      {/* RIGHT SIDEBAR */}
+      <aside className="col-span-12 lg:col-span-4 space-y-4">
+
+        {/* AI Insights */}
+        <div className="bg-white border border-gray-200 rounded-[20px] p-5">
+          <div className="flex items-center justify-between mb-1">
+            <h2 className="text-[14px] font-semibold text-gray-900 flex items-center gap-1.5">
+              <Sparkles size={14} className="text-violet-500" />
+              AI Insights
+            </h2>
+            <span className="text-[10px] font-semibold text-violet-600 bg-violet-50 border border-violet-100 rounded-full px-2 py-0.5">
+              Beta
+            </span>
+          </div>
+          <p className="text-[12px] text-gray-400 mb-4">Here&apos;s what AI found for you.</p>
+          <div className="space-y-3">
+            <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-3">
+              <div className="flex items-start gap-2.5">
+                <CircleCheck size={14} className="text-emerald-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-[12px] font-semibold text-gray-900 leading-snug">Payroll is on track</p>
+                  <p className="text-[11px] text-gray-500 mt-0.5 leading-relaxed">All scheduled payrolls are on track for this month.</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-amber-50 border border-amber-100 rounded-xl p-3">
+              <div className="flex items-start gap-2.5">
+                <CircleAlert size={14} className="text-amber-500 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-[12px] font-semibold text-gray-900 leading-snug">3 employees have changes</p>
+                  <p className="text-[11px] text-gray-500 mt-0.5 leading-relaxed">Review salary or details changes before May 30 payroll.</p>
+                  <button className="mt-3 text-[11px] font-semibold text-gray-700 border border-gray-200 rounded-full px-3 py-1.5 bg-white hover:bg-gray-50 transition-colors">
+                    Review Changes
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Approvals */}
+        <div className="bg-white border border-gray-200 rounded-[20px] p-5">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-[14px] font-semibold text-gray-900 mb-3">Approvals</h2>
+              <p className="text-[28px] font-bold tracking-tight text-gray-900 leading-none">2</p>
+              <p className="text-[12px] text-gray-400 mt-1">Pending Approvals</p>
+            </div>
+            <button className="h-9 w-9 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-700 transition-colors flex-shrink-0">
+              <ArrowRight size={15} />
+            </button>
+          </div>
+        </div>
+
+        {/* Audit logs */}
+        <div className="bg-white border border-gray-200 rounded-[20px] p-5">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-[14px] font-semibold text-gray-900 mb-3">Audit Logs</h2>
+              <p className="text-[28px] font-bold tracking-tight text-gray-900 leading-none">12</p>
+              <p className="text-[12px] text-gray-400 mt-1">Activities this week</p>
+            </div>
+            <button className="h-9 w-9 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-700 transition-colors flex-shrink-0">
+              <ArrowRight size={15} />
+            </button>
+          </div>
+        </div>
+
+        {/* Notifications */}
+        <div className="bg-white border border-gray-200 rounded-[20px] p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-[14px] font-semibold text-gray-900">Notifications</h2>
+            <button className="text-[12px] font-semibold text-indigo-600 hover:text-indigo-800 transition-colors">View all</button>
+          </div>
+          <div className="space-y-4">
+            {notifications.map((n) => (
+              <div key={n.title} className="flex items-start gap-3">
+                <div className={`mt-1.5 h-2 w-2 rounded-full flex-shrink-0 ${n.color}`} />
+                <div>
+                  <p className="text-[13px] font-medium text-gray-800 leading-snug">{n.title}</p>
+                  <p className="text-[11px] text-gray-400 mt-0.5">{n.time}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </aside>
+    </section>
+  </DashboardShell>
+)
 
 export default Overview

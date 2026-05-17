@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import {
   IoEllipsisVertical,
@@ -219,154 +219,164 @@ const PayoutsTable = ({
   toggle,
   toggleAll,
   allSelected,
-}) => (
-  <div className="overflow-hidden rounded-3xl border border-zinc-200 bg-white p-8">
-    <div className="mb-6 flex items-center justify-between">
-      <h3 className="text-lg font-semibold text-zinc-900">
-        Employee Payouts
-      </h3>
+}) => {
+  const navigate = useNavigate()
 
-      <div className="flex items-center gap-3">
-        <button className="inline-flex items-center gap-2 rounded-2xl border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50">
-          All Currencies
-          <LuChevronDown
-            size={14}
-            className="text-zinc-400"
-          />
-        </button>
+  return (
+    <div className="overflow-hidden rounded-3xl border border-zinc-200 bg-white p-8">
+      <div className="mb-6 flex items-center justify-between">
+        <h3 className="text-lg font-semibold text-zinc-900">
+          Employee Payouts
+        </h3>
 
-        <button className="inline-flex items-center gap-2 rounded-2xl border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50">
-          <LuFilter size={14} />
-          Filter
-        </button>
+        <div className="flex items-center gap-3">
+          <button className="inline-flex items-center gap-2 rounded-2xl border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50">
+            All Currencies
+            <LuChevronDown
+              size={14}
+              className="text-zinc-400"
+            />
+          </button>
+
+          <button className="inline-flex items-center gap-2 rounded-2xl border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50">
+            <LuFilter size={14} />
+            Filter
+          </button>
+        </div>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="w-full whitespace-nowrap">
+          <thead>
+            <tr>
+              <th className="w-8 pb-4 text-left">
+                <Checkbox
+                  checked={allSelected}
+                  onChange={toggleAll}
+                />
+              </th>
+
+              {[
+                "Employee",
+                "Country",
+                "Currency",
+                "Amount",
+                "Method",
+                "Status",
+                "",
+              ].map((h) => (
+                <th
+                  key={h}
+                  className="pb-4 pr-6 text-left text-xs font-medium uppercase tracking-wide text-zinc-400"
+                >
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+
+          <tbody>
+            {rows.map((e) => (
+              <tr
+                key={e.id}
+                className="cursor-pointer border-t border-zinc-100 transition-colors hover:bg-zinc-50"
+                onClick={() =>
+                  navigate(`/business/payroll/analysis/${e.id}`)
+                }
+              >
+                <td
+                  className="py-5"
+                  onClick={(ev) => ev.stopPropagation()}
+                >
+                  <Checkbox
+                    checked={selected.has(e.id)}
+                    onChange={() => toggle(e.id)}
+                  />
+                </td>
+
+                <td className="py-5 pr-6">
+                  <div className="flex items-center gap-3">
+                    <Avatar size="sm">
+                      {e.imageSrc && (
+                        <AvatarImage
+                          src={e.imageSrc}
+                          alt={e.name}
+                        />
+                      )}
+
+                      <AvatarFallback className={e.avatarBg}>
+                        {e.initials}
+                      </AvatarFallback>
+                    </Avatar>
+
+                    <div>
+                      <p className="text-sm font-semibold text-zinc-900">
+                        {e.name}
+                      </p>
+
+                      <p className="mt-1 text-xs text-zinc-400">
+                        {e.role}
+                      </p>
+                    </div>
+                  </div>
+                </td>
+
+                <td className="py-5 pr-6 text-sm text-zinc-500">
+                  <span className="inline-flex items-center gap-2">
+                    <ReactCountryFlag
+                      countryCode={e.countryCode}
+                      svg
+                      style={{
+                        width: "1.1em",
+                        height: "0.8em",
+                        borderRadius: "2px",
+                      }}
+                    />
+
+                    {e.country}
+                  </span>
+                </td>
+
+                <td className="py-5 pr-6 text-sm text-zinc-500">
+                  {e.currency}
+                </td>
+
+                <td className="py-5 pr-6 text-sm font-semibold tabular-nums text-zinc-900">
+                  {e.amount}
+                </td>
+
+                <td className="py-5 pr-6">
+                  <span className="inline-flex items-center rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700">
+                    {e.method}
+                  </span>
+                </td>
+
+                <td className="py-5 pr-6">
+                  {e.status === "ready" ? (
+                    <StatusBadge variant="success">
+                      Ready
+                    </StatusBadge>
+                  ) : (
+                    <StatusBadge
+                      variant="info"
+                      icon={<FiClock size={10} />}
+                    >
+                      Scheduled
+                    </StatusBadge>
+                  )}
+                </td>
+
+                <td className="py-5 text-zinc-300 transition hover:text-zinc-600">
+                  <LuArrowRight size={16} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
-
-    <div className="overflow-x-auto">
-      <table className="w-full whitespace-nowrap">
-        <thead>
-          <tr>
-            <th className="w-8 pb-4 text-left">
-              <Checkbox
-                checked={allSelected}
-                onChange={toggleAll}
-              />
-            </th>
-
-            {[
-              "Employee",
-              "Country",
-              "Currency",
-              "Amount",
-              "Method",
-              "Status",
-              "",
-            ].map((h) => (
-              <th
-                key={h}
-                className="pb-4 pr-6 text-left text-xs font-medium uppercase tracking-wide text-zinc-400"
-              >
-                {h}
-              </th>
-            ))}
-          </tr>
-        </thead>
-
-        <tbody>
-          {rows.map((e) => (
-            <tr
-              key={e.id}
-              className="border-t border-zinc-100 transition-colors hover:bg-zinc-50"
-            >
-              <td className="py-5">
-                <Checkbox
-                  checked={selected.has(e.id)}
-                  onChange={() => toggle(e.id)}
-                />
-              </td>
-
-              <td className="py-5 pr-6">
-                <div className="flex items-center gap-3">
-                  <Avatar size="sm">
-                    {e.imageSrc && (
-                      <AvatarImage
-                        src={e.imageSrc}
-                        alt={e.name}
-                      />
-                    )}
-
-                    <AvatarFallback className={e.avatarBg}>
-                      {e.initials}
-                    </AvatarFallback>
-                  </Avatar>
-
-                  <div>
-                    <p className="text-sm font-semibold text-zinc-900">
-                      {e.name}
-                    </p>
-
-                    <p className="mt-1 text-xs text-zinc-400">
-                      {e.role}
-                    </p>
-                  </div>
-                </div>
-              </td>
-
-              <td className="py-5 pr-6 text-sm text-zinc-500">
-                <span className="inline-flex items-center gap-2">
-                  <ReactCountryFlag
-                    countryCode={e.countryCode}
-                    svg
-                    style={{
-                      width: "1.1em",
-                      height: "0.8em",
-                      borderRadius: "2px",
-                    }}
-                  />
-
-                  {e.country}
-                </span>
-              </td>
-
-              <td className="py-5 pr-6 text-sm text-zinc-500">
-                {e.currency}
-              </td>
-
-              <td className="py-5 pr-6 text-sm font-semibold tabular-nums text-zinc-900">
-                {e.amount}
-              </td>
-
-              <td className="py-5 pr-6">
-                <span className="inline-flex items-center rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700">
-                  {e.method}
-                </span>
-              </td>
-
-              <td className="py-5 pr-6">
-                {e.status === "ready" ? (
-                  <StatusBadge variant="success">
-                    Ready
-                  </StatusBadge>
-                ) : (
-                  <StatusBadge
-                    variant="info"
-                    icon={<FiClock size={10} />}
-                  >
-                    Scheduled
-                  </StatusBadge>
-                )}
-              </td>
-
-              <td className="py-5 text-zinc-300 transition hover:text-zinc-600">
-                <IoEllipsisVertical size={16} />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  </div>
-)
+  )
+}
 
 const AIPayrollAssistant = () => (
   <div className="rounded-3xl border border-zinc-200 bg-white p-8">
