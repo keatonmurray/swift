@@ -33,31 +33,31 @@ const navItems = [
     icon: TbArrowsExchange,
     to: "/business/transactions",
   },
-  {
-    label: "Payments",
-    icon: BsCreditCard2Front,
-    to: "/business/payments",
-  },
-  {
-    label: "Payouts",
-    icon: MdOutlinePayments,
-    to: "/business/payouts",
-  },
+  // {
+  //   label: "Payments",
+  //   icon: BsCreditCard2Front,
+  //   to: "/business/payments",
+  // },
+  // {
+  //   label: "Payouts",
+  //   icon: MdOutlinePayments,
+  //   to: "/business/payouts",
+  // },
   {
     label: "Payroll",
     icon: LuWallet,
     to: "/business/payroll",
   },
-  {
-    label: "Reports",
-    icon: TbReportAnalytics,
-    to: "/business/reports",
-  },
-  {
-    label: "AI Insights",
-    icon: RiGeminiLine,
-    to: "/business/ai-insights",
-  },
+  // {
+  //   label: "Reports",
+  //   icon: TbReportAnalytics,
+  //   to: "/business/reports",
+  // },
+  // {
+  //   label: "AI Insights",
+  //   icon: RiGeminiLine,
+  //   to: "/business/ai-insights",
+  // },
   {
     label: "Automations",
     icon: RiRobot2Line,
@@ -68,11 +68,11 @@ const navItems = [
     icon: AiOutlineTeam,
     to: "/business/recipients",
   },
-  {
-    label: "Settings",
-    icon: IoSettingsOutline,
-    to: "/business/settings",
-  },
+  // {
+  //   label: "Settings",
+  //   icon: IoSettingsOutline,
+  //   to: "/business/settings",
+  // },
 ]
 
 const BusinessSidebar = () => {

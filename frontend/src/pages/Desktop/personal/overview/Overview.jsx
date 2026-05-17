@@ -28,58 +28,65 @@ import {
   YAxis,
 } from "recharts"
 
-const spendTrend = [
-  { month: "Dec 2024", amount: 58000 },
-  { month: "Jan 2025", amount: 45000 },
-  { month: "Feb 2025", amount: 59000 },
-  { month: "Mar 2025", amount: 80000 },
-  { month: "Apr 2025", amount: 75000 },
-  { month: "May 2025", amount: 89000 },
-]
+import { TbReportAnalytics } from "react-icons/tb"
+import { useState, useEffect } from "react"
+import axios from "axios"
 
-const payrollStatus = [
-  { name: "Completed", value: 12, color: "#22c55e" },
-  { name: "Scheduled", value: 4, color: "#4f46e5" },
-  { name: "Draft", value: 2, color: "#e5e7eb" },
-]
+const userId = localStorage.getItem("user_id");
 
-const payrolls = [
-  {
-    date: "May 30, 2025",
-    name: "Monthly Payroll – May 2025",
-    amount: "$80,700.00",
-    employees: 18,
-    status: "Scheduled",
-  },
-  {
-    date: "Apr 30, 2025",
-    name: "Monthly Payroll – Apr 2025",
-    amount: "$78,150.00",
-    employees: 18,
-    status: "Completed",
-  },
-  {
-    date: "Mar 31, 2025",
-    name: "Monthly Payroll – Mar 2025",
-    amount: "$75,600.00",
-    employees: 17,
-    status: "Completed",
-  },
-  {
-    date: "Feb 28, 2025",
-    name: "Monthly Payroll – Feb 2025",
-    amount: "$73,200.00",
-    employees: 17,
-    status: "Completed",
-  },
-  {
-    date: "Jan 31, 2025",
-    name: "Monthly Payroll – Jan 2025",
-    amount: "$72,100.00",
-    employees: 16,
-    status: "Completed",
-  },
-]
+
+// const spendTrend = [
+//   { month: "Dec 2024", amount: 58000 },
+//   { month: "Jan 2025", amount: 45000 },
+//   { month: "Feb 2025", amount: 59000 },
+//   { month: "Mar 2025", amount: 80000 },
+//   { month: "Apr 2025", amount: 75000 },
+//   { month: "May 2025", amount: 89000 },
+// ]
+
+// const payrollStatus = [
+//   { name: "Completed", value: 12, color: "#22c55e" },
+//   { name: "Scheduled", value: 4, color: "#4f46e5" },
+//   { name: "Draft", value: 2, color: "#e5e7eb" },
+// ]
+
+// const payrolls = [
+//   {
+//     date: "May 30, 2025",
+//     name: "Monthly Payroll – May 2025",
+//     amount: "$80,700.00",
+//     employees: 18,
+//     status: "Scheduled",
+//   },
+//   {
+//     date: "Apr 30, 2025",
+//     name: "Monthly Payroll – Apr 2025",
+//     amount: "$78,150.00",
+//     employees: 18,
+//     status: "Completed",
+//   },
+//   {
+//     date: "Mar 31, 2025",
+//     name: "Monthly Payroll – Mar 2025",
+//     amount: "$75,600.00",
+//     employees: 17,
+//     status: "Completed",
+//   },
+//   {
+//     date: "Feb 28, 2025",
+//     name: "Monthly Payroll – Feb 2025",
+//     amount: "$73,200.00",
+//     employees: 17,
+//     status: "Completed",
+//   },
+//   {
+//     date: "Jan 31, 2025",
+//     name: "Monthly Payroll – Jan 2025",
+//     amount: "$72,100.00",
+//     employees: 16,
+//     status: "Completed",
+//   },
+// ]
 
 const notifications = [
   {
@@ -135,6 +142,159 @@ const StatCard = ({ title, value, subtitle, icon, iconBg }) => {
 }
 
 const Overview = () => {
+
+   // STATE DECLARATIONS
+  const [wallet, setWallet] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [walletTransactions, setWalletTransactions] = useState([])
+
+  // ---------------- RETRIEVE WALLET ----------------
+  const handleRetrieveWallet = async () => {
+    const token = localStorage.getItem("api_token")
+
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-wallet`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+
+      setWallet(response.data.data.wallet_rapyd)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (userId) {
+      handleRetrieveWallet()
+    }
+  }, [userId])
+
+  // ---------------- TOTAL BALANCE ----------------
+  const totalBalance =
+    wallet?.accounts?.reduce(
+      (sum, account) => sum + Number(account.balance || 0),
+      0
+    ) || 0
+
+  console.log("Total Balance:", totalBalance)
+
+  // ---------------- WALLET TRANSACTIONS ----------------
+  const fetchWalletTransactions = async () => {
+    try {
+      const token = localStorage.getItem("api_token")
+
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/get-wallet-transactions`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+
+      console.log("Wallet Transactions:", response.data.transactions)
+
+      setWalletTransactions(response.data.transactions)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  useEffect(() => {
+    if (userId) {
+      fetchWalletTransactions()
+    }
+  }, [userId])
+
+  // ---------------- FORMAT TRANSACTIONS ----------------
+  const transactions = walletTransactions.map((transaction) => ({
+    name: transaction.type
+      ?.replaceAll("_", " ")
+      ?.replace(/\b\w/g, (char) => char.toUpperCase()),
+
+    initials: transaction.currency,
+
+    time: new Date(
+      transaction.created_at * 1000
+    ).toLocaleString(),
+
+    amount: `${
+      transaction.type?.includes("in") ? "+" : "-"
+    }$${Number(transaction.amount).toLocaleString()}`,
+
+    color: transaction.type?.includes("in")
+      ? "#D4EDDA"
+      : "#F8D7DA",
+  }))
+
+  const payrolls = transactions.map((transaction) => ({
+    date: transaction.time,
+
+    name: transaction.name,
+
+    amount: transaction.amount,
+
+    currency: transaction.initials,
+
+    status:
+      transaction.amount.includes("+")
+        ? "Received"
+        : "Sent",
+
+    color: transaction.color,
+  }))
+
+  // ---------------- SPEND TREND ----------------
+  const spendTrend = walletTransactions.reduce((acc, transaction) => {
+    const month = new Date(
+      transaction.created_at * 1000
+    ).toLocaleString("en-US", {
+      month: "short",
+      year: "numeric",
+    })
+
+    const existingMonth = acc.find(
+      (item) => item.month === month
+    )
+
+    if (existingMonth) {
+      existingMonth.amount += Number(transaction.amount || 0)
+    } else {
+      acc.push({
+        month,
+        amount: Number(transaction.amount || 0),
+      })
+    }
+
+    return acc
+  }, [])
+
+  // ---------------- PAYROLL STATUS ----------------
+  const payrollStatus = [
+    {
+      name: "Received",
+      value: transactions.filter((t) =>
+        t.amount.includes("+")
+      ).length,
+      color: "#22c55e",
+    },
+
+    {
+      name: "Sent",
+      value: transactions.filter((t) =>
+        t.amount.includes("-")
+      ).length,
+      color: "#ef4444",
+    },
+  ]
+
   return (
     <div className="min-h-screen bg-[#f6f7fb]">
       <div className="flex">
@@ -191,8 +351,8 @@ const Overview = () => {
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
               <StatCard
                 title="Total Payroll Amount"
-                value="$80,700.00"
-                subtitle="18 employees · 6 countries"
+                value={`$${totalBalance.toLocaleString()}`}
+                subtitle="Total income"
                 icon={Users}
                 iconBg="bg-indigo-100"
               />
@@ -204,21 +364,21 @@ const Overview = () => {
                 icon={Wallet}
                 iconBg="bg-green-100"
               />
-
-              <StatCard
-                title="Total Employees"
-                value="18"
-                subtitle="Across 6 countries"
-                icon={Users}
-                iconBg="bg-amber-100"
-              />
-
+              
               <StatCard
                 title="Upcoming Payroll"
                 value="May 30, 2025"
                 subtitle="2 days from now"
                 icon={Wallet}
                 iconBg="bg-green-100"
+              />
+
+              <StatCard
+                title="Financial Status"
+                value="10/10"
+                subtitle="Excellent"
+                icon={TbReportAnalytics}
+                iconBg="bg-emerald-100"
               />
             </div>
 
@@ -232,13 +392,13 @@ const Overview = () => {
                   <div className="rounded-3xl border border-zinc-200 bg-white p-6 lg:col-span-8">
                     <div className="mb-6 flex items-center justify-between">
                       <h2 className="text-2xl font-semibold text-zinc-900">
-                        Payroll Spend Trend
+                        Income Overview
                       </h2>
 
-                      <button className="flex items-center gap-2 rounded-xl border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-700">
+                      {/* <button className="flex items-center gap-2 rounded-xl border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-700">
                         Last 6 months
                         <ChevronDown className="h-4 w-4" />
-                      </button>
+                      </button> */}
                     </div>
 
                     <div className="h-[340px]">
@@ -304,7 +464,7 @@ const Overview = () => {
                   {/* STATUS */}
                   <div className="rounded-3xl border border-zinc-200 bg-white p-6 lg:col-span-4">
                     <h2 className="text-2xl font-semibold text-zinc-900">
-                      Payroll Status
+                      Transaction Status
                     </h2>
 
                     <div className="mt-8 flex flex-col items-center">
@@ -330,11 +490,11 @@ const Overview = () => {
 
                         <div className="absolute inset-0 flex flex-col items-center justify-center">
                           <h3 className="text-5xl font-bold text-zinc-900">
-                            18
+                            {transactions.length}
                           </h3>
 
                           <p className="mt-1 text-sm text-zinc-500">
-                            Total Payrolls
+                            Total Transactions
                           </p>
                         </div>
                       </div>
@@ -383,11 +543,11 @@ const Overview = () => {
                       <thead>
                         <tr className="border-b border-zinc-200">
                           <th className="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wide text-zinc-500">
-                            Payroll Date
+                            Transaction Date
                           </th>
 
                           <th className="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wide text-zinc-500">
-                            Payroll Name
+                            Transaction Type
                           </th>
 
                           <th className="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wide text-zinc-500">
@@ -395,7 +555,7 @@ const Overview = () => {
                           </th>
 
                           <th className="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wide text-zinc-500">
-                            Employees
+                            Currencies
                           </th>
 
                           <th className="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wide text-zinc-500">
@@ -423,15 +583,15 @@ const Overview = () => {
                             </td>
 
                             <td className="px-4 py-5 text-[15px] text-zinc-700">
-                              {payroll.employees}
+                              {payroll.currency}
                             </td>
 
                             <td className="px-4 py-5">
                               <span
                                 className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                                  payroll.status === "Completed"
+                                  payroll.status === "Received"
                                     ? "bg-green-100 text-green-700"
-                                    : "bg-indigo-100 text-indigo-700"
+                                    : "bg-red-100 text-red-700"
                                 }`}
                               >
                                 {payroll.status}
@@ -498,10 +658,6 @@ const Overview = () => {
                             Review salary or details changes before May
                             30 payroll.
                           </p>
-
-                          <button className="mt-4 rounded-xl border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700">
-                            Review Changes
-                          </button>
                         </div>
                       </div>
                     </div>

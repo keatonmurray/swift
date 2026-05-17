@@ -91,8 +91,7 @@ class WalletController extends Controller
 
     public function retrieveWallet()
     {
-        // $user_id = auth('sanctum')->id();
-        $user_id = 4;
+        $user_id = auth('sanctum')->id();
         $user = User::with('wallets')->findOrFail($user_id);
 
         $wallet = $user->wallets->first();

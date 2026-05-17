@@ -14,25 +14,23 @@ import {
   TbReportAnalytics,
 } from "react-icons/tb"
 
-import { BsCreditCard2Front } from "react-icons/bs"
-
 import { LuGoal } from "react-icons/lu"
 
 const navItems = [
   { label: "Dashboard", icon: IoHomeOutline, to: "/personal" },
-  { label: "Pay", icon: GoCreditCard, to: "/personal/pay" },
   { label: "Account", icon: GoCreditCard, to: "/personal/account" },
+  { label: "Pay", icon: GoCreditCard, to: "/personal/pay" },
   {
     label: "Transactions",
     icon: TbArrowsExchange,
     to: "/personal/transactions",
   },
-  { label: "Cards", icon: BsCreditCard2Front, to: "/personal/cards" },
-  {
-    label: "Expenses",
-    icon: TbReportSearch,
-    to: "/personal/expenses",
-  },
+  // { label: "Cards", icon: BsCreditCard2Front, to: "/personal/cards" },
+  // {
+  //   label: "Expenses",
+  //   icon: TbReportSearch,
+  //   to: "/personal/expenses",
+  // },
   {
     label: "Reports",
     icon: TbReportAnalytics,

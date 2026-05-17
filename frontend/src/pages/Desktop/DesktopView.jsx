@@ -23,9 +23,13 @@ import BusinessEmployeePayrollDetail from "./business/payroll/EmployeePayrollDet
 import BusinessPayrollSettings from "./business/payroll/PayrollSettings";
 import BusinessAutomations from "./business/automations/Automations";
 import Account from "./business/account/Account";
+import Transactions from "./business/transactions/Transactions";
+import Recipients from "./business/recipients/Recipients";
+import PersonalPay from "./personal/pay/PersonalPay";
 
 // Personal pages
 import PersonalOverview from "./personal/overview/Overview";
+import PersonalTransactions from "./personal/transactions/PersonalTransactions";
 
 const DesktopView = () => {
   return (
@@ -82,11 +86,11 @@ const DesktopView = () => {
 
           {/* Future Routes */}
           {/* <Route path="accounts" element={<Accounts />} /> */}
-          {/* <Route path="transactions" element={<Transactions />} /> */}
+          <Route path="transactions" element={<PersonalTransactions />} />
           {/* <Route path="payouts" element={<Payouts />} /> */}
           {/* <Route path="reports" element={<Reports />} /> */}
           {/* <Route path="ai-insights" element={<AiInsights />} /> */}
-          {/* <Route path="recipients" element={<Recipients />} /> */}
+          <Route path="recipients" element={<Recipients />} />
           {/* <Route path="settings" element={<Settings />} /> */}
         </Route>
       </Route>
@@ -106,8 +110,8 @@ const DesktopView = () => {
           <Route path="account" element={<Account />} />
 
           {/* Future Routes */}
-          {/* <Route path="pay" element={<Pay />} /> */}
-          {/* <Route path="transactions" element={<Transactions />} /> */}
+          <Route path="pay" element={<PersonalPay />} />
+          <Route path="transactions" element={<PersonalTransactions />} />
           {/* <Route path="cards" element={<Cards />} /> */}
           {/* <Route path="expenses" element={<Expenses />} /> */}
           {/* <Route path="reports" element={<Reports />} /> */}
