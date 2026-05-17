@@ -30,6 +30,7 @@ import PersonalPay from "./personal/pay/PersonalPay";
 // Personal pages
 import PersonalOverview from "./personal/overview/Overview";
 import PersonalTransactions from "./personal/transactions/PersonalTransactions";
+import PersonalAccount from "./personal/account/PersonalAccount";
 
 const DesktopView = () => {
   return (
@@ -107,7 +108,7 @@ const DesktopView = () => {
         >
           <Route index element={<PersonalOverview />} />
 
-          <Route path="account" element={<Account />} />
+          <Route path="account" element={<PersonalAccount />} />
 
           {/* Future Routes */}
           <Route path="pay" element={<PersonalPay />} />

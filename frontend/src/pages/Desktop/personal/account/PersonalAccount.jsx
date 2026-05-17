@@ -10,7 +10,7 @@ import {
   Check,
 } from "lucide-react"
 
-import DashboardShell from "../components/DashboardShell"
+import DashboardShell from "../../components/DashboardShell"
 
 import { useState } from "react"
 
