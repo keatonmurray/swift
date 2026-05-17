@@ -251,6 +251,102 @@ const Overview = () => {
     color: transaction.color,
   }))
 
+  // ===============================
+  // FINANCIAL STATUS CALCULATION
+  // ===============================
+
+  const totalTransactions = payrolls.length
+
+  const receivedTransactions = payrolls.filter(
+    (p) => p.status === "Received"
+  ).length
+
+  const sentTransactions = payrolls.filter(
+    (p) => p.status === "Sent"
+  ).length
+
+  // Convert amount string to number
+  const parseAmount = (amount) => {
+    return parseFloat(
+      amount.replace(/[^\d.-]/g, "")
+    ) || 0
+  }
+
+  const totalReceived = payrolls
+    .filter((p) => p.status === "Received")
+    .reduce((sum, p) => sum + parseAmount(p.amount), 0)
+
+  const totalSent = payrolls
+    .filter((p) => p.status === "Sent")
+    .reduce((sum, p) => sum + parseAmount(p.amount), 0)
+
+  // Health score logic
+  let financialScore = 0
+
+  // Positive incoming cashflow
+  if (totalReceived > totalSent) {
+    financialScore += 4
+  } else if (totalReceived === totalSent) {
+    financialScore += 2
+  } else {
+    financialScore += 1
+  }
+
+  // Transaction activity
+  if (totalTransactions >= 15) {
+    financialScore += 3
+  } else if (totalTransactions >= 8) {
+    financialScore += 2
+  } else if (totalTransactions >= 3) {
+    financialScore += 1
+  }
+
+  // Ratio of received transactions
+  const receiveRatio =
+    totalTransactions > 0
+      ? receivedTransactions / totalTransactions
+      : 0
+
+  if (receiveRatio >= 0.6) {
+    financialScore += 3
+  } else if (receiveRatio >= 0.4) {
+    financialScore += 2
+  } else {
+    financialScore += 1
+  }
+
+  // Cap at 10
+  financialScore = Math.min(financialScore, 10)
+
+  // Rating label
+  let financialLabel = "Poor"
+
+  if (financialScore >= 9) {
+    financialLabel = "Excellent"
+  } else if (financialScore >= 7) {
+    financialLabel = "Good"
+  } else if (financialScore >= 5) {
+    financialLabel = "Average"
+  } else if (financialScore >= 3) {
+    financialLabel = "Weak"
+  }
+
+  // Rating color
+  let financialIconBg = "bg-red-100"
+
+  if (financialScore >= 9) {
+    financialIconBg = "bg-emerald-100"
+  } else if (financialScore >= 7) {
+    financialIconBg = "bg-blue-100"
+  } else if (financialScore >= 5) {
+    financialIconBg = "bg-yellow-100"
+  }
+
+  // =================================
+  // CARD
+  // =================================
+
+
   // ---------------- SPEND TREND ----------------
   const spendTrend = walletTransactions.reduce((acc, transaction) => {
     const month = new Date(
@@ -375,10 +471,10 @@ const Overview = () => {
 
               <StatCard
                 title="Financial Status"
-                value="10/10"
-                subtitle="Excellent"
+                value={`${financialScore}/10`}
+                subtitle={financialLabel}
                 icon={TbReportAnalytics}
-                iconBg="bg-emerald-100"
+                iconBg={financialIconBg}
               />
             </div>
 

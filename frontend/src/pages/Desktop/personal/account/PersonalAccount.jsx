@@ -8,11 +8,14 @@ import {
   ExternalLink,
   ArrowRight,
   Check,
+  BadgeCheck,
 } from "lucide-react"
 
 import DashboardShell from "../../components/DashboardShell"
-
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import axios from "axios"
+import { toast } from "react-hot-toast"
+import { useNavigate } from "react-router-dom"
 
 const popularCurrencies = [
   {
@@ -110,6 +113,29 @@ const features = [
   },
 ]
 
+const currencyMeta = {
+  USD: {
+    flag: "🇺🇸",
+    name: "US Dollar",
+  },
+  EUR: {
+    flag: "🇪🇺",
+    name: "Euro",
+  },
+  GBP: {
+    flag: "🇬🇧",
+    name: "British Pound",
+  },
+  SGD: {
+    flag: "🇸🇬",
+    name: "Singapore Dollar",
+  },
+  PHP: {
+    flag: "🇵🇭",
+    name: "Philippine Peso",
+  },
+}
+
 const CurrencyRow = ({
   flag,
   code,
@@ -172,9 +198,186 @@ const CurrencyRow = ({
   )
 }
 
-const Account = () => {
+const PersonalAccount = () => {
+  const navigate = useNavigate()
+
+  const token = localStorage.getItem("api_token")
+
+  const [user, setUser] = useState(null)
+
   const [selectedCurrencies, setSelectedCurrencies] = useState(["USD"])
   const [step, setStep] = useState(1)
+  const [accepted, setAccepted] = useState(false)
+  const [walletCreated, setWalletCreated] = useState(false)
+  const [enabledAccounts, setEnabledAccounts] = useState([])
+  const [creatingWallet, setCreatingWallet] = useState(false)
+  const [openingCurrency, setOpeningCurrency] = useState("")
+  const [ewalletId, setEwalletId] = useState(null)
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/api/user`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/json",
+            },
+          }
+        )
+
+        const fetchedUser =
+          response.data.user ||
+          response.data.data ||
+          response.data
+
+        setUser(fetchedUser)
+      } catch (error) {
+        console.error(error)
+        toast.error("Failed to fetch user")
+      }
+    }
+
+    if (token) {
+      fetchUser()
+    }
+  }, [token])
+
+  const handleCreateWallet = async () => {
+  if (!user) {
+    toast.error("User not loaded yet")
+    return
+  }
+
+  try {
+    setCreatingWallet(true)
+
+    // STEP 1 — CREATE WALLET
+    await axios.post(
+      `${import.meta.env.VITE_API_BASE_URL}/api/create-personal-wallet`,
+      {
+        user_id: user.id,
+
+        first_name:
+          user.first_name ||
+          user.firstname ||
+          user.name?.split(" ")[0] ||
+          "John",
+
+        last_name:
+          user.last_name ||
+          user.lastname ||
+          user.name?.split(" ")[1] ||
+          "Doe",
+
+        email: user.email || "john@example.com",
+
+        // STATIC FALLBACKS
+        country: user.country || "US",
+
+        nationality: user.country || "US",
+
+        identification_number: `ID-${Date.now()}`,
+
+        date_of_birth: "1999-01-01",
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      }
+    )
+
+    // STEP 2 — RETRIEVE WALLET
+    const walletResponse = await axios.get(
+      `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-wallet`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      }
+    )
+
+    const walletData =
+      walletResponse.data?.data?.wallet_rapyd
+
+    const walletId = walletData?.id
+
+    if (!walletId) {
+      toast.error("Failed to retrieve wallet ID")
+      return
+    }
+
+    setEwalletId(walletId)
+
+    // STEP 3 — OPEN ENABLED CURRENCIES
+    for (const currency of enabledAccounts) {
+      try {
+        const payload = {
+          country: user.country || "US",
+
+          currency: currency,
+
+          ewallet: walletId,
+
+          description: "Personal currency account",
+
+          merchant_reference_id: `cur_${Date.now()}`,
+
+          metadata: {
+            source: "frontend",
+            user_id: user.id,
+          },
+
+          requested_currency: currency,
+        }
+
+        await axios.post(
+          `${import.meta.env.VITE_API_BASE_URL}/api/create-personal-currency-account`,
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/json",
+            },
+          }
+        )
+
+        toast.success(`${currency} account opened`)
+      } catch (currencyError) {
+        console.error(currencyError)
+
+        toast.error(
+          `Failed to open ${currency} account`
+        )
+      }
+    }
+
+    setWalletCreated(true)
+
+    toast.success("Wallet setup completed!")
+  } catch (error) {
+    console.error(error)
+
+    if (error.response?.data?.errors) {
+      const errors = error.response.data.errors
+
+      Object.keys(errors).forEach((key) => {
+        toast.error(errors[key])
+      })
+    } else {
+      toast.error(
+        error?.response?.data?.message ||
+          "Something went wrong. Please try again."
+      )
+    }
+  } finally {
+    setCreatingWallet(false)
+  }
+}
 
   return (
     <DashboardShell
@@ -182,97 +385,46 @@ const Account = () => {
       subtitle="Choose currencies and create a wallet to receive and hold funds."
     >
       <div className="space-y-6">
-        {/* Progress Steps */}
         <div className="rounded-3xl border border-zinc-200 bg-white p-8">
           <div className="flex items-center justify-between">
-            {/* Step 1 */}
-            <div className="flex flex-1 items-center">
-              <div className="flex items-center gap-4">
-                <div
-                  className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold ${
-                    step > 1
-                      ? "bg-violet-600 text-white"
-                      : step === 1
-                      ? "border-2 border-violet-500 text-violet-600"
-                      : "border border-zinc-300 text-zinc-600"
-                  }`}
-                >
-                  {step > 1 ? <Check size={18} /> : 1}
-                </div>
-
-                <span
-                  className={`font-medium ${
-                    step >= 1
-                      ? "text-zinc-900"
-                      : "text-zinc-500"
-                  }`}
-                >
-                  Select currencies
-                </span>
-              </div>
-
-              <div className="mx-8 h-px flex-1 bg-zinc-200" />
-            </div>
-
-            {/* Step 2 */}
-            <div className="flex flex-1 items-center">
-              <div className="flex items-center gap-4">
-                <div
-                  className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold ${
-                    step > 2
-                      ? "bg-violet-600 text-white"
-                      : step === 2
-                      ? "border-2 border-violet-500 text-violet-600"
-                      : "border border-zinc-300 text-zinc-600"
-                  }`}
-                >
-                  {step > 2 ? <Check size={18} /> : 2}
-                </div>
-
-                <span
-                  className={`font-medium ${
-                    step >= 2
-                      ? "text-zinc-900"
-                      : "text-zinc-500"
-                  }`}
-                >
-                  Add virtual account number
-                </span>
-              </div>
-
-              <div className="mx-8 h-px flex-1 bg-zinc-200" />
-            </div>
-
-            {/* Step 3 */}
             <div className="flex items-center gap-4">
-              <div
-                className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold ${
-                  step === 3
-                    ? "border-2 border-violet-500 text-violet-600"
-                    : "border border-zinc-300 text-zinc-600"
-                }`}
-              >
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-violet-600 text-sm font-semibold text-white">
+                1
+              </div>
+
+              <span className="font-medium text-zinc-900">
+                Select currencies
+              </span>
+            </div>
+
+            <div className="h-px flex-1 bg-zinc-200 mx-6" />
+
+            <div className="flex items-center gap-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-300 text-sm font-semibold text-zinc-600">
+                2
+              </div>
+
+              <span className="font-medium text-zinc-500">
+                Add virtual accounts
+              </span>
+            </div>
+
+            <div className="h-px flex-1 bg-zinc-200 mx-6" />
+
+            <div className="flex items-center gap-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-300 text-sm font-semibold text-zinc-600">
                 3
               </div>
 
-              <span
-                className={`font-medium ${
-                  step >= 3
-                    ? "text-zinc-900"
-                    : "text-zinc-500"
-                }`}
-              >
+              <span className="font-medium text-zinc-500">
                 Review & confirm
               </span>
             </div>
           </div>
         </div>
 
-        {/* Main Content */}
         <div className="grid grid-cols-12 gap-6">
-          {/* Left */}
-          <div className="col-span-8">
-            {/* STEP 1 */}
+          <div className="col-span-12 lg:col-span-8">
             {step === 1 && (
               <div className="rounded-3xl border border-zinc-200 bg-white p-8">
                 <div className="mb-8">
@@ -281,12 +433,10 @@ const Account = () => {
                   </h2>
 
                   <p className="mt-2 text-zinc-500">
-                    Choose the currencies you want to include in this
-                    wallet. You can add more later.
+                    Choose the currencies you want to include in this wallet.
                   </p>
                 </div>
 
-                {/* Search */}
                 <div className="relative mb-8">
                   <Search
                     size={18}
@@ -296,118 +446,43 @@ const Account = () => {
                   <input
                     type="text"
                     placeholder="Search currencies..."
-                    className="h-14 w-full rounded-2xl border border-zinc-200 bg-white pl-12 pr-4 text-sm outline-none transition focus:border-zinc-400"
+                    className="h-14 w-full rounded-2xl border border-zinc-200 bg-white pl-12 pr-4 text-sm outline-none"
                   />
                 </div>
 
-                {/* Popular */}
-                <div>
-                  <div className="mb-4 flex items-center justify-between">
-                    <span className="text-sm font-medium text-zinc-500">
-                      Popular
-                    </span>
-
-                    <button className="cursor-not-allowed text-sm font-medium text-zinc-400">
-                      Select all
-                    </button>
-                  </div>
-
-                  <div className="mb-8">
-                    {popularCurrencies.map((currency) => (
-                      <CurrencyRow
-                        key={currency.code}
-                        {...currency}
-                        selectedCurrencies={selectedCurrencies}
-                        setSelectedCurrencies={setSelectedCurrencies}
-                      />
-                    ))}
-                  </div>
+                <div className="mb-8">
+                  {popularCurrencies.map((currency) => (
+                    <CurrencyRow
+                      key={currency.code}
+                      {...currency}
+                      selectedCurrencies={selectedCurrencies}
+                      setSelectedCurrencies={setSelectedCurrencies}
+                    />
+                  ))}
                 </div>
 
-                {/* All currencies */}
-                <div>
-                  <div className="mb-4">
-                    <span className="text-sm font-medium text-zinc-500">
-                      All currencies
-                    </span>
-                  </div>
-
-                  <div>
-                    {allCurrencies.map((currency) => (
-                      <CurrencyRow
-                        key={currency.code}
-                        {...currency}
-                        selectedCurrencies={selectedCurrencies}
-                        setSelectedCurrencies={setSelectedCurrencies}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                {/* Selected currencies */}
-                <div className="mt-8 rounded-2xl border border-zinc-200 bg-zinc-50 p-5">
-                  <div className="flex items-start justify-between">
-                    <div className="flex gap-4">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-100">
-                        <Globe
-                          size={22}
-                          className="text-violet-600"
-                        />
-                      </div>
-
-                      <div>
-                        <h3 className="font-semibold text-zinc-900">
-                          {selectedCurrencies.length}{" "}
-                          {selectedCurrencies.length === 1
-                            ? "currency selected"
-                            : "currencies selected"}
-                        </h3>
-
-                        <p className="mt-1 text-zinc-500">
-                          {selectedCurrencies.join(", ")}
-                        </p>
-                      </div>
-                    </div>
-
-                    <button
-                      onClick={() => setSelectedCurrencies([])}
-                      className="text-sm font-medium text-violet-600 hover:text-violet-700"
-                    >
-                      Clear all
-                    </button>
-                  </div>
-                </div>
-
-                {/* Actions */}
                 <div className="mt-8 grid grid-cols-2 gap-4">
-                  <button className="flex h-14 items-center justify-center rounded-2xl border border-zinc-200 bg-white font-medium text-zinc-700 transition hover:bg-zinc-50">
+                  <button className="flex h-14 items-center justify-center rounded-2xl border border-zinc-200 bg-white font-medium text-zinc-700">
                     Cancel
                   </button>
 
                   <button
                     onClick={() => setStep(2)}
-                    className="flex h-14 items-center justify-center gap-2 rounded-2xl bg-black font-medium text-white transition hover:opacity-90"
+                    className="flex h-14 items-center justify-center gap-2 rounded-2xl bg-black font-medium text-white"
                   >
                     Continue
-
                     <ArrowRight size={18} />
                   </button>
                 </div>
               </div>
             )}
 
-            {/* STEP 2 */}
             {step === 2 && (
               <div className="rounded-3xl border border-zinc-200 bg-white p-8">
                 <div className="mb-8">
                   <h2 className="text-2xl font-semibold text-zinc-900">
                     Add virtual account numbers
                   </h2>
-
-                  <p className="mt-2 text-zinc-500">
-                    Enable local receiving accounts for the currencies
-                    you selected.
-                  </p>
                 </div>
 
                 <div className="space-y-4">
@@ -417,8 +492,8 @@ const Account = () => {
                       className="flex items-center justify-between rounded-2xl border border-zinc-200 p-5"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-100 text-2xl">
-                          {currency === "USD" && "🇺🇸"}
+                        <div className="text-3xl">
+                          {currencyMeta[currency]?.flag}
                         </div>
 
                         <div>
@@ -426,81 +501,184 @@ const Account = () => {
                             {currency} virtual account
                           </h3>
 
-                          <p className="mt-1 text-sm text-zinc-500">
-                            Receive local transfers with dedicated
-                            account details.
+                          <p className="text-sm text-zinc-500">
+                            Receive local transfers
                           </p>
                         </div>
                       </div>
 
-                      <button className="flex h-11 items-center justify-center rounded-xl bg-black px-5 text-sm font-medium text-white transition hover:opacity-90">
-                        Enable
+                      <button
+                        disabled={openingCurrency === currency}
+                        onClick={() => {
+                          if (
+                            enabledAccounts.includes(currency)
+                          ) {
+                            return
+                          }
+
+                          setEnabledAccounts([
+                            ...enabledAccounts,
+                            currency,
+                          ])
+
+                          toast.success(
+                            `${currency} enabled`
+                          )
+                        }}
+                        className={`flex h-11 items-center justify-center rounded-xl px-5 text-sm font-medium ${
+                          enabledAccounts.includes(currency)
+                            ? "bg-green-100 text-green-700"
+                            : "bg-black text-white"
+                        }`}
+                      >
+                        {enabledAccounts.includes(currency)
+                          ? "Enabled"
+                          : "Enable"}
                       </button>
                     </div>
                   ))}
                 </div>
 
-                {/* Actions */}
                 <div className="mt-8 grid grid-cols-2 gap-4">
                   <button
                     onClick={() => setStep(1)}
-                    className="flex h-14 items-center justify-center rounded-2xl border border-zinc-200 bg-white font-medium text-zinc-700 transition hover:bg-zinc-50"
+                    className="flex h-14 items-center justify-center rounded-2xl border border-zinc-200 bg-white font-medium text-zinc-700"
                   >
                     Back
                   </button>
 
                   <button
                     onClick={() => setStep(3)}
-                    className="flex h-14 items-center justify-center gap-2 rounded-2xl bg-black font-medium text-white transition hover:opacity-90"
+                    className="flex h-14 items-center justify-center gap-2 rounded-2xl bg-black font-medium text-white"
                   >
                     Continue
-
                     <ArrowRight size={18} />
                   </button>
                 </div>
               </div>
             )}
 
-            {/* STEP 3 */}
-            {step === 3 && (
+            {step === 3 && !walletCreated && (
               <div className="rounded-3xl border border-zinc-200 bg-white p-8">
-                <h2 className="text-2xl font-semibold text-zinc-900">
-                  Review & confirm
-                </h2>
+                <div className="mb-8">
+                  <h2 className="text-2xl font-semibold text-zinc-900">
+                    Review & confirm
+                  </h2>
+                </div>
 
-                <p className="mt-2 text-zinc-500">
-                  Review your wallet setup before continuing.
-                </p>
+                <div className="divide-y divide-zinc-100 rounded-3xl border border-zinc-200">
+                  {selectedCurrencies.map((currency) => (
+                    <div
+                      key={currency}
+                      className="flex items-center justify-between p-6"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="text-3xl">
+                          {currencyMeta[currency]?.flag}
+                        </div>
 
-                <div className="mt-8 rounded-2xl border border-zinc-200 p-6">
-                  <h3 className="font-semibold text-zinc-900">
-                    Selected currencies
-                  </h3>
+                        <div>
+                          <h4 className="font-semibold text-zinc-900">
+                            {currency}
+                          </h4>
 
-                  <p className="mt-2 text-zinc-500">
-                    {selectedCurrencies.join(", ")}
-                  </p>
+                          <p className="text-sm text-zinc-500">
+                            {currencyMeta[currency]?.name}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div
+                        className={`flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium ${
+                          enabledAccounts.includes(currency)
+                            ? "bg-green-100 text-green-700"
+                            : "bg-zinc-100 text-zinc-600"
+                        }`}
+                      >
+                        <BadgeCheck size={16} />
+
+                        {enabledAccounts.includes(currency)
+                          ? "Enabled"
+                          : "Not enabled"}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-8 rounded-2xl border border-zinc-200 bg-zinc-50 p-5">
+                  <label className="flex items-start gap-4">
+                    <input
+                      type="checkbox"
+                      checked={accepted}
+                      onChange={() => setAccepted(!accepted)}
+                      className="mt-1 h-5 w-5 rounded border-zinc-300"
+                    />
+
+                    <div>
+                      <p className="font-medium text-zinc-900">
+                        I confirm the information above is correct
+                      </p>
+                    </div>
+                  </label>
                 </div>
 
                 <div className="mt-8 grid grid-cols-2 gap-4">
                   <button
                     onClick={() => setStep(2)}
-                    className="flex h-14 items-center justify-center rounded-2xl border border-zinc-200 bg-white font-medium text-zinc-700 transition hover:bg-zinc-50"
+                    className="flex h-14 items-center justify-center rounded-2xl border border-zinc-200 bg-white font-medium text-zinc-700"
                   >
                     Back
                   </button>
 
-                  <button className="flex h-14 items-center justify-center gap-2 rounded-2xl bg-black font-medium text-white transition hover:opacity-90">
-                    Create wallet
+                  <button
+                    disabled={
+                      !accepted ||
+                      creatingWallet ||
+                      enabledAccounts.length === 0
+                    }
+                    onClick={handleCreateWallet}
+                    className="flex h-14 items-center justify-center gap-2 rounded-2xl bg-black font-medium text-white disabled:opacity-40"
+                  >
+                    {creatingWallet
+                      ? "Creating wallet..."
+                      : "Create wallet"}
+
+                    {!creatingWallet && <Check size={18} />}
                   </button>
+                </div>
+              </div>
+            )}
+
+            {walletCreated && (
+              <div className="rounded-3xl border border-zinc-200 bg-white p-10">
+                <div className="flex flex-col items-center text-center">
+                  <div className="flex h-24 w-24 items-center justify-center rounded-full bg-green-100">
+                    <Check
+                      size={42}
+                      className="text-green-600"
+                    />
+                  </div>
+
+                  <h2 className="mt-8 text-3xl font-semibold text-zinc-900">
+                    Wallet successfully created
+                  </h2>
+
+                  <div className="mt-10 flex gap-4">
+                    <button
+                      onClick={() =>
+                        navigate(`/dashboard/${user?.id}`)
+                      }
+                      className="flex h-14 items-center justify-center rounded-2xl border border-zinc-200 bg-white px-8 font-medium text-zinc-700"
+                    >
+                      Open dashboard
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Right */}
-          <div className="col-span-4 space-y-6">
-            {/* Why open wallet */}
+          <div className="col-span-12 space-y-6 lg:col-span-4">
             <div className="rounded-3xl border border-zinc-200 bg-white p-8">
               <h3 className="mb-8 text-2xl font-semibold text-zinc-900">
                 Why open a wallet?
@@ -513,7 +691,7 @@ const Account = () => {
                   return (
                     <div key={feature.title} className="flex gap-4">
                       <div
-                        className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl ${feature.bg}`}
+                        className={`flex h-14 w-14 items-center justify-center rounded-2xl ${feature.bg}`}
                       >
                         <Icon
                           size={24}
@@ -536,23 +714,21 @@ const Account = () => {
               </div>
             </div>
 
-            {/* Help */}
             <div className="rounded-3xl border border-zinc-200 bg-white p-8">
               <h3 className="text-2xl font-semibold text-zinc-900">
                 Need help?
               </h3>
 
               <p className="mt-3 text-sm leading-6 text-zinc-500">
-                Learn more about wallets or contact our support team.
+                Learn more about wallets or contact support.
               </p>
 
-              <button className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-zinc-200 bg-white font-medium text-zinc-700 transition hover:bg-zinc-50">
+              <button className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-zinc-200 bg-white font-medium text-zinc-700">
                 Visit Help Center
-
                 <ExternalLink size={16} />
               </button>
 
-              <button className="mt-4 flex items-center gap-2 text-sm font-medium text-zinc-700 hover:text-black">
+              <button className="mt-4 flex items-center gap-2 text-sm font-medium text-zinc-700">
                 <Headphones size={18} />
                 Contact Support
               </button>
@@ -564,4 +740,4 @@ const Account = () => {
   )
 }
 
-export default Account
+export default PersonalAccount
