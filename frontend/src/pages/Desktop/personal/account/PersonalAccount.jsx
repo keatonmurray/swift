@@ -290,8 +290,6 @@ const PersonalAccount = () => {
       }
     )
 
-    console.log("Wallet created successfully!")
-
     // STEP 2 — RETRIEVE WALLET
     const walletResponse = await axios.get(
       `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-wallet`,
@@ -302,8 +300,6 @@ const PersonalAccount = () => {
         },
       }
     )
-
-    console.log("WALLET RESPONSE:", walletResponse.data)
 
     const walletData =
       walletResponse.data?.data?.wallet_rapyd

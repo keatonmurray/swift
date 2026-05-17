@@ -1,5 +1,8 @@
 import { NavLink } from "react-router-dom"
 
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+
 import {
   IoHomeOutline,
   IoSettingsOutline,
@@ -50,6 +53,9 @@ const navItems = [
 ]
 
 const PersonalSidebar = () => {
+  // ADD INSIDE COMPONENT
+  const navigate = useNavigate()
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false)
   return (
     <aside className="flex h-screen w-[100%] flex-col border-r border-white/10 bg-[#050816] px-5 py-6">
       {/* LOGO */}
@@ -91,41 +97,112 @@ const PersonalSidebar = () => {
       </nav>
 
       {/* FOOTER ACCOUNT */}
-      <div className="mt-6 border-t border-white/10 pt-6">
-        <button className="flex w-full items-center justify-between rounded-2xl bg-white/5 p-3 transition-all hover:bg-white/10">
-          <div className="flex items-center gap-3">
-            <img
-              src="https://i.pravatar.cc/100"
-              alt="avatar"
-              className="h-12 w-12 rounded-full object-cover"
-            />
-
-            <div className="text-left">
-              <p className="text-sm font-semibold text-white">
-                Alex Morgan
-              </p>
-
-              <p className="text-xs text-zinc-400">
-                Personal Account
-              </p>
-            </div>
-          </div>
-
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 text-zinc-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
+      <div className="relative mt-6 border-t border-white/10 pt-6">
+        <div className="group relative">
+          <button
+            onClick={() => setAccountMenuOpen((prev) => !prev)}
+            className="flex w-full items-center justify-between rounded-2xl bg-white/5 p-3 transition-all hover:bg-white/10"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
-        </button>
+            <div className="flex items-center gap-3">
+              <img
+                src="https://i.pravatar.cc/100"
+                alt="avatar"
+                className="h-12 w-12 rounded-full object-cover"
+              />
+
+              <div className="text-left">
+                <p className="text-sm font-semibold text-white">
+                  Alex Morgan
+                </p>
+
+                <p className="text-xs text-zinc-400">
+                  Personal Account
+                </p>
+              </div>
+            </div>
+
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={`h-4 w-4 text-zinc-400 transition-transform duration-200 ${
+                accountMenuOpen ? "rotate-180" : ""
+              }`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+
+          {/* DROPDOWN */}
+          {accountMenuOpen && (
+            <div className="absolute bottom-[78px] left-0 z-50 w-full overflow-hidden rounded-2xl border border-white/10 bg-[#111827] shadow-2xl backdrop-blur-xl">
+              <button
+                onClick={() => navigate("/settings")}
+                className="flex w-full items-center gap-3 px-4 py-3 text-sm text-zinc-300 transition-all hover:bg-white/5 hover:text-white"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M11.049 2.927c.3-1.14 1.603-1.14 1.902 0a1.724 1.724 0 002.573 1.01c1.01-.59 2.23.63 1.64 1.64a1.724 1.724 0 001.01 2.573c1.14.3 1.14 1.603 0 1.902a1.724 1.724 0 00-1.01 2.573c.59 1.01-.63 2.23-1.64 1.64a1.724 1.724 0 00-2.573 1.01c-.3 1.14-1.603 1.14-1.902 0a1.724 1.724 0 00-2.573-1.01c-1.01.59-2.23-.63-1.64-1.64a1.724 1.724 0 00-1.01-2.573c-1.14-.3-1.14-1.603 0-1.902a1.724 1.724 0 001.01-2.573c-.59-1.01.63-2.23 1.64-1.64a1.724 1.724 0 002.573-1.01z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+
+                Settings
+              </button>
+
+              <div className="h-px bg-white/10" />
+
+              <button
+                onClick={() => {
+                  localStorage.removeItem("token")
+                  navigate("/login")
+                }}
+                className="flex w-full items-center gap-3 px-4 py-3 text-sm text-red-400 transition-all hover:bg-red-500/10 hover:text-red-300"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17 16l4-4m0 0l-4-4m4 4H7"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 21h4a2 2 0 002-2V5a2 2 0 00-2-2H3"
+                  />
+                </svg>
+
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </aside>
   )
