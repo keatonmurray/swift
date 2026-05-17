@@ -31,10 +31,19 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name'     => 'required|string|max:50',
             'last_name'      => 'required|string|max:50',
+
+            'company_name'   => 'nullable|string|max:100',
+
+            'account_type'   => 'required|in:business,personal',
+
             'country'        => 'required|string|max:100',
+
             'email'          => 'required|email|max:100|unique:users,email',
+
             'profile_avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+
             'kyc_status'     => 'nullable|in:pending,approved,rejected',
+
             'password' => [
                 'required',
                 'string',

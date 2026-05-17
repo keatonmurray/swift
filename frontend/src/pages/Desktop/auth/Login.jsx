@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom"
 import { TbArrowLeft, TbEye, TbEyeOff } from "react-icons/tb"
 import { FcGoogle } from "react-icons/fc"
 import Speeder from "@/components/Speeder"
+import axios from "axios"
+import { toast } from "react-toastify"
 
 const Login = () => {
   const navigate = useNavigate()
@@ -12,23 +14,58 @@ const Login = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
-  const handleChange = (e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-  }
-
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
+
     setError("")
+
     if (!form.email || !form.password) {
       setError("Please fill in all fields")
       return
     }
-    setLoading(true)
-    // TODO: wire to api/login endpoint
-    setTimeout(() => {
+
+    try {
+      setLoading(true)
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/login`,
+        {
+          email: form.email,
+          password: form.password,
+        },
+        { withCredentials: true }
+      )
+
+      if (response.data?.user) {
+        localStorage.setItem("api_token", response.data.token)
+        localStorage.setItem("user_id", response.data.user.id)
+
+        toast.success(response.data.message)
+
+        const userId = response.data.user.id
+
+        navigate(`/business`)
+      }
+    } catch (error) {
+      if (error.response?.status === 401) {
+        const message = error.response?.data?.message || "Login failed"
+
+        setError(message)
+        toast.error(message)
+      } else {
+        setError("Something went wrong")
+        toast.error("Something went wrong")
+      }
+    } finally {
       setLoading(false)
-      navigate("/business")
-    }, 800)
+    }
+  }
+
+  const handleChange = (e) => {
+    setForm((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }))
   }
 
   return (
@@ -99,7 +136,7 @@ const Login = () => {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleLogin} className="space-y-5">
 
             {/* Email */}
             <div>
