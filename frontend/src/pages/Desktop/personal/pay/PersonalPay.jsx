@@ -1,6 +1,5 @@
 import React from "react"
 import {
-  FiSearch,
   FiPlus,
   FiChevronDown,
   FiChevronRight,
@@ -9,6 +8,11 @@ import {
   FiDollarSign,
   FiClock,
 } from "react-icons/fi"
+import DashboardShell from "@/pages/Desktop/components/DashboardShell"
+
+/* -------------------------------------------------------------------------- */
+/*  Mock data                                                                  */
+/* -------------------------------------------------------------------------- */
 
 const recentPayments = [
   {
@@ -29,327 +33,305 @@ const recentPayments = [
     amount: "$1,250.00",
     status: "Completed",
   },
+  {
+    name: "Carlos Rivera",
+    email: "carlos.rivera@startup.mx",
+    amount: "$890.00",
+    status: "Completed",
+  },
 ]
 
 const statusStyles = {
-  Completed:
-    "bg-emerald-50 text-emerald-600 border border-emerald-100",
-  Pending: "bg-amber-50 text-amber-600 border border-amber-100",
+  Completed: "bg-emerald-50 text-emerald-700 border border-emerald-100",
+  Pending:   "bg-amber-50  text-amber-700  border border-amber-100",
+  Failed:    "bg-red-50    text-red-700    border border-red-100",
 }
 
-const PersonalPay = () => {
-  return (
-    <div className="min-h-screen bg-[#f7f7f8] p-6 lg:p-8">
-      <div className="mx-auto max-w-[1600px]">
-        {/* Header */}
-        <div className="mb-6 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+/* -------------------------------------------------------------------------- */
+/*  Page                                                                       */
+/* -------------------------------------------------------------------------- */
+
+const PersonalPay = () => (
+  <DashboardShell
+    title="Pay"
+    subtitle="Send payouts, manage balances, and track outgoing payments"
+    actions={
+      <button className="inline-flex items-center gap-1.5 h-10 text-[13px] font-semibold text-white bg-black rounded-full px-5 hover:opacity-90 transition-colors">
+        <FiPlus size={14} />
+        New Payment
+      </button>
+    }
+  >
+    {/* ── Top row: Wallet hero + stats ───────────────────────────────── */}
+    <section className="grid grid-cols-12 gap-4 mb-5">
+      {/* Wallet Hero — keeps the original brand color */}
+      <div className="col-span-12 xl:col-span-7 overflow-hidden rounded-[20px] bg-main-pallette p-6 text-white relative">
+        {/* Balance */}
+        <div className="relative flex items-start justify-between">
           <div>
-            <h1 className="text-3xl font-semibold tracking-[-0.03em] text-[#111111]">
-              Pay
-            </h1>
-
-            <p className="mt-2 text-lg text-[#6b7280]">
-              Send payouts, manage balances, and track outgoing payments
+            <p className="text-[12px] font-medium text-zinc-400 uppercase tracking-wider">
+              Primary Wallet Balance
             </p>
-          </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <button className="flex h-14 items-center justify-center gap-2 rounded-2xl border border-[#e5e7eb] bg-white px-5 text-base font-medium text-[#111111] shadow-sm transition hover:bg-[#fafafa]">
-              <FiSearch className="text-[18px]" />
-              Search Payments
-            </button>
+            <h2 className="mt-3 text-[40px] font-semibold tracking-[-0.03em] leading-none">
+              $128,450.00
+            </h2>
 
-            <button className="flex h-14 items-center justify-center gap-2 rounded-2xl bg-black px-6 text-base font-medium text-white shadow-sm transition hover:opacity-90">
-              <FiPlus className="text-[18px]" />
-              New Payment
-            </button>
-          </div>
-        </div>
-
-        {/* Top Cards */}
-        <div className="mb-6 grid grid-cols-1 gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-          {/* Wallet Card */}
-          <div className="overflow-hidden rounded-[28px] bg-main-pallette p-8 text-white shadow-sm">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-base text-zinc-400">
-                  Primary Wallet Balance
-                </p>
-
-                <h2 className="mt-4 text-5xl font-semibold tracking-[-0.04em]">
-                  $128,450.00
-                </h2>
-
-                <div className="mt-6 flex items-center gap-3">
-                  <div className="rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white">
-                    USD Wallet
-                  </div>
-
-                  <div className="rounded-full bg-emerald-500/20 px-4 py-2 text-sm font-medium text-emerald-300">
-                    +12.4% this month
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-white/10">
-                <FiDollarSign className="text-[28px]" />
-              </div>
-            </div>
-
-            {/* Credit Card */}
-            <div className="mt-10 rounded-[28px] border border-white/10 bg-white/5 p-7 backdrop-blur">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm text-zinc-400">
-                    Corporate Card
-                  </p>
-
-                  <div className="mt-6 flex items-center gap-3">
-                    <div className="h-10 w-14 rounded-xl bg-gradient-to-br from-zinc-100 to-zinc-300" />
-
-                    <span className="text-xl tracking-[0.25em]">
-                      •••• 4821
-                    </span>
-                  </div>
-                </div>
-
-                <FiCreditCard className="text-[26px] text-zinc-300" />
-              </div>
-
-              <div className="mt-10 flex items-end justify-between">
-                <div>
-                  <p className="text-sm text-zinc-400">
-                    Card Holder
-                  </p>
-
-                  <p className="mt-2 text-lg font-medium">
-                    Acme Global Ltd.
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-sm text-zinc-400">
-                    Expires
-                  </p>
-
-                  <p className="mt-2 text-lg font-medium">
-                    12 / 28
-                  </p>
-                </div>
-              </div>
+            <div className="mt-4 flex items-center gap-2">
+              <span className="rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold text-white border border-white/10">
+                USD Wallet
+              </span>
+              <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-[11px] font-semibold text-emerald-300 border border-emerald-400/20">
+                +12.4% this month
+              </span>
             </div>
           </div>
 
-          {/* Stats */}
-          <div className="space-y-6">
-            {/* Available */}
-            <div className="rounded-[28px] border border-[#ececec] bg-white p-8 shadow-sm">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-base text-[#6b7280]">
-                    Available Balance
-                  </p>
-
-                  <h3 className="mt-4 text-4xl font-semibold tracking-[-0.03em] text-[#111111]">
-                    $96,240
-                  </h3>
-                </div>
-
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-100">
-                  <FiArrowUpRight className="text-[24px] text-emerald-600" />
-                </div>
-              </div>
-            </div>
-
-            {/* Pending */}
-            <div className="rounded-[28px] border border-[#ececec] bg-white p-8 shadow-sm">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-base text-[#6b7280]">
-                    Pending Payments
-                  </p>
-
-                  <h3 className="mt-4 text-4xl font-semibold tracking-[-0.03em] text-[#111111]">
-                    $12,840
-                  </h3>
-                </div>
-
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100">
-                  <FiClock className="text-[24px] text-amber-600" />
-                </div>
-              </div>
-            </div>
-
-            {/* Wallet Selector */}
-            <button className="flex h-16 w-full items-center justify-between rounded-[28px] border border-[#ececec] bg-white px-6 text-base font-medium text-[#111111] shadow-sm transition hover:bg-[#fafafa]">
-              USD Wallet
-
-              <FiChevronDown className="text-[20px]" />
-            </button>
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 border border-white/10">
+            <FiDollarSign size={18} />
           </div>
         </div>
 
-        {/* Payments */}
-        <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_340px]">
-          {/* Table */}
-          <div className="overflow-hidden rounded-[28px] border border-[#ececec] bg-white shadow-sm">
-            <div className="border-b border-[#f1f1f1] px-8 py-6">
-              <h3 className="text-3xl font-semibold tracking-[-0.03em] text-[#111111]">
-                Recent Payments
-              </h3>
+        {/* Credit card */}
+        <div className="relative mt-6 rounded-[16px] border border-white/10 bg-white/5 backdrop-blur-sm p-5">
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-[11px] text-zinc-400 uppercase tracking-wider">
+                Corporate Card
+              </p>
 
-              <p className="mt-2 text-base text-[#6b7280]">
-                Latest outgoing transfers and payouts
+              <div className="mt-4 flex items-center gap-3">
+                <div className="h-7 w-10 rounded-md bg-gradient-to-br from-zinc-100 to-zinc-300" />
+                <span className="text-[15px] font-medium tracking-[0.2em]">
+                  •••• 4821
+                </span>
+              </div>
+            </div>
+
+            <FiCreditCard size={18} className="text-zinc-300" />
+          </div>
+
+          <div className="mt-6 flex items-end justify-between">
+            <div>
+              <p className="text-[10px] text-zinc-400 uppercase tracking-wider">
+                Card Holder
+              </p>
+              <p className="mt-1 text-[13px] font-medium">
+                Acme Global Ltd.
               </p>
             </div>
-
-            <div className="overflow-x-auto">
-              <table className="min-w-full">
-                <thead>
-                  <tr className="border-b border-[#f1f1f1]">
-                    <th className="px-8 py-5 text-left text-sm font-semibold uppercase tracking-wide text-[#9ca3af]">
-                      Recipient
-                    </th>
-
-                    <th className="px-8 py-5 text-left text-sm font-semibold uppercase tracking-wide text-[#9ca3af]">
-                      Amount
-                    </th>
-
-                    <th className="px-8 py-5 text-left text-sm font-semibold uppercase tracking-wide text-[#9ca3af]">
-                      Status
-                    </th>
-
-                    <th className="w-[60px]" />
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {recentPayments.map((payment, index) => (
-                    <tr
-                      key={index}
-                      className="border-b border-[#f5f5f5] transition hover:bg-[#fafafa]"
-                    >
-                      <td className="px-8 py-6">
-                        <div className="flex items-center gap-4">
-                          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-base font-semibold text-zinc-700">
-                            {payment.name
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")}
-                          </div>
-
-                          <div>
-                            <div className="text-base font-medium text-[#111111]">
-                              {payment.name}
-                            </div>
-
-                            <div className="mt-1 text-base text-[#9ca3af]">
-                              {payment.email}
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-
-                      <td className="px-8 py-6">
-                        <div className="text-base font-medium text-[#111111]">
-                          {payment.amount}
-                        </div>
-                      </td>
-
-                      <td className="px-8 py-6">
-                        <span
-                          className={`inline-flex rounded-full px-3 py-1 text-sm font-semibold ${
-                            statusStyles[payment.status]
-                          }`}
-                        >
-                          {payment.status}
-                        </span>
-                      </td>
-
-                      <td className="px-8 py-6">
-                        <button className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#ececec] text-[#6b7280] transition hover:bg-[#fafafa]">
-                          <FiChevronRight className="text-[18px]" />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Quick Actions */}
-            <div className="rounded-[28px] border border-[#ececec] bg-white p-8 shadow-sm">
-              <h3 className="text-3xl font-semibold tracking-[-0.03em] text-[#111111]">
-                Quick Actions
-              </h3>
-
-              <div className="mt-6 space-y-4">
-                <button className="flex h-16 w-full items-center justify-between rounded-2xl border border-[#ececec] px-5 text-base font-medium text-[#111111] transition hover:bg-[#fafafa]">
-                  Send Payment
-
-                  <FiArrowUpRight className="text-[20px]" />
-                </button>
-
-                <button className="flex h-16 w-full items-center justify-between rounded-2xl border border-[#ececec] px-5 text-base font-medium text-[#111111] transition hover:bg-[#fafafa]">
-                  Bulk Payout
-
-                  <FiArrowUpRight className="text-[20px]" />
-                </button>
-
-                <button className="flex h-16 w-full items-center justify-between rounded-2xl border border-[#ececec] px-5 text-base font-medium text-[#111111] transition hover:bg-[#fafafa]">
-                  Manage Cards
-
-                  <FiArrowUpRight className="text-[20px]" />
-                </button>
-              </div>
-            </div>
-
-            {/* Wallet Info */}
-            <div className="rounded-[28px] border border-[#ececec] bg-white p-8 shadow-sm">
-              <h3 className="text-3xl font-semibold tracking-[-0.03em] text-[#111111]">
-                Wallet Details
-              </h3>
-
-              <div className="mt-6 space-y-5">
-                <div className="flex items-center justify-between">
-                  <span className="text-base text-[#6b7280]">
-                    Wallet ID
-                  </span>
-
-                  <span className="text-base font-medium text-[#111111]">
-                    WAL-482194
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-base text-[#6b7280]">
-                    Currency
-                  </span>
-
-                  <span className="text-base font-medium text-[#111111]">
-                    USD
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-base text-[#6b7280]">
-                    Status
-                  </span>
-
-                  <span className="rounded-full bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-600">
-                    Active
-                  </span>
-                </div>
-              </div>
+            <div className="text-right">
+              <p className="text-[10px] text-zinc-400 uppercase tracking-wider">
+                Expires
+              </p>
+              <p className="mt-1 text-[13px] font-medium tabular-nums">
+                12 / 28
+              </p>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  )
-}
+
+      {/* Stats column */}
+      <div className="col-span-12 xl:col-span-5 space-y-4">
+        {/* Available */}
+        <div className="bg-white border border-gray-200 rounded-[20px] px-5 py-4 flex items-center justify-between gap-4">
+          <div className="min-w-0 flex-1">
+            <p className="text-[13px] text-gray-500 leading-none mb-2">
+              Available Balance
+            </p>
+            <p className="text-[22px] font-semibold text-gray-900 tracking-tight leading-none mb-2">
+              $96,240.00
+            </p>
+            <p className="text-[12px] text-emerald-600 font-medium">
+              Ready to send
+            </p>
+          </div>
+          <span className="h-10 w-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-emerald-50">
+            <FiArrowUpRight size={18} className="text-emerald-500" />
+          </span>
+        </div>
+
+        {/* Pending */}
+        <div className="bg-white border border-gray-200 rounded-[20px] px-5 py-4 flex items-center justify-between gap-4">
+          <div className="min-w-0 flex-1">
+            <p className="text-[13px] text-gray-500 leading-none mb-2">
+              Pending Payments
+            </p>
+            <p className="text-[22px] font-semibold text-gray-900 tracking-tight leading-none mb-2">
+              $12,840.00
+            </p>
+            <p className="text-[12px] text-amber-600 font-medium">
+              3 in progress
+            </p>
+          </div>
+          <span className="h-10 w-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-amber-50">
+            <FiClock size={18} className="text-amber-500" />
+          </span>
+        </div>
+
+        {/* Wallet selector */}
+        <button className="bg-white border border-gray-200 rounded-[20px] px-5 h-12 w-full flex items-center justify-between text-[13px] font-medium text-gray-900 hover:bg-gray-50 transition-colors">
+          <span className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-emerald-500" />
+            USD Wallet
+          </span>
+          <FiChevronDown size={14} className="text-gray-400" />
+        </button>
+      </div>
+    </section>
+
+    {/* ── Main grid: lg:8/4 ───────────────────────────────────────────── */}
+    <section className="grid grid-cols-12 gap-4">
+      {/* LEFT — Recent payments table */}
+      <div className="col-span-12 lg:col-span-8 bg-white border border-gray-200 rounded-[20px] overflow-hidden">
+        <div className="px-5 py-4 border-b border-gray-50 flex items-center justify-between">
+          <div>
+            <h3 className="text-[14px] font-semibold text-gray-900">
+              Recent Payments
+            </h3>
+            <p className="text-[12px] text-gray-400 mt-0.5">
+              Latest outgoing transfers and payouts
+            </p>
+          </div>
+          <button className="text-[12px] text-gray-400 hover:text-gray-700 font-medium transition-colors">
+            View all
+          </button>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full whitespace-nowrap">
+            <thead>
+              <tr className="text-left border-b border-gray-50">
+                {["Recipient", "Amount", "Status", ""].map((h) => (
+                  <th
+                    key={h}
+                    className="px-5 py-3.5 text-[11px] font-semibold uppercase tracking-wider text-gray-400"
+                  >
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {recentPayments.map((payment, i) => (
+                <tr
+                  key={i}
+                  className="border-b border-gray-50 hover:bg-gray-50/60 transition-colors last:border-b-0"
+                >
+                  {/* Recipient */}
+                  <td className="px-5 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 text-[11px] font-semibold text-gray-600">
+                        {payment.name.split(" ").map((n) => n[0]).join("")}
+                      </div>
+                      <div>
+                        <p className="text-[13px] font-medium text-gray-800 leading-tight">
+                          {payment.name}
+                        </p>
+                        <p className="text-[11px] text-gray-400 leading-tight mt-0.5">
+                          {payment.email}
+                        </p>
+                      </div>
+                    </div>
+                  </td>
+                  {/* Amount */}
+                  <td className="px-5 py-4 text-[13px] font-semibold text-gray-900 tabular-nums">
+                    {payment.amount}
+                  </td>
+                  {/* Status */}
+                  <td className="px-5 py-4">
+                    <span
+                      className={`inline-flex items-center text-[11px] font-semibold rounded-full px-2.5 py-1 ${
+                        statusStyles[payment.status]
+                      }`}
+                    >
+                      {payment.status}
+                    </span>
+                  </td>
+                  {/* Action */}
+                  <td className="px-5 py-4">
+                    <button className="h-8 w-8 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-colors">
+                      <FiChevronRight size={13} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* RIGHT SIDEBAR */}
+      <aside className="col-span-12 lg:col-span-4 space-y-4">
+        {/* Quick Actions */}
+        <div className="bg-white border border-gray-200 rounded-[20px] p-5">
+          <h3 className="text-[14px] font-semibold text-gray-900 mb-4">
+            Quick Actions
+          </h3>
+
+          <div className="space-y-2">
+            {[
+              { label: "Send Payment", desc: "Transfer to a recipient" },
+              { label: "Bulk Payout", desc: "Pay multiple at once" },
+              { label: "Manage Cards", desc: "Add or update cards" },
+            ].map((action) => (
+              <button
+                key={action.label}
+                className="group w-full flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 hover:bg-gray-50 hover:border-gray-300 transition-colors"
+              >
+                <div className="text-left">
+                  <p className="text-[13px] font-semibold text-gray-900 leading-tight">
+                    {action.label}
+                  </p>
+                  <p className="text-[11px] text-gray-400 leading-tight mt-0.5">
+                    {action.desc}
+                  </p>
+                </div>
+                <FiArrowUpRight
+                  size={14}
+                  className="text-gray-400 group-hover:text-gray-700 transition-colors flex-shrink-0"
+                />
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Wallet Details */}
+        <div className="bg-white border border-gray-200 rounded-[20px] p-5">
+          <h3 className="text-[14px] font-semibold text-gray-900 mb-4">
+            Wallet Details
+          </h3>
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-[13px] text-gray-400">Wallet ID</span>
+              <span className="text-[13px] font-medium text-gray-900 tabular-nums">
+                WAL-482194
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-[13px] text-gray-400">Currency</span>
+              <span className="text-[13px] font-medium text-gray-900">USD</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-[13px] text-gray-400">Status</span>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-100 px-2.5 py-1 text-[11px] font-semibold text-emerald-700">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                Active
+              </span>
+            </div>
+            <div className="flex items-center justify-between border-t border-gray-100 pt-3">
+              <span className="text-[13px] text-gray-400">Created</span>
+              <span className="text-[13px] font-medium text-gray-900">
+                Jan 15, 2024
+              </span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </DashboardShell>
+)
 
 export default PersonalPay

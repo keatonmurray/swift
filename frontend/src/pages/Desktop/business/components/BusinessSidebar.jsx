@@ -88,15 +88,15 @@ const BusinessSidebar = () => {
       </div>
 
       {/* NAVIGATION */}
-      <nav className="flex-1">
-        <ul className="space-y-2">
+      <nav className="flex-1 overflow-y-auto">
+        <ul className="space-y-1">
           {navItems.map((item) => (
             <li key={item.label}>
               <NavLink
                 to={item.to}
                 end={item.to === "/business"}
                 className={({ isActive }) =>
-                  `group flex items-center gap-4 rounded-2xl px-4 py-4 text-[15px] font-medium transition-all duration-200 ${
+                  `group flex items-center gap-3 rounded-2xl px-4 py-3 text-[14px] font-medium transition-all duration-200 ${
                     isActive
                       ? "bg-white/10 text-white shadow-lg"
                       : "text-zinc-400 hover:bg-white/5 hover:text-white"
@@ -104,7 +104,7 @@ const BusinessSidebar = () => {
                 }
               >
                 <item.icon
-                  size={21}
+                  size={19}
                   className="transition-transform duration-200 group-hover:scale-105"
                 />
 
