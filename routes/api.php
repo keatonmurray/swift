@@ -4,10 +4,10 @@ use App\Http\Controllers\Accounts\Personal\TransactionsController;
 use App\Http\Controllers\Accounts\Personal\VirtualAccountController;
 use App\Http\Controllers\Accounts\Personal\WalletController;
 use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\Llm\GeminiController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
-use App\Models\Accounts\Business\Wallet;
 use Illuminate\Support\Facades\Route;
 
 // Login Controller
@@ -35,3 +35,6 @@ Route::get('/retrieve-currencies', [CurrencyController::class, 'retrieveCurrenci
 
 // Transactions (Personal)
 Route::get('/get-wallet-transactions', [TransactionsController::class, 'getTransactionsByWallet'])->middleware('auth:sanctum');
+
+// ****************************** GEMINI ROUTE ************************* //
+Route::get('/test-gemini', [GeminiController::class, 'test']);
