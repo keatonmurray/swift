@@ -22,10 +22,10 @@ import BusinessPayrollAnalysis from "./business/payroll/PayrollAnalysis";
 import BusinessEmployeePayrollDetail from "./business/payroll/EmployeePayrollDetail";
 import BusinessPayrollSettings from "./business/payroll/PayrollSettings";
 import BusinessAutomations from "./business/automations/Automations";
+import Account from "./business/account/Account";
 
 // Personal pages
 import PersonalOverview from "./personal/overview/Overview";
-import Account from "./personal/Account";
 
 const DesktopView = () => {
   return (
@@ -52,6 +52,8 @@ const DesktopView = () => {
             path="payments"
             element={<BusinessPayments />}
           />
+
+          <Route path="accounts" element={<Account />} />
 
           <Route
             path="payroll"
