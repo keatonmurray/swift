@@ -6,6 +6,11 @@ import {
   FiChevronRight,
   FiMoreHorizontal,
 } from "react-icons/fi"
+import DashboardShell from "@/pages/Desktop/components/DashboardShell"
+
+/* -------------------------------------------------------------------------- */
+/*  Mock data                                                                  */
+/* -------------------------------------------------------------------------- */
 
 const recipients = [
   {
@@ -56,296 +61,216 @@ const recipients = [
 ]
 
 const statusStyles = {
-  Active: "bg-emerald-50 text-emerald-600 border border-emerald-100",
-  Pending: "bg-amber-50 text-amber-600 border border-amber-100",
-  Disabled: "bg-red-50 text-red-600 border border-red-100",
+  Active:   "bg-emerald-50 text-emerald-700 border border-emerald-100",
+  Pending:  "bg-amber-50  text-amber-700  border border-amber-100",
+  Disabled: "bg-red-50    text-red-700    border border-red-100",
 }
 
-const Recipients = () => {
-  return (
-    <div className="min-h-screen bg-[#f7f7f8] p-6 lg:p-8">
-      <div className="mx-auto max-w-[1600px]">
-        {/* Header */}
-        <div className="mb-6 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <h1 className="text-3xl font-semibold tracking-[-0.03em] text-[#111111]">
-              Recipients
-            </h1>
+const typeStyles = {
+  Employee:   "bg-violet-50 text-violet-700 border border-violet-100",
+  Contractor: "bg-sky-50 text-sky-700 border border-sky-100",
+  Vendor:     "bg-amber-50 text-amber-700 border border-amber-100",
+}
 
-            <p className="mt-2 text-lg text-[#6b7280]">
-              Manage employees, contractors, and vendors you send payments to
-            </p>
-          </div>
+const summaryStatuses = [
+  { label: "Active",   count: 76, color: "bg-emerald-500" },
+  { label: "Pending",  count: 4,  color: "bg-amber-500"   },
+  { label: "Disabled", count: 2,  color: "bg-red-500"     },
+]
 
-          <div className="flex w-full flex-col gap-3 sm:flex-row lg:w-auto">
-            {/* Search */}
-            <div className="flex h-14 items-center gap-3 rounded-2xl border border-[#e5e7eb] bg-white px-4 shadow-sm">
-              <FiSearch className="text-[20px] text-[#9ca3af]" />
+const recentActivity = [
+  { title: "New recipient added",    subtitle: "Sarah Johnson", color: "bg-emerald-500" },
+  { title: "Recipient updated",      subtitle: "Michael Lee",   color: "bg-sky-500"     },
+  { title: "Verification pending",   subtitle: "Emma Wilson",   color: "bg-amber-500"   },
+]
 
-              <input
-                type="text"
-                placeholder="Search recipients..."
-                className="w-full bg-transparent text-base outline-none placeholder:text-[#9ca3af] sm:w-[280px]"
-              />
-            </div>
+/* -------------------------------------------------------------------------- */
+/*  Page                                                                       */
+/* -------------------------------------------------------------------------- */
 
-            {/* Add Recipient */}
-            <button className="flex h-14 items-center justify-center gap-2 rounded-2xl bg-black px-6 text-base font-medium text-white shadow-sm transition hover:opacity-90">
-              <FiPlus className="text-[18px]" />
-              Add Recipient
-            </button>
-          </div>
-        </div>
+const Recipients = () => (
+  <DashboardShell
+    title="Recipients"
+    subtitle="Manage employees, contractors, and vendors you send payments to"
+    actions={
+      <button className="inline-flex items-center gap-1.5 h-10 text-[13px] font-semibold text-white bg-black rounded-full px-5 hover:opacity-90 transition-colors">
+        <FiPlus size={14} />
+        Add Recipient
+      </button>
+    }
+  >
+    {/* ── Toolbar: search + filters ──────────────────────────────────── */}
+    <div className="flex flex-wrap items-center gap-2 mb-5">
+      {/* Search */}
+      <div className="flex items-center gap-2 h-9 bg-white border border-gray-200 rounded-full px-3 w-[220px]">
+        <FiSearch size={13} className="text-gray-400 flex-shrink-0" />
+        <input
+          type="text"
+          placeholder="Search recipients..."
+          className="flex-1 bg-transparent text-[13px] outline-none placeholder:text-gray-400 min-w-0"
+        />
+      </div>
 
-        {/* Filters */}
-        <div className="mb-6 flex flex-wrap gap-3">
-          {[
-            "All Recipients",
-            "All Countries",
-            "All Types",
-            "All Statuses",
-          ].map((item) => (
-            <button
-              key={item}
-              className="flex h-14 items-center gap-2 rounded-2xl border border-[#e5e7eb] bg-white px-5 text-base font-medium text-[#374151] shadow-sm transition hover:bg-[#fafafa]"
-            >
-              {item}
+      {/* Filter pills */}
+      {["All Recipients", "All Countries", "All Types", "All Statuses"].map((item) => (
+        <button
+          key={item}
+          className="inline-flex items-center gap-1.5 h-9 text-[12px] text-gray-600 bg-white border border-gray-200 rounded-full px-3 hover:bg-gray-50 transition-colors"
+        >
+          {item}
+          <FiChevronDown size={11} className="text-gray-400" />
+        </button>
+      ))}
+    </div>
 
-              <FiChevronDown className="text-[18px]" />
-            </button>
-          ))}
-        </div>
-
-        {/* Content */}
-        <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_340px]">
-          {/* Table */}
-          <div className="overflow-hidden rounded-[28px] border border-[#ececec] bg-white shadow-sm">
-            <div className="overflow-x-auto">
-              <table className="min-w-full">
-                <thead>
-                  <tr className="border-b border-[#f1f1f1]">
-                    <th className="px-8 py-5 text-left text-sm font-semibold uppercase tracking-wide text-[#9ca3af]">
-                      Recipient
-                    </th>
-
-                    <th className="px-8 py-5 text-left text-sm font-semibold uppercase tracking-wide text-[#9ca3af]">
-                      Country
-                    </th>
-
-                    <th className="px-8 py-5 text-left text-sm font-semibold uppercase tracking-wide text-[#9ca3af]">
-                      Type
-                    </th>
-
-                    <th className="px-8 py-5 text-left text-sm font-semibold uppercase tracking-wide text-[#9ca3af]">
-                      Currency
-                    </th>
-
-                    <th className="px-8 py-5 text-left text-sm font-semibold uppercase tracking-wide text-[#9ca3af]">
-                      Status
-                    </th>
-
-                    <th className="w-[60px]" />
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {recipients.map((recipient, index) => (
-                    <tr
-                      key={index}
-                      className="border-b border-[#f5f5f5] transition hover:bg-[#fafafa]"
-                    >
-                      {/* Recipient */}
-                      <td className="px-8 py-6">
-                        <div className="flex items-center gap-4">
-                          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-base font-semibold text-zinc-700">
-                            {recipient.name
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")}
-                          </div>
-
-                          <div>
-                            <div className="text-base font-medium text-[#111111]">
-                              {recipient.name}
-                            </div>
-
-                            <div className="mt-1 text-base text-[#9ca3af]">
-                              {recipient.email}
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-
-                      {/* Country */}
-                      <td className="px-8 py-6">
-                        <div className="flex items-center gap-2 text-base text-[#374151]">
-                          <span className="text-[20px]">
-                            {recipient.flag}
-                          </span>
-
-                          {recipient.country}
-                        </div>
-                      </td>
-
-                      {/* Type */}
-                      <td className="px-8 py-6">
-                        <span className="text-base font-medium text-[#111111]">
-                          {recipient.type}
-                        </span>
-                      </td>
-
-                      {/* Currency */}
-                      <td className="px-8 py-6">
-                        <span className="text-base font-medium text-[#111111]">
-                          {recipient.currency}
-                        </span>
-                      </td>
-
-                      {/* Status */}
-                      <td className="px-8 py-6">
-                        <span
-                          className={`inline-flex rounded-full px-3 py-1 text-sm font-semibold ${
-                            statusStyles[recipient.status]
-                          }`}
-                        >
-                          {recipient.status}
-                        </span>
-                      </td>
-
-                      {/* Actions */}
-                      <td className="px-8 py-6">
-                        <div className="flex items-center gap-2">
-                          <button className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#ececec] text-[#6b7280] transition hover:bg-[#fafafa]">
-                            <FiMoreHorizontal className="text-[18px]" />
-                          </button>
-
-                          <button className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#ececec] text-[#6b7280] transition hover:bg-[#fafafa]">
-                            <FiChevronRight className="text-[18px]" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Footer */}
-            <div className="flex flex-col gap-4 border-t border-[#f3f4f6] px-8 py-6 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-base text-[#6b7280]">
-                Showing 1 to 5 of 82 recipients
-              </p>
-
-              <div className="flex items-center gap-2">
-                {[1, 2, 3].map((page) => (
-                  <button
-                    key={page}
-                    className={`flex h-10 w-10 items-center justify-center rounded-xl text-base font-medium transition ${
-                      page === 1
-                        ? "bg-[#111111] text-white"
-                        : "border border-[#e5e7eb] bg-white text-[#6b7280] hover:bg-[#fafafa]"
-                    }`}
+    {/* ── Main grid: lg:8/4 ───────────────────────────────────────────── */}
+    <section className="grid grid-cols-12 gap-4">
+      {/* LEFT — table */}
+      <div className="col-span-12 lg:col-span-8 bg-white border border-gray-200 rounded-[20px] overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full whitespace-nowrap">
+            <thead>
+              <tr className="text-left border-b border-gray-50">
+                {["Recipient", "Country", "Type", "Currency", "Status", ""].map((h) => (
+                  <th
+                    key={h}
+                    className="px-5 py-3.5 text-[11px] font-semibold uppercase tracking-wider text-gray-400"
                   >
-                    {page}
-                  </button>
+                    {h}
+                  </th>
                 ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Right Sidebar */}
-          <div className="space-y-6">
-            {/* Summary */}
-            <div className="rounded-[28px] border border-[#ececec] bg-white p-8 shadow-sm">
-              <h3 className="text-3xl font-semibold tracking-[-0.03em] text-[#111111]">
-                Recipient Summary
-              </h3>
-
-              <p className="mt-2 text-base text-[#9ca3af]">
-                Overview of your payout network
-              </p>
-
-              <div className="mt-6 space-y-5">
-                <div className="flex items-center justify-between">
-                  <span className="text-base text-[#6b7280]">
-                    Total Recipients
-                  </span>
-
-                  <span className="text-xl font-semibold text-[#111111]">
-                    82
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-base text-[#6b7280]">
-                    Countries
-                  </span>
-
-                  <span className="text-xl font-semibold text-[#111111]">
-                    14
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-base text-[#6b7280]">
-                    Active
-                  </span>
-
-                  <span className="text-xl font-semibold text-[#111111]">
-                    76
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Recent Activity */}
-            <div className="rounded-[28px] border border-[#ececec] bg-white p-8 shadow-sm">
-              <div className="mb-6 flex items-center justify-between">
-                <h3 className="text-3xl font-semibold tracking-[-0.03em] text-[#111111]">
-                  Recent Activity
-                </h3>
-
-                <button className="text-base font-medium text-[#5b5cf0]">
-                  View all
-                </button>
-              </div>
-
-              <div className="space-y-5">
-                {[
-                  {
-                    title: "New recipient added",
-                    subtitle: "Sarah Johnson",
-                  },
-                  {
-                    title: "Recipient updated",
-                    subtitle: "Michael Lee",
-                  },
-                  {
-                    title: "Verification pending",
-                    subtitle: "Emma Wilson",
-                  },
-                ].map((item, index) => (
-                  <div key={index} className="flex gap-4">
-                    <div className="mt-1 h-2.5 w-2.5 rounded-full bg-violet-500" />
-
-                    <div className="flex-1">
-                      <p className="text-base font-medium text-[#111111]">
-                        {item.title}
-                      </p>
-
-                      <p className="mt-1 text-base text-[#9ca3af]">
-                        {item.subtitle}
-                      </p>
+              </tr>
+            </thead>
+            <tbody>
+              {recipients.map((r, i) => (
+                <tr key={i} className="border-b border-gray-50 hover:bg-gray-50/60 transition-colors">
+                  {/* Recipient */}
+                  <td className="px-5 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 text-[11px] font-semibold text-gray-600">
+                        {r.name.split(" ").map((n) => n[0]).join("")}
+                      </div>
+                      <div>
+                        <p className="text-[13px] font-medium text-gray-800 leading-tight">{r.name}</p>
+                        <p className="text-[11px] text-gray-400 leading-tight mt-0.5">{r.email}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+                  </td>
+                  {/* Country */}
+                  <td className="px-5 py-4">
+                    <span className="inline-flex items-center gap-1.5 text-[13px] text-gray-500">
+                      <span className="text-base">{r.flag}</span>
+                      {r.country}
+                    </span>
+                  </td>
+                  {/* Type */}
+                  <td className="px-5 py-4">
+                    <span className={`inline-flex items-center text-[11px] font-semibold rounded-full px-2.5 py-1 ${typeStyles[r.type] || ""}`}>
+                      {r.type}
+                    </span>
+                  </td>
+                  {/* Currency */}
+                  <td className="px-5 py-4 text-[13px] font-semibold text-gray-900 tabular-nums">
+                    {r.currency}
+                  </td>
+                  {/* Status */}
+                  <td className="px-5 py-4">
+                    <span className={`inline-flex items-center text-[11px] font-semibold rounded-full px-2.5 py-1 ${statusStyles[r.status]}`}>
+                      {r.status}
+                    </span>
+                  </td>
+                  {/* Actions */}
+                  <td className="px-5 py-4">
+                    <div className="flex items-center gap-1.5">
+                      <button className="h-8 w-8 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-colors">
+                        <FiMoreHorizontal size={13} />
+                      </button>
+                      <button className="h-8 w-8 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-colors">
+                        <FiChevronRight size={13} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Table footer — pagination */}
+        <div className="flex items-center justify-between px-5 py-4 border-t border-gray-50">
+          <p className="text-[12px] text-gray-400">Showing 1 to 5 of 82 recipients</p>
+          <div className="flex items-center gap-1.5">
+            {[1, 2, 3].map((page) => (
+              <button
+                key={page}
+                className={`h-8 w-8 flex items-center justify-center rounded-xl text-[12px] font-medium transition-colors ${
+                  page === 1
+                    ? "bg-black text-white"
+                    : "border border-gray-200 bg-white text-gray-500 hover:bg-gray-50"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
           </div>
         </div>
       </div>
-    </div>
-  )
-}
+
+      {/* RIGHT SIDEBAR */}
+      <aside className="col-span-12 lg:col-span-4 space-y-4">
+        {/* Recipient Summary */}
+        <div className="bg-white border border-gray-200 rounded-[20px] p-5">
+          <h3 className="text-[14px] font-semibold text-gray-900 mb-0.5">Recipient Summary</h3>
+          <p className="text-[12px] text-gray-400 mb-4">Overview of your payout network</p>
+
+          <div className="space-y-3 mb-4">
+            <div className="flex items-center justify-between">
+              <span className="text-[13px] text-gray-400">Total Recipients</span>
+              <span className="text-[14px] font-semibold text-gray-900 tabular-nums">82</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-[13px] text-gray-400">Countries</span>
+              <span className="text-[14px] font-semibold text-gray-900 tabular-nums">14</span>
+            </div>
+          </div>
+
+          <div className="border-t border-gray-100 pt-4 space-y-3">
+            {summaryStatuses.map((item) => (
+              <div key={item.label} className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className={`h-2 w-2 rounded-full flex-shrink-0 ${item.color}`} />
+                  <span className="text-[13px] text-gray-600">{item.label}</span>
+                </div>
+                <span className="text-[13px] font-medium text-gray-900 tabular-nums">{item.count}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Recent Activity */}
+        <div className="bg-white border border-gray-200 rounded-[20px] p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-[14px] font-semibold text-gray-900">Recent Activity</h3>
+            <button className="text-[12px] font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
+              View all
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            {recentActivity.map((item, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <div className={`mt-1.5 h-2 w-2 rounded-full flex-shrink-0 ${item.color}`} />
+                <div className="flex-1 min-w-0">
+                  <p className="text-[13px] font-medium text-gray-800 leading-snug">{item.title}</p>
+                  <p className="text-[11px] text-gray-400 mt-0.5">{item.subtitle}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </aside>
+    </section>
+  </DashboardShell>
+)
 
 export default Recipients

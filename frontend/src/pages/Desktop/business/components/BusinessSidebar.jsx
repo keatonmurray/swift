@@ -117,28 +117,26 @@ const BusinessSidebar = () => {
 
       {/* FOOTER ACCOUNT */}
       <div className="mt-6 border-t border-white/10 pt-6">
-        <button className="flex w-full items-center justify-between rounded-2xl bg-white/5 p-3 transition-all hover:bg-white/10">
-          <div className="flex items-center gap-3">
-            <img
-              src="https://i.pravatar.cc/100"
-              alt="avatar"
-              className="h-12 w-12 rounded-full object-cover"
-            />
+        <button className="flex w-full items-center gap-3 rounded-2xl bg-white/5 p-3 transition-all hover:bg-white/10">
+          <img
+            src="https://i.pravatar.cc/100"
+            alt="avatar"
+            className="h-10 w-10 flex-shrink-0 rounded-full object-cover"
+          />
 
-            <div className="text-left">
-              <p className="text-sm font-semibold text-white">
-                Alex Morgan
-              </p>
+          <div className="min-w-0 flex-1 text-left">
+            <p className="truncate text-sm font-semibold text-white">
+              Alex Morgan
+            </p>
 
-              <p className="text-xs text-zinc-400">
-                Acme Global Ltd.
-              </p>
-            </div>
+            <p className="truncate text-xs text-zinc-400">
+              Acme Global Ltd.
+            </p>
           </div>
 
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 text-zinc-400"
+            className="h-4 w-4 flex-shrink-0 text-zinc-400"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

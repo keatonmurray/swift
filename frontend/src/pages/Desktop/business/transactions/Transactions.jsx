@@ -1,39 +1,39 @@
 import React from "react"
-import {
-  FiSearch,
-  FiDownload,
-  FiChevronDown,
-  FiChevronRight,
-} from "react-icons/fi"
+import { FiSearch, FiDownload, FiChevronDown, FiChevronRight } from "react-icons/fi"
+import DashboardShell from "@/pages/Desktop/components/DashboardShell"
+
+/* -------------------------------------------------------------------------- */
+/*  Mock data                                                                  */
+/* -------------------------------------------------------------------------- */
 
 const transactions = [
   {
     date: "May 30, 2025",
     time: "10:24 AM",
-    description: "Monthly Payroll – May 2025",
+    description: "Monthly Payroll \u2013 May 2025",
     sub: "Payroll for 18 employees",
     country: "United States",
-    flag: "🇺🇸",
+    flag: "\uD83C\uDDFA\uD83C\uDDF8",
     amount: "$80,700.00",
     status: "Completed",
   },
   {
     date: "May 30, 2025",
     time: "09:15 AM",
-    description: "Tax Payment – May 2025",
+    description: "Tax Payment \u2013 May 2025",
     sub: "Federal income tax",
     country: "United States",
-    flag: "🇺🇸",
+    flag: "\uD83C\uDDFA\uD83C\uDDF8",
     amount: "-$18,250.00",
     status: "Completed",
   },
   {
     date: "May 29, 2025",
     time: "04:45 PM",
-    description: "Benefits Payment – May 2025",
+    description: "Benefits Payment \u2013 May 2025",
     sub: "Health insurance premium",
     country: "United States",
-    flag: "🇺🇸",
+    flag: "\uD83C\uDDFA\uD83C\uDDF8",
     amount: "-$6,450.00",
     status: "Completed",
   },
@@ -43,7 +43,7 @@ const transactions = [
     description: "Contractor Payment",
     sub: "Invoice #INV-2045",
     country: "United Kingdom",
-    flag: "🇬🇧",
+    flag: "\uD83C\uDDEC\uD83C\uDDE7",
     amount: "-$2,400.00",
     status: "Completed",
   },
@@ -53,341 +53,226 @@ const transactions = [
     description: "Employee Reimbursement",
     sub: "Travel expenses",
     country: "Canada",
-    flag: "🇨🇦",
+    flag: "\uD83C\uDDE8\uD83C\uDDE6",
     amount: "-$320.00",
     status: "Completed",
   },
   {
     date: "May 26, 2025",
     time: "10:05 AM",
-    description: "Monthly Payroll – Germany",
+    description: "Monthly Payroll \u2013 Germany",
     sub: "Payroll for 22 employees",
     country: "Germany",
-    flag: "🇩🇪",
-    amount: "€48,600.00",
+    flag: "\uD83C\uDDE9\uD83C\uDDEA",
+    amount: "\u20AC48,600.00",
     status: "Completed",
   },
 ]
 
 const statusStyles = {
-  Completed:
-    "bg-emerald-50 text-emerald-600 border border-emerald-100",
-  Pending: "bg-amber-50 text-amber-600 border border-amber-100",
-  Failed: "bg-red-50 text-red-600 border border-red-100",
+  Completed: "bg-emerald-50 text-emerald-700 border border-emerald-100",
+  Pending:   "bg-amber-50  text-amber-700  border border-amber-100",
+  Failed:    "bg-red-50    text-red-700    border border-red-100",
 }
 
-const Transactions = () => {
-  return (
-    <div className="min-h-screen bg-[#f7f7f8] p-6 lg:p-8">
-      <div className="mx-auto max-w-[1600px]">
-        {/* Header */}
-        <div className="mb-6 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <h1 className="text-3xl font-semibold tracking-[-0.03em] text-[#111111]">
-              Transactions
-            </h1>
+const summaryStatuses = [
+  { label: "Completed", count: 128, color: "bg-emerald-500" },
+  { label: "Pending",   count: 10,  color: "bg-amber-500"   },
+  { label: "Failed",    count: 4,   color: "bg-red-500"     },
+]
 
-            <p className="mt-2 text-lg text-[#6b7280]">
-              Track and manage all your payroll transactions
-            </p>
-          </div>
+const recentActivity = [
+  { title: "Payroll completed",          amount: "$80,700.00", time: "10:24 AM", color: "bg-emerald-500" },
+  { title: "Payroll pending approval",   amount: "$92,500.00", time: "09:15 AM", color: "bg-amber-500"   },
+  { title: "Payment failed",             amount: "$1,200.00",  time: "04:45 PM", color: "bg-red-500"     },
+]
 
-          <div className="flex w-full flex-col gap-3 sm:flex-row lg:w-auto">
-            {/* Search */}
-            <div className="flex h-14 items-center gap-3 rounded-2xl border border-[#e5e7eb] bg-white px-4 shadow-sm">
-              <FiSearch className="text-[20px] text-[#9ca3af]" />
+/* -------------------------------------------------------------------------- */
+/*  Page                                                                       */
+/* -------------------------------------------------------------------------- */
 
-              <input
-                type="text"
-                placeholder="Search transactions..."
-                className="w-full bg-transparent text-base outline-none placeholder:text-[#9ca3af] sm:w-[260px]"
-              />
-            </div>
+const Transactions = () => (
+  <DashboardShell
+    title="Transactions"
+    subtitle="Track and manage all your payroll transactions"
+  >
+    {/* ── Toolbar: search + filters + export ─────────────────────────── */}
+    <div className="flex flex-wrap items-center gap-2 mb-5">
 
-            {/* Export */}
-            <button className="flex h-14 items-center justify-center gap-2 rounded-2xl border border-[#e5e7eb] bg-white px-5 text-base font-medium text-[#111111] shadow-sm transition hover:bg-[#fafafa]">
-              <FiDownload className="text-[18px]" />
-              Export
-            </button>
-          </div>
-        </div>
+      {/* Search */}
+      <div className="flex items-center gap-2 h-9 bg-white border border-gray-200 rounded-full px-3 w-[220px]">
+        <FiSearch size={13} className="text-gray-400 flex-shrink-0" />
+        <input
+          type="text"
+          placeholder="Search transactions..."
+          className="flex-1 bg-transparent text-[13px] outline-none placeholder:text-gray-400 min-w-0"
+        />
+      </div>
 
-        {/* Filters */}
-        <div className="mb-6 flex flex-wrap gap-3">
-          {[
-            "All Transactions",
-            "May 1 – May 31, 2025",
-            "All Countries",
-            "All Statuses",
-          ].map((item) => (
-            <button
-              key={item}
-              className="flex h-14 items-center gap-2 rounded-2xl border border-[#e5e7eb] bg-white px-5 text-base font-medium text-[#374151] shadow-sm transition hover:bg-[#fafafa]"
-            >
-              {item}
-              <FiChevronDown className="text-[18px]" />
-            </button>
-          ))}
-        </div>
+      {/* Filter pills */}
+      {["All Transactions", "May 1 \u2013 May 31, 2025", "All Countries", "All Statuses"].map((item) => (
+        <button
+          key={item}
+          className="inline-flex items-center gap-1.5 h-9 text-[12px] text-gray-600 bg-white border border-gray-200 rounded-full px-3 hover:bg-gray-50 transition-colors"
+        >
+          {item}
+          <FiChevronDown size={11} className="text-gray-400" />
+        </button>
+      ))}
 
-        {/* Content */}
-        <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_340px]">
-          {/* Table */}
-          <div className="overflow-hidden rounded-[28px] border border-[#ececec] bg-white shadow-sm">
-            <div className="overflow-x-auto">
-              <table className="min-w-full">
-                <thead>
-                  <tr className="border-b border-[#f1f1f1]">
-                    <th className="px-8 py-5 text-left text-sm font-semibold uppercase tracking-wide text-[#9ca3af]">
-                      Date
-                    </th>
+      {/* Spacer */}
+      <div className="flex-1" />
 
-                    <th className="px-8 py-5 text-left text-sm font-semibold uppercase tracking-wide text-[#9ca3af]">
-                      Description
-                    </th>
+      {/* Export */}
+      <button className="inline-flex items-center gap-1.5 h-9 text-[12px] font-medium text-gray-700 bg-white border border-gray-200 rounded-full px-4 hover:bg-gray-50 transition-colors">
+        <FiDownload size={12} />
+        Export
+      </button>
+    </div>
 
-                    <th className="px-8 py-5 text-left text-sm font-semibold uppercase tracking-wide text-[#9ca3af]">
-                      Country
-                    </th>
+    {/* ── Main grid: lg:8/4 ───────────────────────────────────────────── */}
+    <section className="grid grid-cols-12 gap-4">
 
-                    <th className="px-8 py-5 text-left text-sm font-semibold uppercase tracking-wide text-[#9ca3af]">
-                      Amount
-                    </th>
-
-                    <th className="px-8 py-5 text-left text-sm font-semibold uppercase tracking-wide text-[#9ca3af]">
-                      Status
-                    </th>
-
-                    <th className="w-[60px]" />
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {transactions.map((transaction, index) => (
-                    <tr
-                      key={index}
-                      className="border-b border-[#f5f5f5] transition hover:bg-[#fafafa]"
-                    >
-                      <td className="px-8 py-6">
-                        <div className="text-base font-medium text-[#111111]">
-                          {transaction.date}
-                        </div>
-
-                        <div className="mt-1 text-base text-[#9ca3af]">
-                          {transaction.time}
-                        </div>
-                      </td>
-
-                      <td className="px-8 py-6">
-                        <div className="text-base font-medium text-[#111111]">
-                          {transaction.description}
-                        </div>
-
-                        <div className="mt-1 text-base text-[#9ca3af]">
-                          {transaction.sub}
-                        </div>
-                      </td>
-
-                      <td className="px-8 py-6">
-                        <div className="flex items-center gap-2 text-base text-[#374151]">
-                          <span className="text-[20px]">
-                            {transaction.flag}
-                          </span>
-
-                          {transaction.country}
-                        </div>
-                      </td>
-
-                      <td className="px-8 py-6">
-                        <div className="text-base font-medium text-[#111111]">
-                          {transaction.amount}
-                        </div>
-                      </td>
-
-                      <td className="px-8 py-6">
-                        <span
-                          className={`inline-flex rounded-full px-3 py-1 text-sm font-semibold ${
-                            statusStyles[transaction.status]
-                          }`}
-                        >
-                          {transaction.status}
-                        </span>
-                      </td>
-
-                      <td className="px-8 py-6">
-                        <button className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#ececec] text-[#6b7280] transition hover:bg-[#fafafa]">
-                          <FiChevronRight className="text-[18px]" />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Footer */}
-            <div className="flex flex-col gap-4 border-t border-[#f3f4f6] px-8 py-6 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-base text-[#6b7280]">
-                Showing 1 to 6 of 142 transactions
-              </p>
-
-              <div className="flex items-center gap-2">
-                {[1, 2, 3].map((page) => (
-                  <button
-                    key={page}
-                    className={`flex h-10 w-10 items-center justify-center rounded-xl text-base font-medium transition ${
-                      page === 1
-                        ? "bg-[#111111] text-white"
-                        : "border border-[#e5e7eb] bg-white text-[#6b7280] hover:bg-[#fafafa]"
-                    }`}
+      {/* LEFT — table */}
+      <div className="col-span-12 lg:col-span-8 bg-white border border-gray-200 rounded-[20px] overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full whitespace-nowrap">
+            <thead>
+              <tr className="text-left border-b border-gray-50">
+                {["Date", "Description", "Country", "Amount", "Status", ""].map((h) => (
+                  <th
+                    key={h}
+                    className="px-5 py-3.5 text-[11px] font-semibold uppercase tracking-wider text-gray-400"
                   >
-                    {page}
-                  </button>
+                    {h}
+                  </th>
                 ))}
-              </div>
-            </div>
-          </div>
+              </tr>
+            </thead>
+            <tbody>
+              {transactions.map((t, i) => (
+                <tr key={i} className="border-b border-gray-50 hover:bg-gray-50/60 transition-colors">
+                  {/* Date */}
+                  <td className="px-5 py-4">
+                    <p className="text-[13px] font-medium text-gray-800 leading-tight">{t.date}</p>
+                    <p className="text-[11px] text-gray-400 leading-tight mt-0.5">{t.time}</p>
+                  </td>
+                  {/* Description */}
+                  <td className="px-5 py-4">
+                    <p className="text-[13px] font-medium text-gray-800 leading-tight">{t.description}</p>
+                    <p className="text-[11px] text-gray-400 leading-tight mt-0.5">{t.sub}</p>
+                  </td>
+                  {/* Country */}
+                  <td className="px-5 py-4">
+                    <span className="inline-flex items-center gap-1.5 text-[13px] text-gray-500">
+                      <span className="text-base">{t.flag}</span>
+                      {t.country}
+                    </span>
+                  </td>
+                  {/* Amount */}
+                  <td className="px-5 py-4 text-[13px] font-semibold text-gray-900 tabular-nums">
+                    {t.amount}
+                  </td>
+                  {/* Status */}
+                  <td className="px-5 py-4">
+                    <span className={`inline-flex items-center text-[11px] font-semibold rounded-full px-2.5 py-1 ${statusStyles[t.status]}`}>
+                      {t.status}
+                    </span>
+                  </td>
+                  {/* Arrow */}
+                  <td className="px-5 py-4">
+                    <button className="h-8 w-8 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-colors">
+                      <FiChevronRight size={13} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-          {/* Right Sidebar */}
-          <div className="space-y-6">
-            {/* Summary */}
-            <div className="rounded-[28px] border border-[#ececec] bg-white p-8 shadow-sm">
-              <h3 className="text-3xl font-semibold tracking-[-0.03em] text-[#111111]">
-                Transaction Summary
-              </h3>
-
-              <p className="mt-2 text-base text-[#9ca3af]">
-                May 1 – May 31, 2025
-              </p>
-
-              <div className="mt-6 space-y-5">
-                <div className="flex items-center justify-between">
-                  <span className="text-base text-[#6b7280]">
-                    Total Volume
-                  </span>
-
-                  <span className="text-xl font-semibold text-[#111111]">
-                    $389,750.00
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-base text-[#6b7280]">
-                    Total Transactions
-                  </span>
-
-                  <span className="text-xl font-semibold text-[#111111]">
-                    142
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-6 border-t border-[#f3f4f6] pt-6">
-                <div className="space-y-4">
-                  {[
-                    {
-                      label: "Completed",
-                      count: 128,
-                      color: "bg-emerald-500",
-                    },
-                    {
-                      label: "Pending",
-                      count: 10,
-                      color: "bg-amber-500",
-                    },
-                    {
-                      label: "Failed",
-                      count: 4,
-                      color: "bg-red-500",
-                    },
-                  ].map((item) => (
-                    <div
-                      key={item.label}
-                      className="flex items-center justify-between"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`h-2.5 w-2.5 rounded-full ${item.color}`}
-                        />
-
-                        <span className="text-base text-[#374151]">
-                          {item.label}
-                        </span>
-                      </div>
-
-                      <span className="text-base font-medium text-[#111111]">
-                        {item.count}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Activity */}
-            <div className="rounded-[28px] border border-[#ececec] bg-white p-8 shadow-sm">
-              <div className="mb-6 flex items-center justify-between">
-                <h3 className="text-3xl font-semibold tracking-[-0.03em] text-[#111111]">
-                  Recent Activity
-                </h3>
-
-                <button className="text-base font-medium text-[#5b5cf0]">
-                  View all
-                </button>
-              </div>
-
-              <div className="space-y-5">
-                {[
-                  {
-                    title: "Payroll completed",
-                    amount: "$80,700.00",
-                    time: "10:24 AM",
-                    color: "bg-emerald-500",
-                  },
-                  {
-                    title: "Payroll pending approval",
-                    amount: "$92,500.00",
-                    time: "09:15 AM",
-                    color: "bg-amber-500",
-                  },
-                  {
-                    title: "Payment failed",
-                    amount: "$1,200.00",
-                    time: "04:45 PM",
-                    color: "bg-red-500",
-                  },
-                ].map((item, index) => (
-                  <div key={index} className="flex gap-4">
-                    <div
-                      className={`mt-1 h-2.5 w-2.5 rounded-full ${item.color}`}
-                    />
-
-                    <div className="flex-1">
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <p className="text-base font-medium text-[#111111]">
-                            {item.title}
-                          </p>
-
-                          <p className="mt-1 text-base text-[#9ca3af]">
-                            {item.amount}
-                          </p>
-                        </div>
-
-                        <span className="text-sm text-[#9ca3af]">
-                          {item.time}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+        {/* Table footer — pagination */}
+        <div className="flex items-center justify-between px-5 py-4 border-t border-gray-50">
+          <p className="text-[12px] text-gray-400">Showing 1 to 6 of 142 transactions</p>
+          <div className="flex items-center gap-1.5">
+            {[1, 2, 3].map((page) => (
+              <button
+                key={page}
+                className={`h-8 w-8 flex items-center justify-center rounded-xl text-[12px] font-medium transition-colors ${
+                  page === 1
+                    ? "bg-black text-white"
+                    : "border border-gray-200 bg-white text-gray-500 hover:bg-gray-50"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
           </div>
         </div>
       </div>
-    </div>
-  )
-}
+
+      {/* RIGHT SIDEBAR */}
+      <aside className="col-span-12 lg:col-span-4 space-y-4">
+
+        {/* Transaction Summary */}
+        <div className="bg-white border border-gray-200 rounded-[20px] p-5">
+          <h3 className="text-[14px] font-semibold text-gray-900 mb-0.5">Transaction Summary</h3>
+          <p className="text-[12px] text-gray-400 mb-4">May 1 \u2013 May 31, 2025</p>
+
+          <div className="space-y-3 mb-4">
+            <div className="flex items-center justify-between">
+              <span className="text-[13px] text-gray-400">Total Volume</span>
+              <span className="text-[14px] font-semibold text-gray-900 tabular-nums">$389,750.00</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-[13px] text-gray-400">Total Transactions</span>
+              <span className="text-[14px] font-semibold text-gray-900 tabular-nums">142</span>
+            </div>
+          </div>
+
+          <div className="border-t border-gray-100 pt-4 space-y-3">
+            {summaryStatuses.map((item) => (
+              <div key={item.label} className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className={`h-2 w-2 rounded-full flex-shrink-0 ${item.color}`} />
+                  <span className="text-[13px] text-gray-600">{item.label}</span>
+                </div>
+                <span className="text-[13px] font-medium text-gray-900 tabular-nums">{item.count}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Recent Activity */}
+        <div className="bg-white border border-gray-200 rounded-[20px] p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-[14px] font-semibold text-gray-900">Recent Activity</h3>
+            <button className="text-[12px] font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
+              View all
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            {recentActivity.map((item, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <div className={`mt-1.5 h-2 w-2 rounded-full flex-shrink-0 ${item.color}`} />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="text-[13px] font-medium text-gray-800 leading-snug">{item.title}</p>
+                      <p className="text-[11px] text-gray-400 mt-0.5 tabular-nums">{item.amount}</p>
+                    </div>
+                    <span className="text-[11px] text-gray-400 flex-shrink-0">{item.time}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </aside>
+    </section>
+  </DashboardShell>
+)
 
 export default Transactions

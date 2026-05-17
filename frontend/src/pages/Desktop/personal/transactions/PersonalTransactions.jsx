@@ -10,11 +10,16 @@ import axios from "axios"
 
 const userId = localStorage.getItem("user_id")
 
+/* -------------------------------------------------------------------------- */
+/*  Status styles                                                              */
+/* -------------------------------------------------------------------------- */
+
 const statusStyles = {
-  Completed:
-    "bg-emerald-50 text-emerald-600 border border-emerald-100",
-  Pending: "bg-amber-50 text-amber-600 border border-amber-100",
-  Failed: "bg-red-50 text-red-600 border border-red-100",
+  Completed: "bg-emerald-50 text-emerald-700 border border-emerald-100",
+  Pending:   "bg-amber-50  text-amber-700  border border-amber-100",
+  Failed:    "bg-red-50    text-red-700    border border-red-100",
+  Received:  "bg-emerald-50 text-emerald-700 border border-emerald-100",
+  Sent:      "bg-indigo-50  text-indigo-700  border border-indigo-100",
 }
 
 const PersonalTransactions = () => {
@@ -201,17 +206,17 @@ const PersonalTransactions = () => {
             </p>
           </div>
 
-          <div className="flex w-full flex-col gap-3 sm:flex-row lg:w-auto">
-            {/* Search */}
-            <div className="flex h-14 items-center gap-3 rounded-2xl border border-[#e5e7eb] bg-white px-4 shadow-sm">
-              <FiSearch className="text-[20px] text-[#9ca3af]" />
+  const summaryStatuses = [
+    { label: "Received", count: received, color: "bg-emerald-500" },
+    { label: "Sent",     count: sent,     color: "bg-indigo-500"  },
+  ]
 
-              <input
-                type="text"
-                placeholder="Search transactions..."
-                className="w-full bg-transparent text-base outline-none placeholder:text-[#9ca3af] sm:w-[260px]"
-              />
-            </div>
+  const recentActivity = transactions.slice(0, 3).map((t) => ({
+    title: t.description,
+    amount: t.amount,
+    time: t.time,
+    color: t.status === "Received" ? "bg-emerald-500" : "bg-indigo-500",
+  }))
 
             {/* Export */}
             <button className="flex h-14 items-center justify-center gap-2 rounded-2xl border border-[#e5e7eb] bg-white px-5 text-base font-medium text-[#111111] shadow-sm transition hover:bg-[#fafafa]">
@@ -264,11 +269,30 @@ const PersonalTransactions = () => {
                       Amount
                     </th>
 
-                    <th className="px-8 py-5 text-left text-sm font-semibold uppercase tracking-wide text-[#9ca3af]">
-                      Status
+      {/* ── Main grid: lg:8/4 ───────────────────────────────────────────── */}
+      <section className="grid grid-cols-12 gap-4">
+        {/* LEFT — table */}
+        <div className="col-span-12 lg:col-span-8 bg-white border border-gray-200 rounded-[20px] overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full whitespace-nowrap">
+              <thead>
+                <tr className="text-left border-b border-gray-50">
+                  {["Date", "Description", "Currency", "Amount", "Status", ""].map((h) => (
+                    <th
+                      key={h}
+                      className="px-5 py-3.5 text-[11px] font-semibold uppercase tracking-wider text-gray-400"
+                    >
+                      {h}
                     </th>
-
-                    <th className="w-[60px]" />
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {loading ? (
+                  <tr>
+                    <td colSpan={6} className="px-5 py-10 text-center text-[13px] text-gray-400">
+                      Loading transactions...
+                    </td>
                   </tr>
                 </thead>
 
@@ -287,25 +311,16 @@ const PersonalTransactions = () => {
                           {transaction.time}
                         </div>
                       </td>
-
-                      <td className="px-8 py-6">
-                        <div className="text-base font-medium text-[#111111]">
-                          {transaction.description}
-                        </div>
-
-                        <div className="mt-1 text-base text-[#9ca3af]">
-                          {transaction.sub}
-                        </div>
+                      {/* Description */}
+                      <td className="px-5 py-4">
+                        <p className="text-[13px] font-medium text-gray-800 leading-tight">{t.description}</p>
+                        <p className="text-[11px] text-gray-400 leading-tight mt-0.5">{t.sub}</p>
                       </td>
-
-                      <td className="px-8 py-6">
-                        <div className="flex items-center gap-2 text-base text-[#374151]">
-                          <span className="text-[20px]">
-                            {transaction.flag}
-                          </span>
-
-                          {transaction.country}
-                        </div>
+                      {/* Currency */}
+                      <td className="px-5 py-4">
+                        <span className="inline-flex items-center gap-1.5 text-[13px] text-gray-500">
+                          {t.currency}
+                        </span>
                       </td>
 
                       <td className="px-8 py-6">
@@ -331,10 +346,10 @@ const PersonalTransactions = () => {
                           {transaction.status}
                         </span>
                       </td>
-
-                      <td className="px-8 py-6">
-                        <button className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#ececec] text-[#6b7280] transition hover:bg-[#fafafa]">
-                          <FiChevronRight className="text-[18px]" />
+                      {/* Arrow */}
+                      <td className="px-5 py-4">
+                        <button className="h-8 w-8 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-colors">
+                          <FiChevronRight size={13} />
                         </button>
                       </td>
                     </tr>
@@ -373,6 +388,7 @@ const PersonalTransactions = () => {
               </div>
             </div>
           </div>
+        </div>
 
           {/* Right Sidebar */}
           <div className="space-y-6">
@@ -475,21 +491,29 @@ const PersonalTransactions = () => {
                       className={`mt-1 h-2.5 w-2.5 rounded-full ${item.color}`}
                     />
 
-                    <div className="flex-1">
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <p className="text-base font-medium text-[#111111]">
-                            {item.title}
-                          </p>
+          {/* Recent Activity */}
+          <div className="bg-white border border-gray-200 rounded-[20px] p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-[14px] font-semibold text-gray-900">Recent Activity</h3>
+              <button className="text-[12px] font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
+                View all
+              </button>
+            </div>
 
-                          <p className="mt-1 text-base text-[#9ca3af]">
-                            {item.amount}
-                          </p>
+            <div className="space-y-4">
+              {recentActivity.length === 0 ? (
+                <p className="text-[12px] text-gray-400">No recent activity</p>
+              ) : (
+                recentActivity.map((item, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <div className={`mt-1.5 h-2 w-2 rounded-full flex-shrink-0 ${item.color}`} />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <p className="text-[13px] font-medium text-gray-800 leading-snug">{item.title}</p>
+                          <p className="text-[11px] text-gray-400 mt-0.5 tabular-nums">{item.amount}</p>
                         </div>
-
-                        <span className="text-sm text-[#9ca3af]">
-                          {item.time}
-                        </span>
+                        <span className="text-[11px] text-gray-400 flex-shrink-0">{item.time}</span>
                       </div>
                     </div>
                   </div>
@@ -503,9 +527,9 @@ const PersonalTransactions = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </aside>
+      </section>
+    </DashboardShell>
   )
 }
 
