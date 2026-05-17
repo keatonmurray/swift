@@ -8,6 +8,7 @@ import axios from "axios";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [accountType, setAccountType] = useState("personal");
 
   const navigate = useNavigate();
 
@@ -15,7 +16,11 @@ const Login = () => {
     e.preventDefault();
       try {
         const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/login`, 
-        { email, password },
+        {
+          email,
+          password,
+          account_type: accountType,
+        },
         { withCredentials: true } );
         if (response.data?.user) {
           localStorage.setItem("api_token", response.data.token);
