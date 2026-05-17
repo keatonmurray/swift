@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 // Bootstrap is scoped to Mobile only — Desktop is pure Tailwind
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -22,8 +22,13 @@ import CurrencyDetails from "./pages/CurrencyDetails";
 import Footer from "../../components/Footer";
 import PageNotFound from "./pages/PageNotFound";
 
+// Routes where the footer should never appear
+const HIDE_FOOTER_ROUTES = ["/", "/login", "/register", "/select-account-type"];
+
 const MobileView = () => {
+  const location = useLocation();
   const isAuthenticated = !!localStorage.getItem("api_token");
+  const showFooter = isAuthenticated && !HIDE_FOOTER_ROUTES.includes(location.pathname);
 
   return (
     <div>
@@ -98,7 +103,7 @@ const MobileView = () => {
         </Routes>
       </div>
 
-      {isAuthenticated && <Footer />}
+      {showFooter && <Footer />}
     </div>
   );
 };

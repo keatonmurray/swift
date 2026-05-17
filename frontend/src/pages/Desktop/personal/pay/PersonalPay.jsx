@@ -65,66 +65,66 @@ const PersonalPay = () => (
     {/* ── Top row: Wallet hero + stats ───────────────────────────────── */}
     <section className="grid grid-cols-12 gap-4 mb-5">
       {/* Wallet Hero — keeps the original brand color */}
-      <div className="col-span-12 xl:col-span-7 overflow-hidden rounded-[20px] bg-main-pallette p-6 text-white relative">
+      <div className="col-span-12 xl:col-span-5 overflow-hidden rounded-[20px] bg-main-pallette p-5 text-white relative">
         {/* Balance */}
         <div className="relative flex items-start justify-between">
-          <div>
-            <p className="text-[12px] font-medium text-zinc-400 uppercase tracking-wider">
+          <div className="min-w-0">
+            <p className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider">
               Primary Wallet Balance
             </p>
 
-            <h2 className="mt-3 text-[40px] font-semibold tracking-[-0.03em] leading-none">
+            <h2 className="mt-2 text-[28px] font-semibold tracking-[-0.03em] leading-none">
               $128,450.00
             </h2>
 
-            <div className="mt-4 flex items-center gap-2">
-              <span className="rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold text-white border border-white/10">
+            <div className="mt-3 flex items-center gap-2">
+              <span className="rounded-full bg-white/10 px-2.5 py-0.5 text-[10px] font-semibold text-white border border-white/10">
                 USD Wallet
               </span>
-              <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-[11px] font-semibold text-emerald-300 border border-emerald-400/20">
-                +12.4% this month
+              <span className="rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-[10px] font-semibold text-emerald-300 border border-emerald-400/20">
+                +12.4%
               </span>
             </div>
           </div>
 
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 border border-white/10">
-            <FiDollarSign size={18} />
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 border border-white/10 shrink-0">
+            <FiDollarSign size={16} />
           </div>
         </div>
 
         {/* Credit card */}
-        <div className="relative mt-6 rounded-[16px] border border-white/10 bg-white/5 backdrop-blur-sm p-5">
+        <div className="relative mt-4 rounded-[14px] border border-white/10 bg-white/5 backdrop-blur-sm p-4">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-[11px] text-zinc-400 uppercase tracking-wider">
+              <p className="text-[10px] text-zinc-400 uppercase tracking-wider">
                 Corporate Card
               </p>
 
-              <div className="mt-4 flex items-center gap-3">
-                <div className="h-7 w-10 rounded-md bg-gradient-to-br from-zinc-100 to-zinc-300" />
-                <span className="text-[15px] font-medium tracking-[0.2em]">
+              <div className="mt-3 flex items-center gap-2.5">
+                <div className="h-5 w-7 rounded bg-gradient-to-br from-zinc-100 to-zinc-300" />
+                <span className="text-[13px] font-medium tracking-[0.2em]">
                   •••• 4821
                 </span>
               </div>
             </div>
 
-            <FiCreditCard size={18} className="text-zinc-300" />
+            <FiCreditCard size={16} className="text-zinc-300" />
           </div>
 
-          <div className="mt-6 flex items-end justify-between">
+          <div className="mt-4 flex items-end justify-between">
             <div>
-              <p className="text-[10px] text-zinc-400 uppercase tracking-wider">
+              <p className="text-[9px] text-zinc-400 uppercase tracking-wider">
                 Card Holder
               </p>
-              <p className="mt-1 text-[13px] font-medium">
+              <p className="mt-0.5 text-[12px] font-medium">
                 Acme Global Ltd.
               </p>
             </div>
             <div className="text-right">
-              <p className="text-[10px] text-zinc-400 uppercase tracking-wider">
+              <p className="text-[9px] text-zinc-400 uppercase tracking-wider">
                 Expires
               </p>
-              <p className="mt-1 text-[13px] font-medium tabular-nums">
+              <p className="mt-0.5 text-[12px] font-medium tabular-nums">
                 12 / 28
               </p>
             </div>
@@ -133,7 +133,7 @@ const PersonalPay = () => (
       </div>
 
       {/* Stats column */}
-      <div className="col-span-12 xl:col-span-5 space-y-4">
+      <div className="col-span-12 xl:col-span-7 space-y-4">
         {/* Available */}
         <div className="bg-white border border-gray-200 rounded-[20px] px-5 py-4 flex items-center justify-between gap-4">
           <div className="min-w-0 flex-1">
