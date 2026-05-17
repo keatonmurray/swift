@@ -1,11 +1,17 @@
 import { Navigate, Outlet } from "react-router-dom";
 
-const PrivateRoute = () => {
+const PrivateRoute = ({ allowedType }) => {
   const token = localStorage.getItem("api_token");
+  const accountType = localStorage.getItem("account_type");
 
-  // Redirect to login page if not logged in
+  // Not logged in
   if (!token) {
     return <Navigate to="/login" replace />;
+  }
+
+  // Wrong account type
+  if (allowedType && accountType !== allowedType) {
+    return <Navigate to={`/${accountType}`} replace />;
   }
 
   return <Outlet />;

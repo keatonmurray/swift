@@ -8,9 +8,10 @@ export const AuthProvider = ({ children }) => {
 
   const isAuthenticated = !!token
 
-  const login = useCallback((newToken, newUserId) => {
+  const login = useCallback((newToken, newUserId, accountType) => {
     localStorage.setItem("api_token", newToken)
     localStorage.setItem("user_id", newUserId)
+    localStorage.setItem("account_type", accountType);
     setToken(newToken)
     setUserId(newUserId)
   }, [])

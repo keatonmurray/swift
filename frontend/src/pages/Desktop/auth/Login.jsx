@@ -41,6 +41,7 @@ const Login = () => {
       if (response.data?.user) {
         localStorage.setItem("api_token", response.data.token)
         localStorage.setItem("user_id", response.data.user.id)
+        localStorage.setItem("account_type", response.data.user.account_type);
 
         // toast.success(response.data.message)
 

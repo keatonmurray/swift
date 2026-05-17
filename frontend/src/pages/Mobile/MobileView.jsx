@@ -23,7 +23,7 @@ import Footer from "../../components/Footer";
 import PageNotFound from "./pages/PageNotFound";
 
 const MobileView = () => {
-  const isAuthenticated = !!localStorage.getItem("user_id");
+  const isAuthenticated = !!localStorage.getItem("api_token");
 
   return (
     <div>
@@ -33,22 +33,67 @@ const MobileView = () => {
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/select-account-type" element={<AccountType />} />
+          <Route
+            path="/select-account-type"
+            element={<AccountType />}
+          />
 
-          {/* Protected routes */}
-          <Route element={<PrivateRoute />}>
-            <Route path="/dashboard/:id" element={<Dashboard />} />
-            <Route path="/transfer" element={<Transfer />} />
-            <Route path="/currencies" element={<Currencies />} />
-            <Route path="/currency-details/:id" element={<CurrencyDetails />} />
-            <Route path="/deposit" element={<Deposit />} />
-            <Route path="/profile/:id" element={<Profile />} />
-            <Route path="/update-profile/:id" element={<UpdateProfile />} />
-            <Route path="/your-currencies/:id" element={<ManageCurrencies />} />
-            <Route path="/create-personal-wallet" element={<CreatePersonalWallet />} />
-            <Route path="/create-personal-currency/:id" element={<CreatePersonalCurrency />} />
+          {/* =========================
+              PERSONAL ROUTES
+          ========================== */}
+          <Route element={<PrivateRoute allowedType="personal" />}>
+            <Route
+              path="/dashboard/:id"
+              element={<Dashboard />}
+            />
+
+            <Route
+              path="/transfer"
+              element={<Transfer />}
+            />
+
+            <Route
+              path="/currencies"
+              element={<Currencies />}
+            />
+
+            <Route
+              path="/currency-details/:id"
+              element={<CurrencyDetails />}
+            />
+
+            <Route
+              path="/deposit"
+              element={<Deposit />}
+            />
+
+            <Route
+              path="/profile/:id"
+              element={<Profile />}
+            />
+
+            <Route
+              path="/update-profile/:id"
+              element={<UpdateProfile />}
+            />
+
+            <Route
+              path="/your-currencies/:id"
+              element={<ManageCurrencies />}
+            />
+
+            <Route
+              path="/create-personal-wallet"
+              element={<CreatePersonalWallet />}
+            />
+
+            <Route
+              path="/create-personal-currency/:id"
+              element={<CreatePersonalCurrency />}
+            />
           </Route>
 
+          {/* 404 */}
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </div>
@@ -58,4 +103,4 @@ const MobileView = () => {
   );
 };
 
-export default MobileView
+export default MobileView;

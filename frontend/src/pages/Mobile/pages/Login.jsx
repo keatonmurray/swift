@@ -20,7 +20,7 @@ const Login = () => {
         if (response.data?.user) {
           localStorage.setItem("api_token", response.data.token);
           localStorage.setItem("user_id", response.data.user.id); 
-          toast.success(response.data.message);
+          localStorage.setItem("account_type", response.data.user.account_type);
           const userId = response.data.user.id;
           navigate(`/dashboard/${userId}`);
         }
