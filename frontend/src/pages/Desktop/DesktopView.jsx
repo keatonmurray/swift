@@ -25,7 +25,7 @@ import BusinessAutomations from "./business/automations/Automations";
 
 // Personal pages
 import PersonalOverview from "./personal/overview/Overview";
-import Account from "./personal/account";
+import Account from "./personal/Account";
 
 const DesktopView = () => {
   return (

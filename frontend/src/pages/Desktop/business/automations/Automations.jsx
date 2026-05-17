@@ -1,9 +1,32 @@
 import { useState } from "react"
+
 import { IoEllipsisHorizontal } from "react-icons/io5"
-import { LuPlus, LuFilter, LuChevronDown, LuCalendar, LuExternalLink, LuShieldCheck, LuBan, LuCreditCard, LuArrowLeftRight } from "react-icons/lu"
-import { FiClock, FiCalendar, FiAlertTriangle } from "react-icons/fi"
+
+import {
+  LuPlus,
+  LuFilter,
+  LuChevronDown,
+  LuCalendar,
+  LuExternalLink,
+  LuShieldCheck,
+  LuBan,
+  LuCreditCard,
+  LuArrowLeftRight,
+} from "react-icons/lu"
+
+import {
+  FiClock,
+  FiCalendar,
+  FiAlertTriangle,
+} from "react-icons/fi"
+
 import { HiOutlineUserGroup } from "react-icons/hi"
-import { TbBuildingBank, TbInfoCircle } from "react-icons/tb"
+
+import {
+  TbBuildingBank,
+  TbInfoCircle,
+} from "react-icons/tb"
+
 import ReactCountryFlag from "react-country-flag"
 
 import DashboardShell from "@/pages/Desktop/components/DashboardShell"
@@ -21,7 +44,7 @@ const summaryCards = [
     value: "6",
     sub: "Across all countries",
     icon: FiClock,
-    iconBg: "bg-violet-50",
+    iconBg: "bg-violet-100",
     iconColor: "text-violet-600",
   },
   {
@@ -29,7 +52,7 @@ const summaryCards = [
     value: "3",
     sub: "Next 30 days",
     icon: FiCalendar,
-    iconBg: "bg-sky-50",
+    iconBg: "bg-sky-100",
     iconColor: "text-sky-600",
   },
   {
@@ -37,7 +60,7 @@ const summaryCards = [
     value: "18",
     sub: "In automated payrolls",
     icon: HiOutlineUserGroup,
-    iconBg: "bg-amber-50",
+    iconBg: "bg-amber-100",
     iconColor: "text-amber-600",
   },
   {
@@ -45,7 +68,7 @@ const summaryCards = [
     value: "$120,450.00",
     sub: "Across upcoming payrolls",
     icon: TbBuildingBank,
-    iconBg: "bg-emerald-50",
+    iconBg: "bg-emerald-100",
     iconColor: "text-emerald-600",
   },
 ]
@@ -78,7 +101,7 @@ const automations = [
     payrollSub: "Every month",
     nextPayment: "May 30, 2025",
     nextSub: "In 9 days",
-    amount: "\u20B134,000.00",
+    amount: "₱34,000.00",
     status: "active",
   },
   {
@@ -96,51 +119,6 @@ const automations = [
     amount: "$18,000.00",
     status: "active",
   },
-  {
-    id: 4,
-    name: "Monthly Payroll - UK",
-    method: "Bank Transfer",
-    country: "United Kingdom",
-    countryCode: "GB",
-    employees: 2,
-    frequency: "Monthly",
-    payrollDay: "Day 15",
-    payrollSub: "Every month",
-    nextPayment: "Jun 15, 2025",
-    nextSub: "In 25 days",
-    amount: "\u00A38,200.00",
-    status: "active",
-  },
-  {
-    id: 5,
-    name: "Monthly Payroll - Germany",
-    method: "Bank Transfer",
-    country: "Germany",
-    countryCode: "DE",
-    employees: 2,
-    frequency: "Monthly",
-    payrollDay: "Day 25",
-    payrollSub: "Every month",
-    nextPayment: "Jun 25, 2025",
-    nextSub: "In 35 days",
-    amount: "\u20AC6,750.00",
-    status: "active",
-  },
-  {
-    id: 6,
-    name: "Monthly Payroll - India",
-    method: "Bank Transfer",
-    country: "India",
-    countryCode: "IN",
-    employees: 2,
-    frequency: "Monthly",
-    payrollDay: "Day 1",
-    payrollSub: "Every month",
-    nextPayment: "Jun 1, 2025",
-    nextSub: "In 11 days",
-    amount: "\u20B926,500.00",
-    status: "paused",
-  },
 ]
 
 const paymentRules = [
@@ -149,10 +127,9 @@ const paymentRules = [
     name: "Weekend Cut-off Rule",
     desc: "Payments submitted on weekends will be processed on the next business day.",
     icon: FiClock,
-    iconBg: "bg-violet-50",
+    iconBg: "bg-violet-100",
     iconColor: "text-violet-600",
     countries: "All",
-    countriesIcon: "globe",
     appliesTo: "All payrolls",
     conditions: "Submission day is Saturday or Sunday",
     actions: "Process on next business day",
@@ -165,10 +142,9 @@ const paymentRules = [
     name: "Payment Lead Time Rule",
     desc: "Ensure enough time for payments to reach employees.",
     icon: FiClock,
-    iconBg: "bg-sky-50",
+    iconBg: "bg-sky-100",
     iconColor: "text-sky-600",
     countries: "+4",
-    countriesFlags: ["GB", "US"],
     appliesTo: "All payrolls",
     conditions: "Lead time is less than 1 business day",
     actions: "Block submission and show warning",
@@ -176,91 +152,39 @@ const paymentRules = [
     lastUpdated: "May 18, 2025",
     updatedBy: "Alex Morgan",
   },
-  {
-    id: 3,
-    name: "High Amount Approval",
-    desc: "Requires approval for high value payrolls.",
-    icon: FiAlertTriangle,
-    iconBg: "bg-amber-50",
-    iconColor: "text-amber-600",
-    countries: "All",
-    countriesIcon: "globe",
-    appliesTo: "Payroll amount > $50,000",
-    conditions: "Total payroll amount is greater than $50,000",
-    actions: "Require approval before processing",
-    status: "active",
-    lastUpdated: "May 15, 2025",
-    updatedBy: "Alex Morgan",
-  },
-  {
-    id: 4,
-    name: "Blocked Country Rule",
-    desc: "Prevent payments to restricted countries.",
-    icon: LuBan,
-    iconBg: "bg-rose-50",
-    iconColor: "text-rose-600",
-    countries: "3 countries",
-    countriesIcon: "ban",
-    appliesTo: "All payrolls",
-    conditions: "Destination country is in blocked countries",
-    actions: "Block payment and show error",
-    status: "active",
-    lastUpdated: "May 10, 2025",
-    updatedBy: "Alex Morgan",
-  },
-  {
-    id: 5,
-    name: "Preferred Payment Method",
-    desc: "Use preferred payment methods by country.",
-    icon: LuCreditCard,
-    iconBg: "bg-emerald-50",
-    iconColor: "text-emerald-600",
-    countries: "8 countries",
-    countriesIcon: "globe",
-    appliesTo: "All payrolls",
-    conditions: "Based on destination country",
-    actions: "Use preferred payment method",
-    status: "draft",
-    lastUpdated: "May 6, 2025",
-    updatedBy: "Alex Morgan",
-  },
-  {
-    id: 6,
-    name: "Currency Conversion Rule",
-    desc: "Set preferred currencies and conversion behavior.",
-    icon: LuArrowLeftRight,
-    iconBg: "bg-indigo-50",
-    iconColor: "text-indigo-600",
-    countries: "All",
-    countriesIcon: "globe",
-    appliesTo: "Multi-currency payrolls",
-    conditions: "When currency is not available",
-    actions: "Convert to preferred currency",
-    status: "draft",
-    lastUpdated: "May 5, 2025",
-    updatedBy: "Alex Morgan",
-  },
 ]
 
-const tabs = ["Payroll Automations", "Payment Rules"]
+const tabs = [
+  "Payroll Automations",
+  "Payment Rules",
+]
 
 /* -------------------------------------------------------------------------- */
-/*  Sub-components                                                             */
+/*  Components                                                                 */
 /* -------------------------------------------------------------------------- */
 
 const SummaryCard = ({ card }) => (
-  <div className="bg-white border border-gray-200 rounded-[20px] px-5 py-4 flex items-center justify-between gap-4">
+  <div className="flex items-center justify-between gap-4 rounded-3xl border border-zinc-200 bg-white p-6 min-w-0">
     <div className="min-w-0 flex-1">
-      <p className="text-[13px] text-gray-500 leading-none mb-2">{card.label}</p>
+      <p className="mb-3 truncate text-sm text-zinc-500">
+        {card.label}
+      </p>
+
       <AnimatedValue
         value={card.value}
         duration={1400}
-        className="text-[22px] font-semibold text-gray-900 tracking-tight leading-none mb-2 block"
+        className="mb-3 block text-2xl font-semibold tracking-tight text-zinc-900"
       />
-      <p className="text-[12px] text-gray-500">{card.sub}</p>
+
+      <p className="text-sm text-zinc-500">
+        {card.sub}
+      </p>
     </div>
-    <span className={`h-10 w-10 rounded-xl flex items-center justify-center flex-shrink-0 ${card.iconBg} ${card.iconColor}`}>
-      <card.icon size={18} />
+
+    <span
+      className={`flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl ${card.iconBg} ${card.iconColor}`}
+    >
+      <card.icon size={22} />
     </span>
   </div>
 )
@@ -270,7 +194,8 @@ const SummaryCard = ({ card }) => (
 /* -------------------------------------------------------------------------- */
 
 const Automations = () => {
-  const [activeTab, setActiveTab] = useState("Payroll Automations")
+  const [activeTab, setActiveTab] =
+    useState("Payroll Automations")
 
   return (
     <DashboardShell
@@ -278,73 +203,94 @@ const Automations = () => {
       subtitle="Set up recurring payrolls and automate your payment schedules"
     >
       {/* Summary cards */}
-      <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-5">
+      <section className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
         {summaryCards.map((c) => (
-          <SummaryCard key={c.label} card={c} />
+          <SummaryCard
+            key={c.label}
+            card={c}
+          />
         ))}
       </section>
 
-      {/* Tabs + Create button */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-6 border-b border-gray-200">
+      {/* Tabs + CTA */}
+      <div className="mb-5 flex items-center justify-between">
+        <div className="flex items-center gap-8 border-b border-zinc-200">
           {tabs.map((t) => (
             <button
               key={t}
               onClick={() => setActiveTab(t)}
-              className={`relative pb-3 text-[13px] font-semibold transition-colors ${
-                activeTab === t ? "text-gray-900" : "text-gray-400 hover:text-gray-700"
+              className={`relative pb-4 text-sm font-semibold transition-colors ${
+                activeTab === t
+                  ? "text-zinc-900"
+                  : "text-zinc-400 hover:text-zinc-700"
               }`}
             >
               {t}
+
               {activeTab === t && (
-                <span className="absolute -bottom-px left-0 right-0 h-[2px] bg-black rounded-full" />
+                <span className="absolute -bottom-px left-0 right-0 h-[2px] rounded-full bg-black" />
               )}
             </button>
           ))}
         </div>
 
-        <button className="inline-flex items-center gap-2 bg-black text-white rounded-full px-5 h-10 text-[13px] font-semibold hover:bg-gray-900 transition-colors">
-          <LuPlus size={14} />
-          {activeTab === "Payroll Automations" ? "Create Payroll Automation" : "Create Payment Rule"}
+        <button className="inline-flex h-12 items-center gap-2 rounded-2xl bg-black px-6 text-sm font-semibold text-white transition hover:bg-zinc-900">
+          <LuPlus size={16} />
+
+          {activeTab === "Payroll Automations"
+            ? "Create Payroll Automation"
+            : "Create Payment Rule"}
         </button>
       </div>
 
-      {/* Description + filters */}
-      <div className="flex items-center justify-between mb-4">
-        <p className="text-[13px] text-gray-500">
+      {/* Filters */}
+      <div className="mb-5 flex items-center justify-between">
+        <p className="text-sm text-zinc-500">
           {activeTab === "Payroll Automations"
             ? "Create recurring payrolls and set payment dates for your employees."
             : "Set global rules to control how payrolls are processed and payments are made."}
         </p>
-        <div className="flex items-center gap-2">
-          <button className="inline-flex items-center gap-1.5 text-[12px] text-gray-700 bg-white border border-gray-200 rounded-full px-3 py-1.5 hover:bg-gray-50 transition-colors">
+
+        <div className="flex items-center gap-3">
+          <button className="inline-flex h-11 items-center gap-2 rounded-2xl border border-zinc-200 bg-white px-4 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50">
             All Countries
-            <LuChevronDown size={12} className="text-gray-400" />
+
+            <LuChevronDown
+              size={16}
+              className="text-zinc-400"
+            />
           </button>
-          <button className="inline-flex items-center gap-1.5 text-[12px] text-gray-700 bg-white border border-gray-200 rounded-full px-3 py-1.5 hover:bg-gray-50 transition-colors">
-            <LuFilter size={12} />
+
+          <button className="inline-flex h-11 items-center gap-2 rounded-2xl border border-zinc-200 bg-white px-4 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50">
+            <LuFilter size={16} />
             Filter
           </button>
         </div>
       </div>
 
-      {/* Tab content */}
+      {/* Payroll Automations */}
       {activeTab === "Payroll Automations" ? (
         <>
           <DataTable
-            className="mb-4"
+            className="mb-5"
             columns={[
               {
                 key: "name",
                 header: "Automation Name",
                 render: (a) => (
                   <div className="flex items-center gap-3">
-                    <span className="h-9 w-9 rounded-xl bg-gray-100 text-gray-600 flex items-center justify-center flex-shrink-0">
-                      <TbBuildingBank size={16} />
+                    <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-600">
+                      <TbBuildingBank size={18} />
                     </span>
+
                     <div className="min-w-0">
-                      <p className="text-[13px] font-semibold text-gray-900 leading-tight">{a.name}</p>
-                      <p className="text-[11px] text-gray-400 leading-tight mt-0.5">{a.method}</p>
+                      <p className="text-sm font-semibold text-zinc-900 leading-tight">
+                        {a.name}
+                      </p>
+
+                      <p className="mt-1 text-sm text-zinc-400 leading-tight">
+                        {a.method}
+                      </p>
                     </div>
                   </div>
                 ),
@@ -353,38 +299,56 @@ const Automations = () => {
                 key: "country",
                 header: "Country",
                 render: (a) => (
-                  <span className="inline-flex items-center gap-1.5">
+                  <span className="inline-flex items-center gap-2 text-sm text-zinc-700">
                     <ReactCountryFlag
                       countryCode={a.countryCode}
                       svg
-                      style={{ width: "1.1em", height: "0.8em", borderRadius: "2px" }}
+                      style={{
+                        width: "1.1em",
+                        height: "0.8em",
+                        borderRadius: "2px",
+                      }}
                     />
+
                     {a.country}
                   </span>
                 ),
-                cellClassName: "text-gray-500",
+                cellClassName: "text-zinc-500",
               },
               {
                 key: "employees",
                 header: "Employees",
                 accessor: "employees",
-                cellClassName: "text-gray-900 font-semibold tabular-nums text-center",
+                cellClassName:
+                  "text-zinc-900 font-semibold tabular-nums text-center text-sm",
               },
               {
                 key: "frequency",
                 header: "Frequency",
                 accessor: "frequency",
-                cellClassName: "text-gray-500",
+                cellClassName:
+                  "text-zinc-500 text-sm",
               },
               {
                 key: "payrollDate",
                 header: "Payroll Date",
                 render: (a) => (
-                  <div className="flex items-center gap-1.5">
-                    <LuCalendar size={12} className="text-gray-400" />
+                  <div className="flex items-center gap-2">
+                    <LuCalendar
+                      size={14}
+                      className="text-zinc-400"
+                    />
+
                     <div>
-                      <p className="text-[13px] text-gray-900 leading-tight">{a.payrollDay}</p>
-                      {a.payrollSub && <p className="text-[11px] text-gray-400 leading-tight">{a.payrollSub}</p>}
+                      <p className="text-sm text-zinc-900 leading-tight">
+                        {a.payrollDay}
+                      </p>
+
+                      {a.payrollSub && (
+                        <p className="mt-1 text-sm text-zinc-400 leading-tight">
+                          {a.payrollSub}
+                        </p>
+                      )}
                     </div>
                   </div>
                 ),
@@ -394,8 +358,13 @@ const Automations = () => {
                 header: "Next Payment",
                 render: (a) => (
                   <div>
-                    <p className="text-[13px] text-gray-900 leading-tight">{a.nextPayment}</p>
-                    <p className="text-[11px] text-gray-400 leading-tight">{a.nextSub}</p>
+                    <p className="text-sm text-zinc-900 leading-tight">
+                      {a.nextPayment}
+                    </p>
+
+                    <p className="mt-1 text-sm text-zinc-400 leading-tight">
+                      {a.nextSub}
+                    </p>
                   </div>
                 ),
               },
@@ -403,24 +372,29 @@ const Automations = () => {
                 key: "amount",
                 header: "Total Amount",
                 accessor: "amount",
-                cellClassName: "text-gray-900 font-semibold tabular-nums",
+                cellClassName:
+                  "text-zinc-900 font-semibold tabular-nums text-sm",
               },
               {
                 key: "status",
                 header: "Status",
                 render: (a) =>
                   a.status === "active" ? (
-                    <StatusBadge variant="success">Active</StatusBadge>
+                    <StatusBadge variant="success">
+                      Active
+                    </StatusBadge>
                   ) : (
-                    <StatusBadge variant="neutral">Paused</StatusBadge>
+                    <StatusBadge variant="neutral">
+                      Paused
+                    </StatusBadge>
                   ),
               },
               {
                 key: "actions",
-                header: "Actions",
+                header: "",
                 render: () => (
-                  <button className="text-gray-300 hover:text-gray-600 transition-colors">
-                    <IoEllipsisHorizontal size={16} />
+                  <button className="text-zinc-300 transition hover:text-zinc-600">
+                    <IoEllipsisHorizontal size={18} />
                   </button>
                 ),
                 cellClassName: "text-center",
@@ -430,35 +404,49 @@ const Automations = () => {
             getRowKey={(a) => a.id}
           />
 
-          {/* Footer info */}
-          <div className="flex items-center justify-between bg-white border border-gray-200 rounded-[20px] px-5 py-4">
-            <p className="text-[12px] text-gray-500 flex items-center gap-2">
-              <TbInfoCircle size={14} className="text-gray-400 flex-shrink-0" />
+          {/* Footer */}
+          <div className="flex items-center justify-between rounded-3xl border border-zinc-200 bg-white p-6">
+            <p className="flex items-center gap-3 text-sm text-zinc-500">
+              <TbInfoCircle
+                size={18}
+                className="flex-shrink-0 text-zinc-400"
+              />
+
               Payroll dates are set per automation and will be used for all employees in that automation.
               You can edit or pause automations anytime.
             </p>
-            <button className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-gray-700 bg-white border border-gray-200 rounded-full px-4 py-2 hover:bg-gray-50 transition-colors flex-shrink-0">
+
+            <button className="inline-flex h-11 flex-shrink-0 items-center gap-2 rounded-2xl border border-zinc-200 bg-white px-5 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50">
               Learn more about automations
-              <LuExternalLink size={12} />
+
+              <LuExternalLink size={16} />
             </button>
           </div>
         </>
       ) : (
         <>
           <DataTable
-            className="mb-4"
+            className="mb-5"
             columns={[
               {
                 key: "name",
                 header: "Rule Name",
                 render: (r) => (
                   <div className="flex items-center gap-3">
-                    <span className={`h-9 w-9 rounded-xl flex items-center justify-center flex-shrink-0 ${r.iconBg} ${r.iconColor}`}>
-                      <r.icon size={16} />
+                    <span
+                      className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl ${r.iconBg} ${r.iconColor}`}
+                    >
+                      <r.icon size={18} />
                     </span>
+
                     <div className="min-w-0">
-                      <p className="text-[13px] font-semibold text-gray-900 leading-tight">{r.name}</p>
-                      <p className="text-[11px] text-gray-400 leading-tight mt-0.5 max-w-[200px] truncate">{r.desc}</p>
+                      <p className="text-sm font-semibold text-zinc-900 leading-tight">
+                        {r.name}
+                      </p>
+
+                      <p className="mt-1 max-w-[220px] truncate text-sm text-zinc-400 leading-tight">
+                        {r.desc}
+                      </p>
                     </div>
                   </div>
                 ),
@@ -467,25 +455,13 @@ const Automations = () => {
                 key: "countries",
                 header: "Countries",
                 render: (r) => (
-                  <span className="inline-flex items-center gap-1.5 text-gray-700">
-                    {r.countriesFlags ? (
-                      <>
-                        {r.countriesFlags.map((code) => (
-                          <ReactCountryFlag
-                            key={code}
-                            countryCode={code}
-                            svg
-                            style={{ width: "1.1em", height: "0.8em", borderRadius: "2px" }}
-                          />
-                        ))}
-                        <span className="text-[12px] text-gray-500">{r.countries}</span>
-                      </>
-                    ) : (
-                      <span className="text-[12px] flex items-center gap-1">
-                        <LuShieldCheck size={12} className="text-gray-400" />
-                        {r.countries}
-                      </span>
-                    )}
+                  <span className="inline-flex items-center gap-2 text-sm text-zinc-700">
+                    <LuShieldCheck
+                      size={14}
+                      className="text-zinc-400"
+                    />
+
+                    {r.countries}
                   </span>
                 ),
               },
@@ -493,14 +469,18 @@ const Automations = () => {
                 key: "appliesTo",
                 header: "Applies To",
                 accessor: "appliesTo",
-                cellClassName: "text-gray-500",
+                cellClassName:
+                  "text-zinc-500 text-sm",
               },
               {
                 key: "conditions",
                 header: "Conditions",
                 render: (r) => (
-                  <span className="text-gray-700">
-                    <span className="text-gray-400 mr-1">&bull;</span>
+                  <span className="text-sm text-zinc-700">
+                    <span className="mr-1 text-zinc-400">
+                      •
+                    </span>
+
                     {r.conditions}
                   </span>
                 ),
@@ -509,16 +489,21 @@ const Automations = () => {
                 key: "ruleActions",
                 header: "Actions",
                 accessor: "actions",
-                cellClassName: "text-gray-700",
+                cellClassName:
+                  "text-zinc-700 text-sm",
               },
               {
                 key: "status",
                 header: "Status",
                 render: (r) =>
                   r.status === "active" ? (
-                    <StatusBadge variant="success">Active</StatusBadge>
+                    <StatusBadge variant="success">
+                      Active
+                    </StatusBadge>
                   ) : (
-                    <StatusBadge variant="neutral">Draft</StatusBadge>
+                    <StatusBadge variant="neutral">
+                      Draft
+                    </StatusBadge>
                   ),
               },
               {
@@ -526,17 +511,22 @@ const Automations = () => {
                 header: "Last Updated",
                 render: (r) => (
                   <div>
-                    <p className="text-[13px] text-gray-900 leading-tight">{r.lastUpdated}</p>
-                    <p className="text-[11px] text-gray-400 leading-tight">by {r.updatedBy}</p>
+                    <p className="text-sm text-zinc-900 leading-tight">
+                      {r.lastUpdated}
+                    </p>
+
+                    <p className="mt-1 text-sm text-zinc-400 leading-tight">
+                      by {r.updatedBy}
+                    </p>
                   </div>
                 ),
               },
               {
                 key: "rowActions",
-                header: "Actions",
+                header: "",
                 render: () => (
-                  <button className="text-gray-300 hover:text-gray-600 transition-colors">
-                    <IoEllipsisHorizontal size={16} />
+                  <button className="text-zinc-300 transition hover:text-zinc-600">
+                    <IoEllipsisHorizontal size={18} />
                   </button>
                 ),
                 cellClassName: "text-center",
@@ -546,16 +536,22 @@ const Automations = () => {
             getRowKey={(r) => r.id}
           />
 
-          {/* Footer info */}
-          <div className="flex items-center justify-between bg-white border border-gray-200 rounded-[20px] px-5 py-4">
-            <p className="text-[12px] text-gray-500 flex items-center gap-2">
-              <TbInfoCircle size={14} className="text-gray-400 flex-shrink-0" />
+          {/* Footer */}
+          <div className="flex items-center justify-between rounded-3xl border border-zinc-200 bg-white p-6">
+            <p className="flex items-center gap-3 text-sm text-zinc-500">
+              <TbInfoCircle
+                size={18}
+                className="flex-shrink-0 text-zinc-400"
+              />
+
               Payment rules help you enforce policies and automate decisions across all your payrolls.
               Rules are evaluated in order from top to bottom.
             </p>
-            <button className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-gray-700 bg-white border border-gray-200 rounded-full px-4 py-2 hover:bg-gray-50 transition-colors flex-shrink-0">
+
+            <button className="inline-flex h-11 flex-shrink-0 items-center gap-2 rounded-2xl border border-zinc-200 bg-white px-5 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50">
               Learn more about payment rules
-              <LuExternalLink size={12} />
+
+              <LuExternalLink size={16} />
             </button>
           </div>
         </>
