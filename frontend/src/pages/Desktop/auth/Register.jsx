@@ -291,9 +291,6 @@ const Register = () => {
           password_confirmation: form.passwordConfirmation,
         }
       )
-
-      toast.success(response.data.message)
-
       navigate("/login")
     } catch (error) {
       if (

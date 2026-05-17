@@ -13,14 +13,19 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required'
+            'email'        => 'required|email',
+            'password'     => 'required',
+            'account_type' => 'required|in:personal,business',
         ]);
 
-        if (!Auth::attempt($credentials)) {
+        if (!Auth::attempt([
+            'email'        => $credentials['email'],
+            'password'     => $credentials['password'],
+            'account_type' => $credentials['account_type'],
+        ])) {
             return response()->json([
                 'message' => 'Invalid credentials'
-            ], 401); // <-- important
+            ], 401);
         }
 
         $user = Auth::user();

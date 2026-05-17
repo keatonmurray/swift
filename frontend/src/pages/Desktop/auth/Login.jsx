@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { TbArrowLeft, TbEye, TbEyeOff } from "react-icons/tb"
+import { TbArrowLeft, TbEye, TbEyeOff, TbBuilding, TbUser } from "react-icons/tb"
 import { FcGoogle } from "react-icons/fc"
 import Speeder from "@/components/Speeder"
 import axios from "axios"
@@ -10,6 +10,7 @@ const Login = () => {
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [remember, setRemember] = useState(false)
+  const [accountType, setAccountType] = useState("business")
   const [form, setForm] = useState({ email: "", password: "" })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
@@ -32,6 +33,7 @@ const Login = () => {
         {
           email: form.email,
           password: form.password,
+          account_type: accountType,
         },
         { withCredentials: true }
       )
@@ -40,21 +42,22 @@ const Login = () => {
         localStorage.setItem("api_token", response.data.token)
         localStorage.setItem("user_id", response.data.user.id)
 
-        toast.success(response.data.message)
+        // toast.success(response.data.message)
 
-        const userId = response.data.user.id
+        const user = response.data.user
 
-        navigate(`/business`)
+        navigate(
+          user.account_type === "business"
+            ? "/business"
+            : "/personal"
+        )
       }
     } catch (error) {
       if (error.response?.status === 401) {
         const message = error.response?.data?.message || "Login failed"
-
         setError(message)
-        toast.error(message)
       } else {
         setError("Something went wrong")
-        toast.error("Something went wrong")
       }
     } finally {
       setLoading(false)
@@ -133,6 +136,54 @@ const Login = () => {
             <p className="text-white/50 text-sm">
               Log in to keep your books on autopilot.
             </p>
+          </div>
+
+          {/* Account Type Toggle */}
+          <div
+            className="grid grid-cols-2 gap-1 p-1 rounded-full mb-6"
+            style={{
+              background: "#0A0A0A",
+              border: "1px solid rgba(255,255,255,0.08)",
+            }}
+          >
+            {[
+              {
+                value: "business",
+                label: "Business",
+                icon: TbBuilding,
+              },
+              {
+                value: "personal",
+                label: "Personal",
+                icon: TbUser,
+              },
+            ].map(({ value, label, icon: Icon }) => {
+              const active = accountType === value
+
+              return (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => setAccountType(value)}
+                  className="inline-flex items-center justify-center gap-2 rounded-full transition-all duration-200 cursor-pointer"
+                  style={{
+                    background: active
+                      ? "#D9FF43"
+                      : "transparent",
+                    color: active
+                      ? "#000"
+                      : "rgba(255,255,255,0.6)",
+                    border: "0",
+                    padding: "9px 12px",
+                    fontSize: "0.8rem",
+                    fontWeight: 600,
+                  }}
+                >
+                  <Icon size={15} />
+                  {label}
+                </button>
+              )
+            })}
           </div>
 
           {/* Form */}
