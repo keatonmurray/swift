@@ -4,7 +4,7 @@ const DashboardLayout = ({ sidebar }) => {
   return (
     <div className="flex h-screen bg-black overflow-hidden">
       {/* Sidebar */}
-      <aside className="hidden md:flex w-[260px] flex-col bg-black text-white flex-shrink-0">
+      <aside className="hidden md:flex w-[220px] flex-col bg-black text-white flex-shrink-0">
         {sidebar}
       </aside>
 
