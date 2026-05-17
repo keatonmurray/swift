@@ -1,344 +1,365 @@
-import { Link } from "react-router-dom"
-import { useState } from "react";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
+import axios from "axios"
+import {
+  MdArrowBack,
+  MdOutlineEmail,
+  MdOutlinePerson,
+  MdOutlinePublic,
+  MdLockOutline,
+  MdVisibility,
+  MdVisibilityOff,
+  MdKeyboardArrowDown,
+} from "react-icons/md"
 
-const countries = [
-  { code: "AF", name: "Afghanistan" },
-  { code: "AL", name: "Albania" },
-  { code: "DZ", name: "Algeria" },
-  { code: "AD", name: "Andorra" },
-  { code: "AO", name: "Angola" },
-  { code: "AG", name: "Antigua and Barbuda" },
-  { code: "AR", name: "Argentina" },
-  { code: "AM", name: "Armenia" },
-  { code: "AU", name: "Australia" },
-  { code: "AT", name: "Austria" },
-  { code: "AZ", name: "Azerbaijan" },
-  { code: "BS", name: "Bahamas" },
-  { code: "BH", name: "Bahrain" },
-  { code: "BD", name: "Bangladesh" },
-  { code: "BB", name: "Barbados" },
-  { code: "BY", name: "Belarus" },
-  { code: "BE", name: "Belgium" },
-  { code: "BZ", name: "Belize" },
-  { code: "BJ", name: "Benin" },
-  { code: "BT", name: "Bhutan" },
-  { code: "BO", name: "Bolivia" },
-  { code: "BA", name: "Bosnia and Herzegovina" },
-  { code: "BW", name: "Botswana" },
-  { code: "BR", name: "Brazil" },
-  { code: "BN", name: "Brunei" },
-  { code: "BG", name: "Bulgaria" },
-  { code: "BF", name: "Burkina Faso" },
-  { code: "BI", name: "Burundi" },
-  { code: "CV", name: "Cabo Verde" },
-  { code: "KH", name: "Cambodia" },
-  { code: "CM", name: "Cameroon" },
-  { code: "CA", name: "Canada" },
-  { code: "CF", name: "Central African Republic" },
-  { code: "TD", name: "Chad" },
-  { code: "CL", name: "Chile" },
-  { code: "CN", name: "China" },
-  { code: "CO", name: "Colombia" },
-  { code: "KM", name: "Comoros" },
-  { code: "CG", name: "Congo — Brazzaville" },
-  { code: "CD", name: "Congo — Kinshasa" },
-  { code: "CR", name: "Costa Rica" },
-  { code: "HR", name: "Croatia" },
-  { code: "CU", name: "Cuba" },
-  { code: "CY", name: "Cyprus" },
-  { code: "CZ", name: "Czech Republic" },
-  { code: "DK", name: "Denmark" },
-  { code: "DJ", name: "Djibouti" },
-  { code: "DM", name: "Dominica" },
-  { code: "DO", name: "Dominican Republic" },
-  { code: "EC", name: "Ecuador" },
-  { code: "EG", name: "Egypt" },
-  { code: "SV", name: "El Salvador" },
-  { code: "GQ", name: "Equatorial Guinea" },
-  { code: "ER", name: "Eritrea" },
-  { code: "EE", name: "Estonia" },
-  { code: "SZ", name: "Eswatini" },
-  { code: "ET", name: "Ethiopia" },
-  { code: "FJ", name: "Fiji" },
-  { code: "FI", name: "Finland" },
-  { code: "FR", name: "France" },
-  { code: "GA", name: "Gabon" },
-  { code: "GM", name: "Gambia" },
-  { code: "GE", name: "Georgia" },
-  { code: "DE", name: "Germany" },
-  { code: "GH", name: "Ghana" },
-  { code: "GR", name: "Greece" },
-  { code: "GD", name: "Grenada" },
-  { code: "GT", name: "Guatemala" },
-  { code: "GN", name: "Guinea" },
-  { code: "GW", name: "Guinea‑Bissau" },
-  { code: "GY", name: "Guyana" },
-  { code: "HT", name: "Haiti" },
-  { code: "HN", name: "Honduras" },
-  { code: "HU", name: "Hungary" },
-  { code: "IS", name: "Iceland" },
-  { code: "IN", name: "India" },
-  { code: "ID", name: "Indonesia" },
-  { code: "IR", name: "Iran" },
-  { code: "IQ", name: "Iraq" },
-  { code: "IE", name: "Ireland" },
-  { code: "IL", name: "Israel" },
-  { code: "IT", name: "Italy" },
-  { code: "JM", name: "Jamaica" },
-  { code: "JP", name: "Japan" },
-  { code: "JO", name: "Jordan" },
-  { code: "KZ", name: "Kazakhstan" },
-  { code: "KE", name: "Kenya" },
-  { code: "KI", name: "Kiribati" },
-  { code: "KP", name: "North Korea" },
-  { code: "KR", name: "South Korea" },
-  { code: "KW", name: "Kuwait" },
-  { code: "KG", name: "Kyrgyzstan" },
-  { code: "LA", name: "Laos" },
-  { code: "LV", name: "Latvia" },
-  { code: "LB", name: "Lebanon" },
-  { code: "LS", name: "Lesotho" },
-  { code: "LR", name: "Liberia" },
-  { code: "LY", name: "Libya" },
-  { code: "LI", name: "Liechtenstein" },
-  { code: "LT", name: "Lithuania" },
-  { code: "LU", name: "Luxembourg" },
-  { code: "MG", name: "Madagascar" },
-  { code: "MW", name: "Malawi" },
-  { code: "MY", name: "Malaysia" },
-  { code: "MV", name: "Maldives" },
-  { code: "ML", name: "Mali" },
-  { code: "MT", name: "Malta" },
-  { code: "MH", name: "Marshall Islands" },
-  { code: "MR", name: "Mauritania" },
-  { code: "MU", name: "Mauritius" },
-  { code: "MX", name: "Mexico" },
-  { code: "FM", name: "Micronesia" },
-  { code: "MD", name: "Moldova" },
-  { code: "MC", name: "Monaco" },
-  { code: "MN", name: "Mongolia" },
-  { code: "ME", name: "Montenegro" },
-  { code: "MA", name: "Morocco" },
-  { code: "MZ", name: "Mozambique" },
-  { code: "MM", name: "Myanmar" },
-  { code: "NA", name: "Namibia" },
-  { code: "NR", name: "Nauru" },
-  { code: "NP", name: "Nepal" },
-  { code: "NL", name: "Netherlands" },
-  { code: "NZ", name: "New Zealand" },
-  { code: "NI", name: "Nicaragua" },
-  { code: "NE", name: "Niger" },
-  { code: "NG", name: "Nigeria" },
-  { code: "MK", name: "North Macedonia" },
-  { code: "NO", name: "Norway" },
-  { code: "OM", name: "Oman" },
-  { code: "PK", name: "Pakistan" },
-  { code: "PW", name: "Palau" },
-  { code: "PA", name: "Panama" },
-  { code: "PG", name: "Papua New Guinea" },
-  { code: "PY", name: "Paraguay" },
-  { code: "PE", name: "Peru" },
-  { code: "PH", name: "Philippines" },
-  { code: "PL", name: "Poland" },
-  { code: "PT", name: "Portugal" },
-  { code: "QA", name: "Qatar" },
-  { code: "RO", name: "Romania" },
-  { code: "RU", name: "Russia" },
-  { code: "RW", name: "Rwanda" },
-  { code: "KN", name: "Saint Kitts and Nevis" },
-  { code: "LC", name: "Saint Lucia" },
-  { code: "VC", name: "Saint Vincent" },
-  { code: "WS", name: "Samoa" },
-  { code: "SM", name: "San Marino" },
-  { code: "ST", name: "Sao Tome and Principe" },
-  { code: "SA", name: "Saudi Arabia" },
-  { code: "SN", name: "Senegal" },
-  { code: "RS", name: "Serbia" },
-  { code: "SC", name: "Seychelles" },
-  { code: "SL", name: "Sierra Leone" },
-  { code: "SG", name: "Singapore" },
-  { code: "SK", name: "Slovakia" },
-  { code: "SI", name: "Slovenia" },
-  { code: "SB", name: "Solomon Islands" },
-  { code: "SO", name: "Somalia" },
-  { code: "ZA", name: "South Africa" },
-  { code: "SS", name: "South Sudan" },
-  { code: "ES", name: "Spain" },
-  { code: "LK", name: "Sri Lanka" },
-  { code: "SD", name: "Sudan" },
-  { code: "SR", name: "Suriname" },
-  { code: "SE", name: "Sweden" },
-  { code: "CH", name: "Switzerland" },
-  { code: "SY", name: "Syria" },
-  { code: "TJ", name: "Tajikistan" },
-  { code: "TZ", name: "Tanzania" },
-  { code: "TH", name: "Thailand" },
-  { code: "TL", name: "Timor‑Leste" },
-  { code: "TG", name: "Togo" },
-  { code: "TO", name: "Tonga" },
-  { code: "TT", name: "Trinidad and Tobago" },
-  { code: "TN", name: "Tunisia" },
-  { code: "TR", name: "Turkey" },
-  { code: "TM", name: "Turkmenistan" },
-  { code: "UG", name: "Uganda" },
-  { code: "UA", name: "Ukraine" },
-  { code: "AE", name: "United Arab Emirates" },
-  { code: "GB", name: "United Kingdom" },
-  { code: "US", name: "United States" },
-  { code: "UY", name: "Uruguay" },
-  { code: "UZ", name: "Uzbekistan" },
-  { code: "VU", name: "Vanuatu" },
-  { code: "VA", name: "Vatican City" },
-  { code: "VE", name: "Venezuela" },
-  { code: "VN", name: "Vietnam" },
-  { code: "YE", name: "Yemen" },
-  { code: "ZM", name: "Zambia" },
-  { code: "ZW", name: "Zimbabwe" }
-];
+import { countries } from "../../../constants/countries"
 
+/* -----------------------------------------------------------
+   Field primitives — DESIGN.md text-input on dark canvas
+   - rounded-md (12px) per design spec
+   - height 56px (text-input spec)
+   - Inter body-md text, on-dark-mute placeholder
+----------------------------------------------------------- */
+const FieldShell = ({ children }) => {
+  const [focused, setFocused] = useState(false)
+  return (
+    <div
+      onFocusCapture={() => setFocused(true)}
+      onBlurCapture={() => setFocused(false)}
+      className={[
+        "flex items-center gap-3 h-14 px-4 rounded-xl border backdrop-blur-md transition",
+        focused
+          ? "bg-white/[0.08] border-white/30"
+          : "bg-white/[0.05] border-white/10",
+      ].join(" ")}
+      style={{ borderRadius: 12 }}
+    >
+      {children}
+    </div>
+  )
+}
+
+const FieldLabel = ({ children }) => (
+  <span className="type-caption text-white/40 uppercase font-semibold tracking-[0.06em] pl-0.5">
+    {children}
+  </span>
+)
+
+const Field = ({
+  icon: Icon,
+  type = "text",
+  label,
+  value,
+  onChange,
+  required,
+  autoComplete,
+  inputMode,
+  trailing,
+  placeholder,
+}) => (
+  <div className="flex flex-col gap-1.5">
+    {label && <FieldLabel>{label}</FieldLabel>}
+    <FieldShell>
+      {Icon && <Icon size={18} className="text-white/40 shrink-0" />}
+      <input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder ?? ""}
+        required={required}
+        autoComplete={autoComplete}
+        inputMode={inputMode}
+        className="flex-1 min-w-0 bg-transparent text-white placeholder-white/35 type-body-md outline-none border-0"
+        style={{ caretColor: "#D9FF43" }}
+      />
+      {trailing}
+    </FieldShell>
+  </div>
+)
+
+const SelectField = ({
+  icon: Icon,
+  label,
+  value,
+  onChange,
+  options,
+  placeholder,
+  required,
+}) => (
+  <div className="flex flex-col gap-1.5">
+    {label && <FieldLabel>{label}</FieldLabel>}
+    <FieldShell>
+      {Icon && <Icon size={18} className="text-white/40 shrink-0" />}
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        required={required}
+        className={[
+          "flex-1 min-w-0 bg-transparent type-body-md outline-none border-0 appearance-none cursor-pointer",
+          value ? "text-white" : "text-white/35",
+        ].join(" ")}
+      >
+        <option value="" disabled className="bg-black text-white/60">
+          {placeholder}
+        </option>
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value} className="bg-black text-white">
+            {opt.label}
+          </option>
+        ))}
+      </select>
+      <MdKeyboardArrowDown size={18} className="text-white/40 shrink-0" />
+    </FieldShell>
+  </div>
+)
+
+const ToggleBtn = ({ show, onToggle }) => (
+  <button
+    type="button"
+    onClick={onToggle}
+    aria-label={show ? "Hide password" : "Show password"}
+    className="text-white/40 hover:text-white transition p-1 shrink-0"
+  >
+    {show ? <MdVisibilityOff size={20} /> : <MdVisibility size={20} />}
+  </button>
+)
+
+const SectionLabel = ({ children }) => (
+  <p className="type-caption font-semibold uppercase tracking-[0.12em] text-white/30 m-0 mb-1">
+    {children}
+  </p>
+)
+
+/* -----------------------------------------------------------
+   Page
+----------------------------------------------------------- */
 const Register = () => {
+  const navigate = useNavigate()
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [country, setCountry] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [country, setCountry] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [passwordConfirmation, setPasswordConfirmation] = useState("")
 
-  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const t = setTimeout(() => setVisible(true), 80)
+    return () => clearTimeout(t)
+  }, [])
+
+  const enter = (delay = 0) => ({
+    opacity: visible ? 1 : 0,
+    transform: visible ? "translateY(0)" : "translateY(18px)",
+    transition: `opacity 0.55s ease ${delay}s, transform 0.55s ease ${delay}s`,
+  })
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
+    if (submitting) return
+    setSubmitting(true)
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/register`, {
-        first_name: firstName,
-        last_name: lastName,
-        email: email,
-        password: password,
-        password_confirmation: passwordConfirmation,
-        country,
-      })
-      toast.success(response.data.message)
-      navigate('/login')
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/register`,
+        {
+          first_name: firstName,
+          last_name: lastName,
+          email,
+          password,
+          password_confirmation: passwordConfirmation,
+          country,
+        }
+      )
+      toast.success(response.data.message ?? "Account created")
+      navigate("/login")
     } catch (error) {
-      // Check if it's a Laravel validation error
       if (error.response?.status === 422 && error.response.data?.errors) {
-        const errors = error.response.data.errors;
-        // Loop through each field's errors and display each message
-        Object.values(errors).forEach((messages) => {
-          messages.forEach((msg) => toast.error(msg));
-        });
+        Object.values(error.response.data.errors).forEach((msgs) =>
+          msgs.forEach((msg) => toast.error(msg))
+        )
       } else {
-        // generic fallback error
-        toast.error(error.response?.data?.message || "Something went wrong");
+        toast.error(error.response?.data?.message || "Something went wrong")
       }
+    } finally {
+      setSubmitting(false)
     }
   }
 
   return (
-    <div className="swift auth register flex-column d-flex justify-content-center align-items-center bg-main-pallette">
-        <div>
-          <img src="./img/logo-inverted.png" alt="Logo" />
+    <div className="bg-main-pallette relative flex flex-col overflow-hidden min-h-screen -mt-10">
+      {/* Header */}
+      <header
+        className="px-6 pt-12 pb-4 flex items-center"
+        style={{ opacity: visible ? 1 : 0, transition: "opacity 0.5s ease" }}
+      >
+        <Link
+          to="/select-account-type"
+          aria-label="Back"
+          className="inline-flex items-center justify-center h-10 w-10 rounded-full border border-white/15 bg-white/[0.06] backdrop-blur-md text-white hover:bg-white/[0.12] transition"
+        >
+          <MdArrowBack size={20} />
+        </Link>
+      </header>
+
+      {/* Main */}
+      <main className="flex-1 flex flex-col px-6 pb-10">
+        {/* Eyebrow */}
+        <div style={enter(0)} className="mb-3">
+          <span className="type-caption text-brand uppercase tracking-[0.18em] font-semibold">
+            Create account
+          </span>
         </div>
-        <div className="d-flex flex-column align-items-center mt-5">
-          <form className="register-form" onSubmit={handleSubmit}>
-            <div className="mb-2">
-              <label htmlFor="firstName" className="form-label visually-hidden">First Name</label>
-              <input 
-                type="text" 
-                id="firstName" 
-                className="form-control py-3" 
-                placeholder="First Name" 
-                value={firstName}
-                onChange={(e)=> setFirstName(e.target.value)}
-                required 
-              />
-            </div>
 
-            <div className="mb-2">
-              <label htmlFor="lastName" className="form-label visually-hidden">Last Name</label>
-              <input 
-                type="text" 
-                id="lastName" 
-                className="form-control py-3" 
-                placeholder="Last Name" 
-                value={lastName}
-                onChange={(e)=> setLastName(e.target.value)}
-                required 
-              />
-            </div>
-
-            <div className="mb-2">
-              <label htmlFor="country" className="form-label visually-hidden">
-                Country
-              </label>
-              <select
-                id="country"
-                className="form-select py-3"
-                value={country} 
-                onChange={(e) => setCountry(e.target.value)}
-                required
-              >
-                <option value="" disabled>
-                  Country
-                </option>
-                {countries.map((c) => (
-                  <option key={c.code} value={c.code}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="mb-2">
-              <label htmlFor="email" className="form-label visually-hidden">Email Address</label>
-              <input 
-                type="email" 
-                id="email" 
-                className="form-control py-3" 
-                placeholder="Email Address" 
-                value={email}
-                onChange={(e)=> setEmail(e.target.value)}
-                required 
-              />
-            </div>
-
-            <div className="mb-2">
-              <label htmlFor="password" className="form-label visually-hidden">Password</label>
-              <input 
-                type="password" 
-                id="password" 
-                className="form-control py-3" 
-                placeholder="Password" 
-                value={password}
-                onChange={(e)=> setPassword(e.target.value)}
-                required 
-              />
-            </div>
-
-            <div className="mb-2">
-              <label htmlFor="password" className="form-label visually-hidden">Confirm Password</label>
-              <input 
-                type="password" 
-                id="password_confirmation" 
-                className="form-control py-3" 
-                placeholder="Confirm Password" 
-                value={passwordConfirmation}
-                onChange={(e)=> setPasswordConfirmation(e.target.value)}
-                required 
-              />
-            </div>
-
-            <button type="submit" className="btn btn-bg-primary w-100 py-3 fw-semibold mt-3 border-0">
-              Register
-            </button>
-          </form>
-
-          <p className="fw-semibold small mt-3 text-white">Already have an account? <Link to="/login" className="text-white text-decoration-none">Login instead</Link></p>
+        {/* Heading — Aeonik Pro substitute (Inter) display weight 500, lh 1.0, tight tracking */}
+        <div style={enter(0.05)}>
+          <h1
+            className="font-display text-white m-0"
+            style={{
+              fontSize: "clamp(2.2rem, 9vw, 2.75rem)",
+              lineHeight: 1.0,
+              letterSpacing: "-0.03em",
+              fontWeight: 500,
+            }}
+          >
+            Get started
+            <br />
+            <span className="text-brand">in minutes.</span>
+          </h1>
         </div>
+
+        {/* Subtext — body-md, on-dark-mute */}
+        <div style={enter(0.15)} className="mt-4 mb-8">
+          <p className="type-body-md text-white/72 max-w-[34ch]">
+            Set up your Swift account. We'll guide you through verification next.
+          </p>
+        </div>
+
+        {/* Form */}
+        <form
+          onSubmit={handleSubmit}
+          noValidate
+          style={enter(0.25)}
+          className="flex flex-col"
+        >
+          {/* Section: Personal */}
+          <div className="flex flex-col gap-3 mb-5">
+            <SectionLabel>Personal info</SectionLabel>
+
+            <Field
+              icon={MdOutlinePerson}
+              label="First name"
+              type="text"
+              value={firstName}
+              onChange={setFirstName}
+              required
+              autoComplete="given-name"
+            />
+
+            <Field
+              icon={MdOutlinePerson}
+              label="Last name"
+              type="text"
+              value={lastName}
+              onChange={setLastName}
+              required
+              autoComplete="family-name"
+            />
+
+            <SelectField
+              icon={MdOutlinePublic}
+              label="Country"
+              value={country}
+              onChange={setCountry}
+              required
+              placeholder="Select your country"
+              options={countries.map((c) => ({ value: c.code, label: c.name }))}
+            />
+          </div>
+
+          {/* Section: Account */}
+          <div className="flex flex-col gap-3 mb-5">
+            <SectionLabel>Account details</SectionLabel>
+
+            <Field
+              icon={MdOutlineEmail}
+              label="Email"
+              type="email"
+              value={email}
+              onChange={setEmail}
+              required
+              autoComplete="email"
+              inputMode="email"
+            />
+          </div>
+
+          {/* Section: Security */}
+          <div className="flex flex-col gap-3 mb-7">
+            <SectionLabel>Security</SectionLabel>
+
+            <Field
+              icon={MdLockOutline}
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={setPassword}
+              required
+              autoComplete="new-password"
+              trailing={
+                <ToggleBtn
+                  show={showPassword}
+                  onToggle={() => setShowPassword((v) => !v)}
+                />
+              }
+            />
+
+            <Field
+              icon={MdLockOutline}
+              label="Confirm password"
+              type={showConfirm ? "text" : "password"}
+              value={passwordConfirmation}
+              onChange={setPasswordConfirmation}
+              required
+              autoComplete="new-password"
+              trailing={
+                <ToggleBtn
+                  show={showConfirm}
+                  onToggle={() => setShowConfirm((v) => !v)}
+                />
+              }
+            />
+          </div>
+
+          {/* Submit — DESIGN.md button-primary: pill, white-on-dark equivalent uses brand stamp */}
+          <button
+            type="submit"
+            disabled={submitting}
+            className="btn-pill bg-brand text-black active:scale-[0.98] hover:brightness-95 disabled:opacity-60 disabled:cursor-not-allowed"
+            style={{
+              height: 56,
+              boxShadow: "0 8px 30px rgba(217,255,67,0.28)",
+            }}
+          >
+            {submitting ? "Creating account..." : "Create account"}
+          </button>
+        </form>
+
+        {/* Sign-in link */}
+        <p className="type-caption text-white/50 text-center mt-6 mb-0">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-white font-semibold underline underline-offset-2 decoration-white/30"
+          >
+            Sign in
+          </Link>
+        </p>
+      </main>
     </div>
   )
 }
