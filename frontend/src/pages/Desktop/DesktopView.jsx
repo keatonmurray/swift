@@ -15,6 +15,11 @@ import PersonalSidebar from "./personal/components/PersonalSidebar"
 // Business pages
 import BusinessOverview from "./business/overview/Overview"
 import BusinessPayments from "./business/payments/Payments"
+import BusinessPayroll from "./business/payroll/Payroll"
+import BusinessPayrollAnalysis from "./business/payroll/PayrollAnalysis"
+import BusinessEmployeePayrollDetail from "./business/payroll/EmployeePayrollDetail"
+import BusinessPayrollSettings from "./business/payroll/PayrollSettings"
+import BusinessAutomations from "./business/automations/Automations"
 
 // Personal pages
 import PersonalOverview from "./personal/overview/Overview"
@@ -32,6 +37,11 @@ const DesktopView = () => {
       <Route path="/business" element={<DashboardLayout sidebar={<BusinessSidebar />} />}>
         <Route index element={<BusinessOverview />} />
         <Route path="payments" element={<BusinessPayments />} />
+        <Route path="payroll" element={<BusinessPayroll />} />
+        <Route path="payroll/analysis" element={<BusinessPayrollAnalysis />} />
+        <Route path="payroll/analysis/:employeeId" element={<BusinessEmployeePayrollDetail />} />
+        <Route path="payroll/settings" element={<BusinessPayrollSettings />} />
+        <Route path="automations" element={<BusinessAutomations />} />
         {/* Add sub-routes here as pages are built */}
         {/* <Route path="accounts" element={<Accounts />} /> */}
         {/* <Route path="transactions" element={<Transactions />} /> */}
