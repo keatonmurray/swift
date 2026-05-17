@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import {
   FiSearch,
   FiDownload,
@@ -6,68 +6,9 @@ import {
   FiChevronRight,
 } from "react-icons/fi"
 
-const transactions = [
-  {
-    date: "May 30, 2025",
-    time: "10:24 AM",
-    description: "Monthly Payroll – May 2025",
-    sub: "Payroll for 18 employees",
-    country: "United States",
-    flag: "🇺🇸",
-    amount: "$80,700.00",
-    status: "Completed",
-  },
-  {
-    date: "May 30, 2025",
-    time: "09:15 AM",
-    description: "Tax Payment – May 2025",
-    sub: "Federal income tax",
-    country: "United States",
-    flag: "🇺🇸",
-    amount: "-$18,250.00",
-    status: "Completed",
-  },
-  {
-    date: "May 29, 2025",
-    time: "04:45 PM",
-    description: "Benefits Payment – May 2025",
-    sub: "Health insurance premium",
-    country: "United States",
-    flag: "🇺🇸",
-    amount: "-$6,450.00",
-    status: "Completed",
-  },
-  {
-    date: "May 28, 2025",
-    time: "11:30 AM",
-    description: "Contractor Payment",
-    sub: "Invoice #INV-2045",
-    country: "United Kingdom",
-    flag: "🇬🇧",
-    amount: "-$2,400.00",
-    status: "Completed",
-  },
-  {
-    date: "May 27, 2025",
-    time: "02:10 PM",
-    description: "Employee Reimbursement",
-    sub: "Travel expenses",
-    country: "Canada",
-    flag: "🇨🇦",
-    amount: "-$320.00",
-    status: "Completed",
-  },
-  {
-    date: "May 26, 2025",
-    time: "10:05 AM",
-    description: "Monthly Payroll – Germany",
-    sub: "Payroll for 22 employees",
-    country: "Germany",
-    flag: "🇩🇪",
-    amount: "€48,600.00",
-    status: "Completed",
-  },
-]
+import axios from "axios"
+
+const userId = localStorage.getItem("user_id")
 
 const statusStyles = {
   Completed:
@@ -77,6 +18,174 @@ const statusStyles = {
 }
 
 const PersonalTransactions = () => {
+  const [walletTransactions, setWalletTransactions] = useState([])
+
+  // ---------------- WALLET TRANSACTIONS ----------------
+  const fetchWalletTransactions = async () => {
+    try {
+      const token = localStorage.getItem("api_token")
+
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/get-wallet-transactions`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+
+      console.log("Wallet Transactions:", response.data.transactions)
+
+      setWalletTransactions(response.data.transactions || [])
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  useEffect(() => {
+    if (userId) {
+      fetchWalletTransactions()
+    }
+  }, [])
+
+  // ---------------- FORMAT TRANSACTIONS ----------------
+  const transactions = walletTransactions.map((transaction) => {
+    // Detect incoming/outgoing
+    const isIncoming =
+      transaction.type?.includes("in") ||
+      transaction.type === "add_funds"
+
+    // Clean readable title
+    const formattedName = transaction.type
+      ?.replaceAll("_", " ")
+      ?.replace(/\b\w/g, (char) => char.toUpperCase())
+
+    // Format amount
+    const formattedAmount = `${
+      isIncoming ? "+" : "-"
+    }${new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: transaction.currency || "USD",
+    }).format(Number(transaction.amount || 0))}`
+
+    // Date
+    const transactionDate = new Date(
+      transaction.created_at * 1000
+    )
+
+    // Currency flags
+    const currencyFlags = {
+      USD: "🇺🇸",
+      AUD: "🇦🇺",
+      EUR: "🇪🇺",
+      GBP: "🇬🇧",
+      CAD: "🇨🇦",
+      PHP: "🇵🇭",
+      SGD: "🇸🇬",
+      JPY: "🇯🇵",
+    }
+
+    return {
+      id: transaction.id,
+
+      date: transactionDate.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }),
+
+      time: transactionDate.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+
+      description: formattedName || "Wallet Transaction",
+
+      sub: `Balance: ${new Intl.NumberFormat(
+        "en-US",
+        {
+          style: "currency",
+          currency: transaction.currency || "USD",
+        }
+      ).format(Number(transaction.balance || 0))}`,
+
+      country: transaction.currency || "USD",
+
+      flag:
+        currencyFlags[transaction.currency] || "🌍",
+
+      amount: formattedAmount,
+
+      status:
+        transaction.status === "CLOSED"
+          ? "Completed"
+          : transaction.status === "PENDING"
+          ? "Pending"
+          : "Failed",
+
+      rawAmount: Number(transaction.amount || 0),
+
+      isIncoming,
+    }
+  })
+
+  // ---------------- PAYROLLS ----------------
+  const payrolls = transactions.map((transaction) => ({
+    date: transaction.time,
+
+    name: transaction.description,
+
+    amount: transaction.amount,
+
+    currency: transaction.country,
+
+    status: transaction.isIncoming
+      ? "Received"
+      : "Sent",
+  }))
+
+  // ---------------- SUMMARY ----------------
+  const totalVolume = transactions.reduce(
+    (sum, transaction) =>
+      sum + transaction.rawAmount,
+    0
+  )
+
+  const totalTransactions = transactions.length
+
+  const completedTransactions =
+    transactions.filter(
+      (t) => t.status === "Completed"
+    ).length
+
+  const pendingTransactions =
+    transactions.filter(
+      (t) => t.status === "Pending"
+    ).length
+
+  const failedTransactions =
+    transactions.filter(
+      (t) => t.status === "Failed"
+    ).length
+
+  // ---------------- RECENT ACTIVITY ----------------
+  const recentActivities = transactions
+    .slice(0, 5)
+    .map((transaction) => ({
+      title: transaction.description,
+
+      amount: transaction.amount,
+
+      time: transaction.time,
+
+      color:
+        transaction.status === "Completed"
+          ? "bg-emerald-500"
+          : transaction.status === "Pending"
+          ? "bg-amber-500"
+          : "bg-red-500",
+    }))
+
   return (
     <div className="min-h-screen bg-[#f7f7f8] p-6 lg:p-8">
       <div className="mx-auto max-w-[1600px]">
@@ -88,7 +197,7 @@ const PersonalTransactions = () => {
             </h1>
 
             <p className="mt-2 text-lg text-[#6b7280]">
-              Track and manage all your payroll transactions
+              Track and manage all your wallet transactions
             </p>
           </div>
 
@@ -116,8 +225,8 @@ const PersonalTransactions = () => {
         <div className="mb-6 flex flex-wrap gap-3">
           {[
             "All Transactions",
-            "May 1 – May 31, 2025",
-            "All Countries",
+            "Last 30 Days",
+            "All Currencies",
             "All Statuses",
           ].map((item) => (
             <button
@@ -125,6 +234,7 @@ const PersonalTransactions = () => {
               className="flex h-14 items-center gap-2 rounded-2xl border border-[#e5e7eb] bg-white px-5 text-base font-medium text-[#374151] shadow-sm transition hover:bg-[#fafafa]"
             >
               {item}
+
               <FiChevronDown className="text-[18px]" />
             </button>
           ))}
@@ -147,7 +257,7 @@ const PersonalTransactions = () => {
                     </th>
 
                     <th className="px-8 py-5 text-left text-sm font-semibold uppercase tracking-wide text-[#9ca3af]">
-                      Country
+                      Currency
                     </th>
 
                     <th className="px-8 py-5 text-left text-sm font-semibold uppercase tracking-wide text-[#9ca3af]">
@@ -165,7 +275,7 @@ const PersonalTransactions = () => {
                 <tbody>
                   {transactions.map((transaction, index) => (
                     <tr
-                      key={index}
+                      key={transaction.id || index}
                       className="border-b border-[#f5f5f5] transition hover:bg-[#fafafa]"
                     >
                       <td className="px-8 py-6">
@@ -199,7 +309,13 @@ const PersonalTransactions = () => {
                       </td>
 
                       <td className="px-8 py-6">
-                        <div className="text-base font-medium text-[#111111]">
+                        <div
+                          className={`text-base font-semibold ${
+                            transaction.isIncoming
+                              ? "text-emerald-600"
+                              : "text-red-600"
+                          }`}
+                        >
                           {transaction.amount}
                         </div>
                       </td>
@@ -207,7 +323,9 @@ const PersonalTransactions = () => {
                       <td className="px-8 py-6">
                         <span
                           className={`inline-flex rounded-full px-3 py-1 text-sm font-semibold ${
-                            statusStyles[transaction.status]
+                            statusStyles[
+                              transaction.status
+                            ]
                           }`}
                         >
                           {transaction.status}
@@ -221,6 +339,17 @@ const PersonalTransactions = () => {
                       </td>
                     </tr>
                   ))}
+
+                  {transactions.length === 0 && (
+                    <tr>
+                      <td
+                        colSpan={6}
+                        className="px-8 py-16 text-center text-lg text-[#9ca3af]"
+                      >
+                        No transactions found
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -228,18 +357,15 @@ const PersonalTransactions = () => {
             {/* Footer */}
             <div className="flex flex-col gap-4 border-t border-[#f3f4f6] px-8 py-6 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-base text-[#6b7280]">
-                Showing 1 to 6 of 142 transactions
+                Showing 1 to {transactions.length} of{" "}
+                {transactions.length} transactions
               </p>
 
               <div className="flex items-center gap-2">
-                {[1, 2, 3].map((page) => (
+                {[1].map((page) => (
                   <button
                     key={page}
-                    className={`flex h-10 w-10 items-center justify-center rounded-xl text-base font-medium transition ${
-                      page === 1
-                        ? "bg-[#111111] text-white"
-                        : "border border-[#e5e7eb] bg-white text-[#6b7280] hover:bg-[#fafafa]"
-                    }`}
+                    className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#111111] text-base font-medium text-white transition"
                   >
                     {page}
                   </button>
@@ -257,7 +383,7 @@ const PersonalTransactions = () => {
               </h3>
 
               <p className="mt-2 text-base text-[#9ca3af]">
-                May 1 – May 31, 2025
+                Last 30 Days
               </p>
 
               <div className="mt-6 space-y-5">
@@ -267,7 +393,13 @@ const PersonalTransactions = () => {
                   </span>
 
                   <span className="text-xl font-semibold text-[#111111]">
-                    $389,750.00
+                    {new Intl.NumberFormat(
+                      "en-US",
+                      {
+                        style: "currency",
+                        currency: "USD",
+                      }
+                    ).format(totalVolume)}
                   </span>
                 </div>
 
@@ -277,7 +409,7 @@ const PersonalTransactions = () => {
                   </span>
 
                   <span className="text-xl font-semibold text-[#111111]">
-                    142
+                    {totalTransactions}
                   </span>
                 </div>
               </div>
@@ -287,17 +419,17 @@ const PersonalTransactions = () => {
                   {[
                     {
                       label: "Completed",
-                      count: 128,
+                      count: completedTransactions,
                       color: "bg-emerald-500",
                     },
                     {
                       label: "Pending",
-                      count: 10,
+                      count: pendingTransactions,
                       color: "bg-amber-500",
                     },
                     {
                       label: "Failed",
-                      count: 4,
+                      count: failedTransactions,
                       color: "bg-red-500",
                     },
                   ].map((item) => (
@@ -337,26 +469,7 @@ const PersonalTransactions = () => {
               </div>
 
               <div className="space-y-5">
-                {[
-                  {
-                    title: "Payroll completed",
-                    amount: "$80,700.00",
-                    time: "10:24 AM",
-                    color: "bg-emerald-500",
-                  },
-                  {
-                    title: "Payroll pending approval",
-                    amount: "$92,500.00",
-                    time: "09:15 AM",
-                    color: "bg-amber-500",
-                  },
-                  {
-                    title: "Payment failed",
-                    amount: "$1,200.00",
-                    time: "04:45 PM",
-                    color: "bg-red-500",
-                  },
-                ].map((item, index) => (
+                {recentActivities.map((item, index) => (
                   <div key={index} className="flex gap-4">
                     <div
                       className={`mt-1 h-2.5 w-2.5 rounded-full ${item.color}`}
@@ -381,6 +494,12 @@ const PersonalTransactions = () => {
                     </div>
                   </div>
                 ))}
+
+                {recentActivities.length === 0 && (
+                  <p className="text-base text-[#9ca3af]">
+                    No recent activity
+                  </p>
+                )}
               </div>
             </div>
           </div>
