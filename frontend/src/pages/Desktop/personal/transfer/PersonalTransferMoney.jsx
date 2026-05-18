@@ -6,6 +6,10 @@ import {
 import { HiOutlinePaperAirplane } from "react-icons/hi2"
 import { RiShieldCheckLine } from "react-icons/ri"
 
+import { useState } from "react"
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
+
 const SummaryRow = ({ label, value }) => {
   return (
     <div className="flex items-center justify-between gap-4">
@@ -17,6 +21,62 @@ const SummaryRow = ({ label, value }) => {
 }
 
 const PersonalTransferMoney = () => {
+
+  const [amount, setAmount] = useState("");
+  const [currency, setCurrency] = useState(""); 
+  const [destination_ewallet, setDestinationEwallet] = useState("");
+  const [source_wallet, setSourceWallet] = useState("");
+  const [expirationDate, setExpirationDate] = useState("");
+
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
+
+  const token = localStorage.getItem("api_token");
+
+  const handleTransferMoney = async () => {
+
+    const defaultExp = "1781502000"; //sandbox only (UNIX format)
+    
+    try {
+      setLoading(true)
+      setError("")
+      setSuccess("")
+
+      const payload = {
+        amount: Number(amount),
+        currency,
+        destination_ewallet,
+        source_ewallet: source_wallet,
+        expiration: defaultExp,
+        metadata: {},
+      }
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/transfer-personal-money`,
+        payload,
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      setSuccess("Money transferred successfully!")
+    } catch (error) {
+      console.error(error)
+
+      setError(
+        error?.response?.data?.message ||
+          "Something went wrong while transferring money."
+      )
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <DashboardShell
       title="Transfer To Another Wallet"
@@ -35,6 +95,8 @@ const PersonalTransferMoney = () => {
               <input
                 type="number"
                 placeholder="0.00"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
                 className="h-12 w-full rounded-2xl border border-zinc-200 bg-white px-4 text-[15px] outline-none transition focus:border-zinc-300"
               />
             </div>
@@ -46,9 +108,16 @@ const PersonalTransferMoney = () => {
               </label>
 
               <div className="relative">
-                <select className="h-12 w-full appearance-none rounded-2xl border border-zinc-200 bg-white px-4 text-[15px] text-zinc-500 outline-none transition focus:border-zinc-300">
-                  <option disabled selected>Select currency</option>
-                  <option>USD</option>
+                <select
+                  value={currency}
+                  onChange={(e) => setCurrency(e.target.value)}
+                  className="h-12 w-full appearance-none rounded-2xl border border-zinc-200 bg-white px-4 text-[15px] text-zinc-500 outline-none transition focus:border-zinc-300"
+                >
+                  <option value="" disabled>
+                    Select currency
+                  </option>
+
+                  <option value="USD">USD</option>
                 </select>
 
                 <IoChevronDownOutline className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[18px] text-zinc-500" />
@@ -64,6 +133,8 @@ const PersonalTransferMoney = () => {
               <input
                 type="text"
                 placeholder="Enter destination e-wallet"
+                value={destination_ewallet}
+                onChange={(e) => setDestinationEwallet(e.target.value)}
                 className="h-12 w-full rounded-2xl border border-zinc-200 bg-white px-4 text-[15px] outline-none transition focus:border-zinc-300"
               />
 
@@ -81,6 +152,8 @@ const PersonalTransferMoney = () => {
               <input
                 type="text"
                 placeholder="Enter source e-wallet"
+                value={source_wallet}
+                onChange={(e) => setSourceWallet(e.target.value)}
                 className="h-12 w-full rounded-2xl border border-zinc-200 bg-white px-4 text-[15px] outline-none transition focus:border-zinc-300"
               />
 
@@ -89,37 +162,35 @@ const PersonalTransferMoney = () => {
               </p>
             </div>
 
-            {/* Expiration */}
-            <div>
-              <label className="mb-3 block text-[15px] font-medium text-black">
-                Expiration
-              </label>
-
-              <div className="relative">
-                <input
-                  type="datetime-local"
-                  className="h-12 w-full rounded-2xl border border-zinc-200 bg-white px-4 pr-12 text-[15px] text-zinc-500 outline-none transition focus:border-zinc-300"
-                />
-
-                <IoCalendarOutline className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[18px] text-zinc-500" />
+            {/* Status Messages */}
+            {success && (
+              <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-[14px] text-emerald-700">
+                {success}
               </div>
+            )}
 
-              <p className="mt-2 text-[13px] text-zinc-500">
-                When the payment request will expire.
-              </p>
-            </div>
+            {error && (
+              <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-[14px] text-red-700">
+                {error}
+              </div>
+            )}
 
             {/* Button */}
-            <button className="flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-black text-[15px] font-medium text-white transition hover:opacity-95">
+            <button
+              onClick={handleTransferMoney}
+              disabled={loading}
+              className="flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-black text-[15px] font-medium text-white transition hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60"
+            >
               <HiOutlinePaperAirplane className="text-[16px]" />
-              Send Payment
+
+              {loading ? "Sending Payment..." : "Send Payment"}
             </button>
           </div>
         </div>
 
         {/* RIGHT */}
-        <div className="rounded-[32px] bg-white p-5 md:p-6 border border-zinc-200/70">
-          <h2 className="text-[28px] font-semibold tracking-tight text-black text-center">
+        <div className="rounded-[32px] border border-zinc-200/70 bg-white p-5 md:p-6">
+          <h2 className="text-center text-[28px] font-semibold tracking-tight text-black">
             Transfer Summary
           </h2>
 
@@ -140,11 +211,25 @@ const PersonalTransferMoney = () => {
 
           <div className="border-t border-zinc-200 pt-6">
             <div className="space-y-5">
-              <SummaryRow label="Amount" value="—" />
-              <SummaryRow label="Currency" value="—" />
-              <SummaryRow label="Destination E-Wallet" value="—" />
-              <SummaryRow label="Source E-Wallet" value="—" />
-              <SummaryRow label="Expiration" value="—" />
+              <SummaryRow
+                label="Amount"
+                value={amount ? `$${amount}` : "—"}
+              />
+
+              <SummaryRow
+                label="Currency"
+                value={currency || "—"}
+              />
+
+              <SummaryRow
+                label="Destination E-Wallet"
+                value={destination_ewallet || "—"}
+              />
+
+              <SummaryRow
+                label="Source E-Wallet"
+                value={source_wallet || "—"}
+              />
             </div>
 
             {/* Secure Card */}
