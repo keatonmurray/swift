@@ -10,6 +10,7 @@ import {
 } from "react-icons/io5"
 
 import { GoCreditCard } from "react-icons/go"
+import { BsWallet2 } from "react-icons/bs";
 
 import {
   TbArrowsExchange,
@@ -21,8 +22,8 @@ import { LuGoal } from "react-icons/lu"
 
 const navItems = [
   { label: "Dashboard", icon: IoHomeOutline, to: "/personal" },
-  { label: "Account", icon: GoCreditCard, to: "/personal/account" },
-  { label: "Pay", icon: GoCreditCard, to: "/personal/pay" },
+  { label: "Open a wallet", icon: BsWallet2, to: "/personal/account" },
+  { label: "Transfer money", icon: GoCreditCard, to: "/personal/pay" },
   {
     label: "Transactions",
     icon: TbArrowsExchange,
