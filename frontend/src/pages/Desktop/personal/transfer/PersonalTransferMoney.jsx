@@ -6,9 +6,8 @@ import {
 import { HiOutlinePaperAirplane } from "react-icons/hi2"
 import { RiShieldCheckLine } from "react-icons/ri"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
-import { useNavigate } from "react-router-dom"
 
 const SummaryRow = ({ label, value }) => {
   return (
@@ -26,7 +25,7 @@ const PersonalTransferMoney = () => {
   const [currency, setCurrency] = useState(""); 
   const [destination_ewallet, setDestinationEwallet] = useState("");
   const [source_wallet, setSourceWallet] = useState("");
-  const [expirationDate, setExpirationDate] = useState("");
+  const [wallet, setWallet] = useState(null)
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
@@ -76,6 +75,38 @@ const PersonalTransferMoney = () => {
       setLoading(false)
     }
   }
+
+  // Retrieve wallet
+  const handleRetrieveWallet = async () => {
+    try {
+      setLoading(true)
+
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/retrieve-personal-wallet`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        }
+      )
+
+      const walletData = response.data?.data?.wallet_rapyd
+
+      setWallet(walletData)
+
+      // Automatically set source wallet using the ewallet id
+      setSourceWallet(walletData?.id || "")
+    } catch (error) {
+      console.error("Retrieve wallet error:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    handleRetrieveWallet()
+  }, [])
 
   return (
     <DashboardShell
@@ -151,10 +182,10 @@ const PersonalTransferMoney = () => {
 
               <input
                 type="text"
-                placeholder="Enter source e-wallet"
+                placeholder={source_wallet}
                 value={source_wallet}
-                onChange={(e) => setSourceWallet(e.target.value)}
-                className="h-12 w-full rounded-2xl border border-zinc-200 bg-white px-4 text-[15px] outline-none transition focus:border-zinc-300"
+                readOnly
+                className="h-12 w-full rounded-2xl border border-zinc-200 bg-zinc-100 px-4 text-[15px] text-zinc-500 outline-none cursor-not-allowed"
               />
 
               <p className="mt-2 text-[13px] text-zinc-500">
