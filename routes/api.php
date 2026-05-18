@@ -44,3 +44,4 @@ Route::get('/get-wallet-transactions', [TransactionsController::class, 'getTrans
 
 // ****************************** GEMINI ROUTE ************************* //
 Route::get('/test-gemini', [GeminiController::class, 'test']);
+Route::post('/gemini/personal-summary', [GeminiController::class, 'personalSummary'])->middleware('auth:sanctum');
