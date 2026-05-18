@@ -57,12 +57,11 @@ const PendingTransfer = () => {
   // ======================================================
 
   const acceptTransfer = async (transferId) => {
-
     try {
 
       setProcessingId(transferId)
 
-      await axios.post(
+      const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/accept-wallet-transfer`,
         {
           transfer_id: transferId,
@@ -75,9 +74,14 @@ const PendingTransfer = () => {
         }
       )
 
-      // Remove accepted transfer from pending list
+      // ======================================================
+      // Remove accepted transfer from UI
+      // ======================================================
+
       setPendingTransfers((prev) =>
-        prev.filter((t) => t.id !== transferId)
+        prev.filter(
+          (t) => t.rapyd_transfer_id !== transferId
+        )
       )
 
     } catch (error) {
@@ -116,31 +120,6 @@ const PendingTransfer = () => {
     }, 0)
 
   }, [pendingTransfers])
-
-
-  // ======================================================
-  // Helpers
-  // ======================================================
-
-  const formatExpiration = (expiration) => {
-
-    if (!expiration) return "No expiration"
-
-    const now = Math.floor(Date.now() / 1000)
-
-    const diff = expiration - now
-
-    if (diff <= 0) return "Expired"
-
-    const days = Math.floor(diff / 86400)
-    const hours = Math.floor((diff % 86400) / 3600)
-
-    if (days > 0) {
-      return `${days}d ${hours}h left`
-    }
-
-    return `${hours}h left`
-  }
 
 
   return (

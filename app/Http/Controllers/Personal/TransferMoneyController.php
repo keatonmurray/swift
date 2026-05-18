@@ -244,4 +244,118 @@ class TransferMoneyController extends Controller
             ], 500);
         }
     }
+
+    public function acceptPendingWalletTransfers(Request $request)
+    {
+        $validated = $request->validate([
+            'transfer_id' => ['required', 'string'],
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+
+            // ======================================================
+            // Get authenticated user
+            // ======================================================
+
+            $user = auth('sanctum')->id();
+
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized.',
+                ], 401);
+            }
+
+
+            // ======================================================
+            // Find pending transfer
+            // ======================================================
+
+            $transfer = Transfer::where(
+                'rapyd_transfer_id',
+                $validated['transfer_id']
+            )
+            ->where('recipient_user_id', $user)
+            ->first();
+
+
+            if (!$transfer) {
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Transfer not found.',
+                ], 404);
+            }
+
+
+            // ======================================================
+            // Prevent duplicate processing
+            // ======================================================
+
+            if ($transfer->status !== 'PEN') {
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Transfer already processed.',
+                ], 400);
+            }
+
+
+            // ======================================================
+            // Accept transfer via Rapyd
+            // ======================================================
+
+            $payload = [
+                'id' => $transfer->rapyd_transfer_id,
+
+                'status' => 'accept',
+
+                'metadata' => [],
+            ];
+
+
+            $rapydResponse = $this->rapydService
+                ->setTransferResponse($payload);
+
+
+            // ======================================================
+            // Update local DB
+            // ======================================================
+
+            $transfer->update([
+
+                // ACT = accepted
+                'status' => 'ACT',
+
+                'responded_at' => now(),
+            ]);
+
+
+            DB::commit();
+
+
+            return response()->json([
+                'success' => true,
+
+                'message'
+                    => 'Transfer accepted successfully.',
+
+                'data' => [
+                    'transfer' => $transfer,
+                    'rapyd' => $rapydResponse,
+                ],
+            ]);
+
+        } catch (\Throwable $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }
