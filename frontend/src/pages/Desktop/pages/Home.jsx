@@ -138,7 +138,7 @@ const Home = () => {
                 style={{ animation: "fadeInUp 0.65s ease 0.1s forwards", opacity: 0, letterSpacing: "0.22em", fontSize: "0.7rem" }}
                 className="text-[#D9FF43] font-semibold uppercase mb-6"
               >
-                Autonomous Finance for Global Teams
+                The next-generation global payment gateway
               </p>
 
               <h1
@@ -152,16 +152,14 @@ const Home = () => {
                 }}
                 className="font-display text-white mb-6"
               >
-                Let your finance run itself.
+                A gateway that runs your bookkeeping for you
               </h1>
 
               <p
                 style={{ animation: "fadeInUp 0.65s ease 0.3s forwards", opacity: 0, lineHeight: 1.65 }}
                 className="text-white/60 text-[1rem] max-w-[440px] mb-10"
               >
-                Swift connects QuickBooks to a multi-currency payment rail and lets
-                Gemini handle the rest — payroll, reconciliations, reports.
-                No prompts, no manual entry.
+                Swift automates payroll, reconciliation, accounting, and financial operations directly inside your payment flow. 
               </p>
 
               <div
@@ -206,8 +204,7 @@ const Home = () => {
             >
               <div style={{ animation: "fadeInRight 0.65s ease 0.3s forwards", opacity: 0 }}>
                 <p className="text-white/50 text-sm leading-relaxed mb-7" style={{ lineHeight: 1.6 }}>
-                  Trusted by finance teams running distributed
-                  payroll across borders.
+                  Trusted by digital teams running globally distributed operations across the world.
                 </p>
               </div>
 
@@ -274,7 +271,7 @@ const Home = () => {
               className="font-display text-white"
               style={{ fontSize: "clamp(2rem, 3.5vw, 3.25rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
             >
-              Set it up once. Forget it forever.
+              Set it up once. Swift handles the rest.
             </h2>
           </div>
 
@@ -290,13 +287,13 @@ const Home = () => {
                 step: "02",
                 icon: TbBrain,
                 title: "Define your guardrails",
-                copy: "Tell Gemini who gets paid, when, and how much. Set approval thresholds and let the agent handle the rest.",
+                copy: "Tell us who gets paid, when, and how much. Set approval thresholds and let Swift handle the rest.",
               },
               {
                 step: "03",
                 icon: TbRobot,
                 title: "Watch it run",
-                copy: "Gemini executes payouts, reconciles books, and generates reports — autonomously, with a full audit trail.",
+                copy: "Let Swift execute payouts, reconciliations, and report generation autonomously — with a full audit trail and no prompts required.",
               },
             ].map(({ step, icon: Icon, title, copy }) => (
               <div
@@ -349,7 +346,7 @@ const Home = () => {
               className="font-display text-white"
               style={{ fontSize: "clamp(2rem, 3.5vw, 3.25rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
             >
-              Accounting that runs<br />itself.
+              A payment gateway with embedded bookkeeping.
             </h2>
           </div>
 
@@ -357,18 +354,18 @@ const Home = () => {
             {[
               {
                 icon: TbSparkles,
-                title: "Gemini-powered automation",
-                copy: "An always-on AI agent watches your QuickBooks, decides when to act, and executes — no prompting required.",
+                title: "Payments + accounting, unified",
+                copy: "Payment gateways stop at moving money. Swift embeds accounting automation directly into the payment infrastructure — reducing added software costs and maintenance overhead.",
               },
               {
                 icon: TbBolt,
-                title: "Multi-currency payouts",
-                copy: "Pay your global team in their local currency. Mid-market rates, instant settlement, zero manual FX work.",
+                title: "Autonomous financial operations",
+                copy: "Swift executes payouts, reconciliations, and reporting autonomously — within your company’s approval logic and accounting controls.",
               },
               {
                 icon: TbReportAnalytics,
                 title: "Always audit-ready",
-                copy: "Every action — auto or manual — is logged with reasoning. Books reconcile themselves and stay clean.",
+                copy: "Every action is logged with reasoning and a complete audit trail, keeping books reconciled, compliant, and continuously up to date.",
               },
             ].map(({ icon: Icon, title, copy }) => (
               <div
@@ -493,7 +490,7 @@ const Home = () => {
               className="font-display text-white"
               style={{ fontSize: "clamp(2rem, 3.5vw, 3.25rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
             >
-              The agent doesn't sleep.<br />Neither do your books.
+              Open multi-currency accounts for free.
             </h2>
           </div>
         </div>
@@ -501,23 +498,28 @@ const Home = () => {
         <div className="max-w-[1200px] mx-auto pb-32">
           {[
             {
-              tag: "QuickBooks integration",
-              title: "Your books, your source of truth.",
-              copy: "Swift listens to QuickBooks in real time — invoices, bills, payroll runs — and turns them into payment intents the moment they're approved.",
-              bullets: ["Two-way sync, no double-entry", "Maps to your existing chart of accounts", "Handles classes, locations, projects"],
+              tag: "Multicurrency Accounts",
+              title: "Never visit a bank again.",
+              copy:
+                "Hold, convert, and move money globally from a single account — with real-time FX rates and zero banking friction.",
+              bullets: [
+                "Real-time exchange rates",
+                "Get paid in any currency",
+                "Lower FX conversion costs",
+              ],
               accent: "#D9FF43",
             },
             {
               tag: "Autonomous payouts",
-              title: "Gemini pays your team for you.",
-              copy: "When payroll is due, the agent picks the right currency, books FX, sends the payout, and writes the journal entry — all before you get to your desk.",
+              title: "Swift pays your team for you.",
+              copy: "Before your team starts the day, Swift has already handled FX, executed payroll payouts, reconciled transactions, and written the journal entries — all within your company’s predefined controls.",
               bullets: ["Threshold-based approvals", "Multi-currency in one batch", "Full reasoning logged per action"],
               accent: "#9DFF00",
             },
             {
               tag: "Self-driving reconciliation",
               title: "Books that close themselves.",
-              copy: "Bank feeds, Swift transactions, and QuickBooks ledgers stay in lockstep. When something doesn't match, Gemini flags it with a proposed fix.",
+              copy: "Bank feeds, Swift transactions, and QuickBooks ledgers stay in lockstep. When something doesn't match, Swift flags it with a proposed fix.",
               bullets: ["Real-time bank reconciliation", "Auto-categorized transactions", "Variance alerts with context"],
               accent: "#00FF8C",
             },
@@ -956,7 +958,7 @@ const Home = () => {
             {[
               {
                 q: "What can the autonomous agent actually do?",
-                a: "Gemini reads QuickBooks events in real time, executes scheduled and threshold-based payouts, posts journal entries, reconciles bank feeds, flags anomalies, and generates reports. You set the guardrails — it handles the work.",
+                a: "Swift reads QuickBooks events in real time, executes scheduled and threshold-based payouts, posts journal entries, reconciles bank feeds, flags anomalies, and generates reports. You set the guardrails — it handles the work.",
               },
               {
                 q: "How do you keep the AI from making mistakes?",
