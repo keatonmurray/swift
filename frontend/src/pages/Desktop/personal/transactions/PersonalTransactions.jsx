@@ -16,67 +16,6 @@ const statusStyles = {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  Mock data                                                                  */
-/* -------------------------------------------------------------------------- */
-
-const mockTransactions = [
-  {
-    date: "May 30, 2025",
-    time: "10:24 AM",
-    description: "Salary Deposit",
-    sub: "Monthly salary – May 2025",
-    currency: "USD",
-    amount: "+$4,500.00",
-    status: "Received",
-  },
-  {
-    date: "May 29, 2025",
-    time: "03:12 PM",
-    description: "Rent Payment",
-    sub: "Apartment rent – June",
-    currency: "USD",
-    amount: "-$1,200.00",
-    status: "Sent",
-  },
-  {
-    date: "May 28, 2025",
-    time: "11:45 AM",
-    description: "Freelance Payment",
-    sub: "Design project – Invoice #1042",
-    currency: "EUR",
-    amount: "+€850.00",
-    status: "Received",
-  },
-  {
-    date: "May 27, 2025",
-    time: "09:30 AM",
-    description: "Electricity Bill",
-    sub: "Utility payment",
-    currency: "USD",
-    amount: "-$145.00",
-    status: "Sent",
-  },
-  {
-    date: "May 26, 2025",
-    time: "02:15 PM",
-    description: "Transfer to Savings",
-    sub: "Monthly savings goal",
-    currency: "USD",
-    amount: "-$500.00",
-    status: "Sent",
-  },
-  {
-    date: "May 25, 2025",
-    time: "06:00 PM",
-    description: "Refund – Online Store",
-    sub: "Order #ORD-8821 returned",
-    currency: "GBP",
-    amount: "+£62.00",
-    status: "Received",
-  },
-]
-
-/* -------------------------------------------------------------------------- */
 /*  Page                                                                       */
 /* -------------------------------------------------------------------------- */
 
@@ -85,11 +24,11 @@ const PersonalTransactions = () => {
   const [loading, setLoading] = useState(true)
 
   const userId = localStorage.getItem("user_id")
+  const token = localStorage.getItem("api_token")
 
   // Fetch wallet transactions
   const fetchWalletTransactions = async () => {
     try {
-      const token = localStorage.getItem("api_token")
       const response = await axios.get(
         `${import.meta.env.VITE_API_BASE_URL}/api/get-wallet-transactions`,
         { headers: { Authorization: `Bearer ${token}` } }
@@ -110,50 +49,102 @@ const PersonalTransactions = () => {
     }
   }, [userId])
 
-  // Format transactions for display (use mock data as fallback)
+  // Format transactions for display
   const transactions =
     walletTransactions.length > 0
-      ? walletTransactions.map((t) => ({
-          date: new Date(t.created_at * 1000).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          }),
-          time: new Date(t.created_at * 1000).toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-          description: t.type
-            ?.replaceAll("_", " ")
-            ?.replace(/\b\w/g, (char) => char.toUpperCase()),
-          sub: t.reason || t.type || "",
-          currency: t.currency?.toUpperCase() || "USD",
-          amount: `${t.type?.includes("in") ? "+" : "-"}$${Number(
-            t.amount
-          ).toLocaleString()}`,
-          status: t.type?.includes("in") ? "Received" : "Sent",
-        }))
-      : mockTransactions
+      ? walletTransactions.map((t) => {
+          const numericAmount = Number(t.amount || 0)
+          const isReceived = numericAmount > 0
+
+          return {
+            date: new Date(t.created_at * 1000).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            }),
+
+            time: new Date(t.created_at * 1000).toLocaleTimeString("en-US", {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+
+            description:
+              t.type
+                ?.replaceAll("_", " ")
+                ?.replace(/\b\w/g, (char) => char.toUpperCase()) || "Transaction",
+
+            sub: t.reason || t.type || "",
+
+            currency: t.currency?.toUpperCase() || "USD",
+
+            amount: `${isReceived ? "+" : "-"}$${Math.abs(
+              numericAmount
+            ).toLocaleString()}`,
+
+            status: isReceived ? "Received" : "Sent",
+          }
+        })
+      : []
 
   // Summary stats
   const totalVolume = walletTransactions.reduce(
     (sum, t) => sum + Math.abs(Number(t.amount || 0)),
     0
   )
-  const received = transactions.filter((t) => t.status === "Received").length
-  const sent = transactions.filter((t) => t.status === "Sent").length
+
+  const received = transactions.filter(
+    (t) => t.status === "Received"
+  ).length
+
+  const sent = transactions.filter(
+    (t) => t.status === "Sent"
+  ).length
 
   const summaryStatuses = [
     { label: "Received", count: received, color: "bg-emerald-500" },
     { label: "Sent", count: sent, color: "bg-indigo-500" },
   ]
 
+  // Recent activity
   const recentActivity = transactions.slice(0, 3).map((t) => ({
     title: t.description,
     amount: t.amount,
     time: t.time,
-    color: t.status === "Received" ? "bg-emerald-500" : "bg-indigo-500",
+    color: t.status === "Received"
+      ? "bg-emerald-500"
+      : "bg-indigo-500",
   }))
+
+  const getPendingWalletTransactions = async () => {
+    try {
+
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/get-pending-wallet-transactions`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        }
+      )
+
+      console.log(
+        "Pending wallet transfers:",
+        response.data
+      )
+
+    } catch (error) {
+
+      console.error(
+        "Failed to fetch pending wallet transfers:",
+        error.response?.data || error.message
+      )
+    }
+  }
+
+  useEffect(() => {
+    getPendingWalletTransactions()
+  }, [])
 
   return (
     <DashboardShell

@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Models\Accounts\Personal\Transaction;
+use App\Models\Accounts\Personal\Transfer;
 use App\Models\Accounts\Personal\VirtualAccount;
 use App\Models\Accounts\Personal\Wallet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,15 +24,15 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'first_name', 
-        'last_name', 
-        'country', 
+        'first_name',
+        'last_name',
+        'country',
         'account_type',
         'company_name',
-        'email', 
-        'profile_avatar', 
-        'id_photo', 
-        'kyc_status', 
+        'email',
+        'profile_avatar',
+        'id_photo',
+        'kyc_status',
         'password'
     ];
 
@@ -58,18 +59,59 @@ class User extends Authenticatable
         ];
     }
 
+
+    // ======================================================
+    // Wallets
+    // ======================================================
+
     public function wallets()
     {
         return $this->hasMany(Wallet::class);
     }
+
+
+    // ======================================================
+    // Virtual accounts
+    // ======================================================
 
     public function virtualAccounts()
     {
         return $this->hasMany(VirtualAccount::class);
     }
 
+
+    // ======================================================
+    // Transactions
+    // ======================================================
+
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+
+    // ======================================================
+    // Transfers SENT by this user
+    // ======================================================
+
+    public function sentTransfers()
+    {
+        return $this->hasMany(
+            Transfer::class,
+            'sender_user_id'
+        );
+    }
+
+
+    // ======================================================
+    // Transfers RECEIVED by this user
+    // ======================================================
+
+    public function receivedTransfers()
+    {
+        return $this->hasMany(
+            Transfer::class,
+            'recipient_user_id'
+        );
     }
 }
