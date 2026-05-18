@@ -1,29 +1,42 @@
-import React, { useEffect, useState } from "react"
+﻿import React from "react"
 import {
   FiPlus,
   FiChevronDown,
   FiChevronRight,
   FiArrowUpRight,
+  FiCreditCard,
   FiClock,
   FiDollarSign,
   FiLock,
+
 } from "react-icons/fi"
 import DashboardShell from "@/pages/Desktop/components/DashboardShell"
 import { Link } from "react-router-dom"
+import { useState, useEffect } from "react"
 import axios from "axios"
 
 const statusStyles = {
-  Received: "bg-emerald-50 text-emerald-700 border border-emerald-100",
-  Sent: "bg-indigo-50 text-indigo-700 border border-indigo-100",
-  Pending: "bg-amber-50 text-amber-700 border border-amber-100",
-  Failed: "bg-red-50 text-red-700 border border-red-100",
+  Received:
+    "bg-emerald-50 text-emerald-700 border border-emerald-100",
+
+  Sent:
+    "bg-indigo-50 text-indigo-700 border border-indigo-100",
+
+  Pending:
+    "bg-amber-50 text-amber-700 border border-amber-100",
+
+  Failed:
+    "bg-red-50 text-red-700 border border-red-100",
 }
 
 const PersonalPay = () => {
-  const [walletTransactions, setWalletTransactions] = useState([])
+  const [walletTransactions, setWalletTransactions] =
+    useState([])
+
   const [loading, setLoading] = useState(true)
 
   const userId = localStorage.getItem("user_id")
+
   const token = localStorage.getItem("api_token")
 
   // Fetch wallet transactions
@@ -39,7 +52,9 @@ const PersonalPay = () => {
         }
       )
 
-      setWalletTransactions(response.data.transactions || [])
+      setWalletTransactions(
+        response.data.transactions || []
+      )
     } catch (err) {
       console.error(err)
     } finally {
@@ -53,7 +68,6 @@ const PersonalPay = () => {
     } else {
       setLoading(false)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId])
 
   // Format transactions
@@ -61,92 +75,145 @@ const PersonalPay = () => {
     walletTransactions.length > 0
       ? walletTransactions.map((t) => {
           const numericAmount = Number(t.amount || 0)
+
           const isReceived = numericAmount > 0
 
           return {
             id: t.id,
-            date: new Date(t.created_at * 1000).toLocaleDateString("en-US", {
+
+            date: new Date(
+              t.created_at * 1000
+            ).toLocaleDateString("en-US", {
               month: "short",
               day: "numeric",
               year: "numeric",
             }),
-            time: new Date(t.created_at * 1000).toLocaleTimeString("en-US", {
+
+            time: new Date(
+              t.created_at * 1000
+            ).toLocaleTimeString("en-US", {
               hour: "2-digit",
               minute: "2-digit",
             }),
+
             description:
               t.type
                 ?.replaceAll("_", " ")
-                ?.replace(/\b\w/g, (char) => char.toUpperCase()) ||
-              "Transaction",
+                ?.replace(/\b\w/g, (char) =>
+                  char.toUpperCase()
+                ) || "Transaction",
+
             sub: t.reason || t.status || "",
-            currency: t.currency?.toUpperCase() || "USD",
+
+            currency:
+              t.currency?.toUpperCase() || "USD",
+
             amount: `${isReceived ? "+" : "-"}$${Math.abs(
               numericAmount
             ).toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}`,
+
             rawAmount: numericAmount,
-            status: isReceived ? "Received" : "Sent",
-            color: isReceived ? "bg-emerald-500" : "bg-indigo-500",
+
+            status: isReceived
+              ? "Received"
+              : "Sent",
+
+            color: isReceived
+              ? "bg-emerald-500"
+              : "bg-indigo-500",
           }
         })
       : []
 
   // Recent payments
-  const recentPayments = transactions.slice(0, 5).map((t) => ({
-    id: t.id,
-    name: t.description || "Transaction",
-    email: t.sub || t.currency || "Wallet transaction",
-    amount: t.amount,
-    status: t.status,
-    color: t.color,
-    initials:
-      t.description
-        ?.split(" ")
-        ?.map((n) => n[0])
-        ?.join("")
-        ?.slice(0, 2)
-        ?.toUpperCase() || "TX",
-  }))
+  const recentPayments = transactions
+    .slice(0, 5)
+    .map((t) => ({
+      id: t.id,
+
+      name: t.description || "Transaction",
+
+      email:
+        t.sub ||
+        t.currency ||
+        "Wallet transaction",
+
+      amount: t.amount,
+
+      status: t.status,
+
+      color: t.color,
+
+      initials:
+        t.description
+          ?.split(" ")
+          ?.map((n) => n[0])
+          ?.join("")
+          ?.slice(0, 2)
+          ?.toUpperCase() || "TX",
+    }))
 
   // USE LATEST TRANSACTION AS WALLET DATA
-  const latestTransaction = walletTransactions?.[0] || null
+  const latestTransaction =
+    walletTransactions?.[0] || null
 
   const walletCurrency =
-    latestTransaction?.currency?.toUpperCase() || "USD"
+    latestTransaction?.currency?.toUpperCase() ||
+    "USD"
 
-  const totalBalance = Number(latestTransaction?.balance || 0)
+  const totalBalance = Number(
+    latestTransaction?.balance || 0
+  )
 
   const availableBalance =
-    latestTransaction?.balance_type === "available_balance"
-      ? Number(latestTransaction?.balance || 0)
+    latestTransaction?.balance_type ===
+    "available_balance"
+      ? Number(
+          latestTransaction?.balance || 0
+        )
       : 0
 
-  const pendingTransactions = walletTransactions.filter(
-    (t) =>
-      t.status?.toLowerCase() === "pending" ||
-      t.status?.toLowerCase() === "hold" ||
-      t.status?.toLowerCase() === "in_progress"
-  )
+  const pendingTransactions =
+    walletTransactions.filter(
+      (t) =>
+        t.status?.toLowerCase() ===
+          "pending" ||
+        t.status?.toLowerCase() === "hold" ||
+        t.status?.toLowerCase() ===
+          "in_progress"
+    )
 
-  const pendingAmount = pendingTransactions.reduce(
-    (sum, t) => sum + Math.abs(Number(t.amount || 0)),
-    0
-  )
+  const pendingAmount =
+    pendingTransactions.reduce(
+      (sum, t) =>
+        sum + Math.abs(Number(t.amount || 0)),
+      0
+    )
 
-  const walletId = latestTransaction?.ewallet_id || "N/A"
-  const walletStatus = latestTransaction?.status || "Active"
-  const walletCreated = latestTransaction?.created_at
-    ? new Date(latestTransaction.created_at * 1000).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      })
-    : "N/A"
+  const walletId =
+    latestTransaction?.ewallet_id || "N/A"
+
+  const walletStatus =
+    latestTransaction?.status || "Active"
+
+  const walletCreated =
+    latestTransaction?.created_at
+      ? new Date(
+          latestTransaction.created_at * 1000
+        ).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        })
+      : "N/A"
 
   const cardLast4 = "4821"
+
+  const cardHolder = "Card Holder"
+
   const walletGrowth = "+12.4%"
 
   return (
@@ -179,10 +246,13 @@ const PersonalPay = () => {
               </p>
 
               <h2 className="mt-2 text-[28px] font-semibold tracking-[-0.03em] leading-none">
-                {totalBalance.toLocaleString(undefined, {
-                  style: "currency",
-                  currency: walletCurrency,
-                })}
+                {totalBalance.toLocaleString(
+                  undefined,
+                  {
+                    style: "currency",
+                    currency: walletCurrency,
+                  }
+                )}
               </h2>
 
               <div className="mt-3 flex items-center gap-2">
@@ -231,7 +301,7 @@ const PersonalPay = () => {
                     </div>
 
                     <span className="text-[13px] font-medium tracking-[0.25em]">
-                      •••• {cardLast4}
+                      ΓÇóΓÇóΓÇóΓÇó {cardLast4}
                     </span>
                   </div>
                 </div>
@@ -240,7 +310,10 @@ const PersonalPay = () => {
               {/* Disabled state content */}
               <div className="flex flex-1 flex-col items-center justify-center text-center px-2">
                 <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
-                  <FiLock size={17} className="text-zinc-200" />
+                  <FiLock
+                    size={17}
+                    className="text-zinc-200"
+                  />
                 </div>
 
                 <p className="text-[14px] font-semibold text-white tracking-tight">
@@ -267,10 +340,13 @@ const PersonalPay = () => {
                 </p>
 
                 <p className="text-[24px] font-semibold text-gray-900 tracking-tight leading-none mb-2">
-                  {availableBalance.toLocaleString(undefined, {
-                    style: "currency",
-                    currency: walletCurrency,
-                  })}
+                  {availableBalance.toLocaleString(
+                    undefined,
+                    {
+                      style: "currency",
+                      currency: walletCurrency,
+                    }
+                  )}
                 </p>
 
                 <p className="text-[12px] text-emerald-600 font-medium">
@@ -279,7 +355,10 @@ const PersonalPay = () => {
               </div>
 
               <span className="h-11 w-11 rounded-2xl flex items-center justify-center flex-shrink-0 bg-emerald-50 transition-transform group-hover:scale-105">
-                <FiArrowUpRight size={18} className="text-emerald-500" />
+                <FiArrowUpRight
+                  size={18}
+                  className="text-emerald-500"
+                />
               </span>
             </div>
 
@@ -291,19 +370,26 @@ const PersonalPay = () => {
                 </p>
 
                 <p className="text-[24px] font-semibold text-gray-900 tracking-tight leading-none mb-2">
-                  {pendingAmount.toLocaleString(undefined, {
-                    style: "currency",
-                    currency: walletCurrency,
-                  })}
+                  {pendingAmount.toLocaleString(
+                    undefined,
+                    {
+                      style: "currency",
+                      currency: walletCurrency,
+                    }
+                  )}
                 </p>
 
                 <p className="text-[12px] text-amber-600 font-medium">
-                  {pendingTransactions.length} in progress
+                  {pendingTransactions.length} in
+                  progress
                 </p>
               </div>
 
               <span className="h-11 w-11 rounded-2xl flex items-center justify-center flex-shrink-0 bg-amber-50 transition-transform group-hover:scale-105">
-                <FiClock size={18} className="text-amber-500" />
+                <FiClock
+                  size={18}
+                  className="text-amber-500"
+                />
               </span>
             </div>
           </div>
@@ -315,7 +401,10 @@ const PersonalPay = () => {
               {walletCurrency} Wallet
             </span>
 
-            <FiChevronDown size={14} className="text-gray-400" />
+            <FiChevronDown
+              size={14}
+              className="text-gray-400"
+            />
           </button>
         </div>
       </section>
@@ -331,7 +420,8 @@ const PersonalPay = () => {
               </h3>
 
               <p className="text-[12px] text-gray-400 mt-0.5">
-                Latest outgoing transfers and payouts
+                Latest outgoing transfers and
+                payouts
               </p>
             </div>
 
@@ -344,7 +434,12 @@ const PersonalPay = () => {
             <table className="w-full whitespace-nowrap">
               <thead>
                 <tr className="text-left border-b border-gray-50">
-                  {["Recipient", "Amount", "Status", ""].map((h) => (
+                  {[
+                    "Recipient",
+                    "Amount",
+                    "Status",
+                    "",
+                  ].map((h) => (
                     <th
                       key={h}
                       className="px-5 py-3.5 text-[11px] font-semibold uppercase tracking-wider text-gray-400"
@@ -375,56 +470,62 @@ const PersonalPay = () => {
                     </td>
                   </tr>
                 ) : (
-                  recentPayments.map((payment, i) => (
-                    <tr
-                      key={i}
-                      className="border-b border-gray-50 hover:bg-gray-50/60 transition-colors last:border-b-0"
-                    >
-                      {/* Recipient */}
-                      <td className="px-5 py-4">
-                        <div className="flex items-center gap-3">
-                          <div
-                            className={`flex h-9 w-9 items-center justify-center rounded-full text-[11px] font-semibold text-white ${payment.color}`}
+                  recentPayments.map(
+                    (payment, i) => (
+                      <tr
+                        key={i}
+                        className="border-b border-gray-50 hover:bg-gray-50/60 transition-colors last:border-b-0"
+                      >
+                        {/* Recipient */}
+                        <td className="px-5 py-4">
+                          <div className="flex items-center gap-3">
+                            <div
+                              className={`flex h-9 w-9 items-center justify-center rounded-full text-[11px] font-semibold text-white ${payment.color}`}
+                            >
+                              {payment.initials}
+                            </div>
+
+                            <div>
+                              <p className="text-[13px] font-medium text-gray-800 leading-tight">
+                                {payment.name}
+                              </p>
+
+                              <p className="text-[11px] text-gray-400 leading-tight mt-0.5">
+                                {payment.email}
+                              </p>
+                            </div>
+                          </div>
+                        </td>
+
+                        {/* Amount */}
+                        <td className="px-5 py-4 text-[13px] font-semibold text-gray-900 tabular-nums">
+                          {payment.amount}
+                        </td>
+
+                        {/* Status */}
+                        <td className="px-5 py-4">
+                          <span
+                            className={`inline-flex items-center text-[11px] font-semibold rounded-full px-2.5 py-1 ${
+                              statusStyles[
+                                payment.status
+                              ]
+                            }`}
                           >
-                            {payment.initials}
-                          </div>
+                            {payment.status}
+                          </span>
+                        </td>
 
-                          <div>
-                            <p className="text-[13px] font-medium text-gray-800 leading-tight">
-                              {payment.name}
-                            </p>
-
-                            <p className="text-[11px] text-gray-400 leading-tight mt-0.5">
-                              {payment.email}
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-
-                      {/* Amount */}
-                      <td className="px-5 py-4 text-[13px] font-semibold text-gray-900 tabular-nums">
-                        {payment.amount}
-                      </td>
-
-                      {/* Status */}
-                      <td className="px-5 py-4">
-                        <span
-                          className={`inline-flex items-center text-[11px] font-semibold rounded-full px-2.5 py-1 ${
-                            statusStyles[payment.status]
-                          }`}
-                        >
-                          {payment.status}
-                        </span>
-                      </td>
-
-                      {/* Action */}
-                      <td className="px-5 py-4">
-                        <button className="h-8 w-8 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-colors">
-                          <FiChevronRight size={13} />
-                        </button>
-                      </td>
-                    </tr>
-                  ))
+                        {/* Action */}
+                        <td className="px-5 py-4">
+                          <button className="h-8 w-8 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-colors">
+                            <FiChevronRight
+                              size={13}
+                            />
+                          </button>
+                        </td>
+                      </tr>
+                    )
+                  )
                 )}
               </tbody>
             </table>
@@ -441,9 +542,18 @@ const PersonalPay = () => {
 
             <div className="space-y-2">
               {[
-                { label: "Send Payment", desc: "Transfer to a recipient" },
-                { label: "Bulk Payout", desc: "Pay multiple at once" },
-                { label: "Manage Cards", desc: "Add or update cards" },
+                {
+                  label: "Send Payment",
+                  desc: "Transfer to a recipient",
+                },
+                {
+                  label: "Bulk Payout",
+                  desc: "Pay multiple at once",
+                },
+                {
+                  label: "Manage Cards",
+                  desc: "Add or update cards",
+                },
               ].map((action) => (
                 <button
                   key={action.label}
@@ -476,29 +586,42 @@ const PersonalPay = () => {
 
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-[13px] text-gray-400">Wallet ID</span>
+                <span className="text-[13px] text-gray-400">
+                  Wallet ID
+                </span>
+
                 <span className="text-[13px] font-medium text-gray-900 tabular-nums">
                   {walletId}
                 </span>
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="text-[13px] text-gray-400">Currency</span>
+                <span className="text-[13px] text-gray-400">
+                  Currency
+                </span>
+
                 <span className="text-[13px] font-medium text-gray-900">
                   {walletCurrency}
                 </span>
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="text-[13px] text-gray-400">Status</span>
+                <span className="text-[13px] text-gray-400">
+                  Status
+                </span>
+
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-100 px-2.5 py-1 text-[11px] font-semibold text-emerald-700">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+
                   {walletStatus}
                 </span>
               </div>
 
               <div className="flex items-center justify-between border-t border-gray-100 pt-3">
-                <span className="text-[13px] text-gray-400">Created</span>
+                <span className="text-[13px] text-gray-400">
+                  Created
+                </span>
+
                 <span className="text-[13px] font-medium text-gray-900">
                   {walletCreated}
                 </span>
