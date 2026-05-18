@@ -32,6 +32,7 @@ import PersonalOverview from "./personal/overview/Overview";
 import PersonalTransactions from "./personal/transactions/PersonalTransactions";
 import PersonalAccount from "./personal/account/PersonalAccount";
 import PersonalTransferMoney from "./personal/transfer/PersonalTransferMoney";
+import PendingTransfer from "./personal/pending-transfer/PendingTransfer";
 
 const DesktopView = () => {
   return (
@@ -115,6 +116,7 @@ const DesktopView = () => {
           <Route path="pay" element={<PersonalPay />} />
           <Route path="transactions" element={<PersonalTransactions />} />
           <Route path="transfer" element={<PersonalTransferMoney />} />
+          <Route path="transfer/pending" element={<PendingTransfer/>} />
           {/* <Route path="cards" element={<Cards />} /> */}
           {/* <Route path="expenses" element={<Expenses />} /> */}
           {/* <Route path="reports" element={<Reports />} /> */}

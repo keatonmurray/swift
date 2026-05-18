@@ -115,37 +115,6 @@ const PersonalTransactions = () => {
       : "bg-indigo-500",
   }))
 
-  const getPendingWalletTransactions = async () => {
-    try {
-
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/api/get-pending-wallet-transactions`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
-        }
-      )
-
-      console.log(
-        "Pending wallet transfers:",
-        response.data
-      )
-
-    } catch (error) {
-
-      console.error(
-        "Failed to fetch pending wallet transfers:",
-        error.response?.data || error.message
-      )
-    }
-  }
-
-  useEffect(() => {
-    getPendingWalletTransactions()
-  }, [])
-
   return (
     <DashboardShell
       title="Transactions"
