@@ -84,7 +84,7 @@ const Overview = () => (
     {/* ── Stat cards ───────────────────────────────────────────────────── */}
     <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-5">
       <StatCard
-        title="Total Payroll Amount"
+        title="Total Corporate Balance"
         value="$80,700.00"
         subtitle="18 employees \u00B7 6 countries"
         icon={Users}
