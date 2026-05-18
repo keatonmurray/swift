@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import {
   FiPlus,
   FiChevronDown,
@@ -14,6 +14,41 @@ import DashboardShell from "@/pages/Desktop/components/DashboardShell"
 import { Link } from "react-router-dom"
 import { useState, useEffect } from "react"
 import axios from "axios"
+import {
+  TransferMoneySkeleton,
+  TransferStatsSkeleton,
+} from "@/pages/Desktop/components/Skeleton"
+
+/* -------------------------------------------------------------------------- */
+/*  Mock data                                                                  */
+/* -------------------------------------------------------------------------- */
+
+const recentPayments = [
+  {
+    name: "Sarah Johnson",
+    email: "sarah.johnson@acme.com",
+    amount: "$4,200.00",
+    status: "Completed",
+  },
+  {
+    name: "Michael Lee",
+    email: "michael.lee@globalpay.io",
+    amount: "$2,850.00",
+    status: "Pending",
+  },
+  {
+    name: "Emma Wilson",
+    email: "emma.wilson@agency.co",
+    amount: "$1,250.00",
+    status: "Completed",
+  },
+  {
+    name: "Carlos Rivera",
+    email: "carlos.rivera@startup.mx",
+    amount: "$890.00",
+    status: "Completed",
+  },
+]
 
 const statusStyles = {
   Received:
@@ -61,6 +96,40 @@ const PersonalPay = () => {
       setLoading(false)
     }
   }
+const PersonalPay = () => {
+  // TODO: replace with real wallet fetch when wired
+  const [walletLoading, setWalletLoading] = useState(true)
+
+  useEffect(() => {
+    const t = setTimeout(() => setWalletLoading(false), 900)
+    return () => clearTimeout(t)
+  }, [])
+
+  return (
+  <DashboardShell
+    title="Pay"
+    subtitle="Send payouts, manage balances, and track outgoing payments"
+    actions={
+      <Link to="/personal/transfer" className="inline-flex items-center gap-1.5 h-10 text-[13px] font-semibold text-white bg-black rounded-full px-5 hover:opacity-90 transition-colors">
+        <FiPlus size={14} />
+        Send to another wallet
+      </Link>
+    }
+  >
+    {/* ── Top row: Wallet hero + stats ───────────────────────────────── */}
+    <section className="grid grid-cols-12 gap-4 mb-5">
+      {/* Wallet Hero — keeps the original brand color */}
+      <div className="col-span-12 xl:col-span-4">
+        {walletLoading ? (
+          <TransferMoneySkeleton />
+        ) : (
+        <div className="overflow-hidden rounded-[20px] bg-main-pallette p-5 text-white relative">
+        {/* Balance */}
+        <div className="relative flex items-start justify-between">
+          <div className="min-w-0">
+            <p className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider">
+              Primary Wallet Balance
+            </p>
 
   useEffect(() => {
     if (userId) {
@@ -338,6 +407,24 @@ const PersonalPay = () => {
                 <p className="text-[13px] text-gray-500 leading-none mb-2">
                   Available Balance
                 </p>
+        </div>
+        )}
+      </div>
+
+      {/* Stats column */}
+      <div className="col-span-12 xl:col-span-8">
+        {walletLoading ? (
+          <TransferStatsSkeleton />
+        ) : (
+          <>
+        {/* Top stats */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Available */}
+          <div className="bg-white border border-gray-200 rounded-[20px] px-5 py-4 flex items-center justify-between gap-4">
+            <div className="min-w-0 flex-1">
+              <p className="text-[13px] text-gray-500 leading-none mb-2">
+                Available Balance
+              </p>
 
                 <p className="text-[24px] font-semibold text-gray-900 tracking-tight leading-none mb-2">
                   {availableBalance.toLocaleString(
@@ -405,6 +492,35 @@ const PersonalPay = () => {
               size={14}
               className="text-gray-400"
             />
+        {/* Wallet selector */}
+        <button className="mt-4 bg-white border border-gray-200 rounded-[20px] px-5 h-12 w-full flex items-center justify-between text-[13px] font-medium text-gray-900 hover:bg-gray-50 transition-colors">
+          <span className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-emerald-500" />
+            USD Wallet
+          </span>
+
+          <FiChevronDown size={14} className="text-gray-400" />
+        </button>
+        </>
+        )}
+      </div>
+    </section>
+
+    {/* ── Main grid: lg:8/4 ───────────────────────────────────────────── */}
+    <section className="grid grid-cols-12 gap-4">
+      {/* LEFT — Recent payments table */}
+      <div className="col-span-12 lg:col-span-8 bg-white border border-gray-200 rounded-[20px] overflow-hidden">
+        <div className="px-5 py-4 border-b border-gray-50 flex items-center justify-between">
+          <div>
+            <h3 className="text-[14px] font-semibold text-gray-900">
+              Recent Transactions
+            </h3>
+            <p className="text-[12px] text-gray-400 mt-0.5">
+              Latest outgoing transfers and payouts
+            </p>
+          </div>
+          <button className="text-[12px] text-gray-400 hover:text-gray-700 font-medium transition-colors">
+            View all
           </button>
         </div>
       </section>
@@ -577,6 +693,12 @@ const PersonalPay = () => {
               ))}
             </div>
           </div>
+        </div>
+      </aside>
+    </section>
+  </DashboardShell>
+  )
+}
 
           {/* Wallet Details */}
           <div className="bg-white border border-gray-200 rounded-[20px] p-5">

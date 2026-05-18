@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import {
   FiSearch,
   FiPlus,
@@ -9,6 +9,10 @@ import {
   FiDollarSign,
   FiClock,
 } from "react-icons/fi"
+import {
+  TransferMoneySkeleton,
+  TransferStatsSkeleton,
+} from "@/pages/Desktop/components/Skeleton"
 
 const recentPayments = [
   {
@@ -38,6 +42,14 @@ const statusStyles = {
 }
 
 const BusinessPay = () => {
+  // TODO: replace with real wallet fetch when wired
+  const [walletLoading, setWalletLoading] = useState(true)
+
+  useEffect(() => {
+    const t = setTimeout(() => setWalletLoading(false), 900)
+    return () => clearTimeout(t)
+  }, [])
+
   return (
     <div className="min-h-screen bg-[#f7f7f8] p-6 lg:p-8">
       <div className="mx-auto max-w-[1600px]">
@@ -69,6 +81,9 @@ const BusinessPay = () => {
         {/* Top Cards */}
         <div className="mb-6 grid grid-cols-1 gap-6 xl:grid-cols-[1.2fr_0.8fr]">
           {/* Wallet Card */}
+          {walletLoading ? (
+            <TransferMoneySkeleton />
+          ) : (
           <div className="overflow-hidden rounded-[28px] bg-main-pallette p-8 text-white shadow-sm">
             <div className="flex items-start justify-between">
               <div>
@@ -139,8 +154,12 @@ const BusinessPay = () => {
               </div>
             </div>
           </div>
+          )}
 
           {/* Stats */}
+          {walletLoading ? (
+            <TransferStatsSkeleton />
+          ) : (
           <div className="space-y-6">
             {/* Available */}
             <div className="rounded-[28px] border border-[#ececec] bg-white p-8 shadow-sm">
@@ -187,6 +206,7 @@ const BusinessPay = () => {
               <FiChevronDown className="text-[20px]" />
             </button>
           </div>
+          )}
         </div>
 
         {/* Payments */}
