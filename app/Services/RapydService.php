@@ -147,4 +147,27 @@ class RapydService
 
         return $response->json();
     }
+
+    public function transferFundsBetweenWallets (array $payload)
+    {
+        $endpoint = $this->endpoint . '/account/transfer';
+
+        $body = json_encode($payload);
+
+        $signature = $this->signer->generate(
+            'POST',
+            $endpoint,
+            $body
+        );
+
+        $response = Http::withHeaders([
+            'access_key'   => $signature['access_key'],
+            'salt'         => $signature['salt'],
+            'timestamp'    => $signature['timestamp'],
+            'signature'    => $signature['signature'],
+            'Content-Type' => 'application/json',
+        ])->post($this->baseUrl . $endpoint, $payload);
+
+        return $response->json();
+    }
 }
