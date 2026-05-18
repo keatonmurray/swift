@@ -17,6 +17,8 @@ import {
   TbReportAnalytics,
 } from "react-icons/tb"
 
+import { RiRobot2Line } from "react-icons/ri"
+
 import { LuGoal } from "react-icons/lu"
 
 const navItems = [
@@ -27,6 +29,11 @@ const navItems = [
     label: "Transactions",
     icon: TbArrowsExchange,
     to: "/personal/transactions",
+  },
+  {
+    label: "Automations",
+    icon: RiRobot2Line,
+    to: "/personal/automations",
   },
   // { label: "Cards", icon: BsCreditCard2Front, to: "/personal/cards" },
   // {

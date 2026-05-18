@@ -31,6 +31,7 @@ import PersonalPay from "./personal/pay/PersonalPay";
 import PersonalOverview from "./personal/overview/Overview";
 import PersonalTransactions from "./personal/transactions/PersonalTransactions";
 import PersonalAccount from "./personal/account/PersonalAccount";
+import PersonalAutomations from "./personal/automations/Automations";
 
 const DesktopView = () => {
   return (
@@ -113,6 +114,7 @@ const DesktopView = () => {
           {/* Future Routes */}
           <Route path="pay" element={<PersonalPay />} />
           <Route path="transactions" element={<PersonalTransactions />} />
+          <Route path="automations" element={<PersonalAutomations />} />
           {/* <Route path="cards" element={<Cards />} /> */}
           {/* <Route path="expenses" element={<Expenses />} /> */}
           {/* <Route path="reports" element={<Reports />} /> */}
