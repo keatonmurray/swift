@@ -28,6 +28,7 @@ import BusinessPendingTransfer from "./business/pending-transfer/BusinessPending
 import Recipients from "./business/recipients/Recipients";
 import PersonalPay from "./personal/pay/PersonalPay";
 import Payments from "./business/payments/Payments";
+import BusinessIntegrations from "./business/integrations/BusinessIntegrations";
 
 // Personal pages
 import PersonalOverview from "./personal/overview/Overview";
@@ -76,6 +77,11 @@ const DesktopView = () => {
           <Route
             path="pending-transfer"
             element={<BusinessPendingTransfer />}
+          />
+
+          <Route
+            path="integrations"
+            element={<BusinessIntegrations />}
           />
 
           <Route path="accounts" element={<Account />} />
