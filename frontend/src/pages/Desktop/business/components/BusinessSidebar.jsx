@@ -21,7 +21,7 @@ import {
 
 import { AiOutlineTeam } from "react-icons/ai"
 import { CiMoneyBill } from "react-icons/ci";
-import { LuWallet } from "react-icons/lu"
+import { MdOutlineIntegrationInstructions } from "react-icons/md";
 
 import useCurrentUser from "@/hooks/useCurrentUser"
 
@@ -46,6 +46,7 @@ const navItems = [
     icon: RiRobot2Line,
     to: "/business/automations",
   },
+  { label: "Integrations", icon: MdOutlineIntegrationInstructions, to: "/business/integrations" },
   {
     label: "Your Employees",
     icon: AiOutlineTeam,
