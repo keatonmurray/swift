@@ -11,6 +11,7 @@ import {
 
 import { GoCreditCard } from "react-icons/go"
 import { BsWallet2 } from "react-icons/bs";
+import { CiMoneyBill } from "react-icons/ci";
 
 import {
   TbArrowsExchange,
@@ -28,6 +29,7 @@ const navItems = [
   { label: "Dashboard", icon: IoHomeOutline, to: "/personal" },
   { label: "Open a wallet", icon: BsWallet2, to: "/personal/account" },
   { label: "Transfer money", icon: GoCreditCard, to: "/personal/pay" },
+  { label: "Accept money", icon: CiMoneyBill, to: "/personal/transfer/pending" },
   {
     label: "Transactions",
     icon: TbArrowsExchange,

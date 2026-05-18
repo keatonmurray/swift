@@ -36,6 +36,8 @@ Route::get('/retrieve-currencies', [CurrencyController::class, 'retrieveCurrenci
 
 // Transfer Money (Personal)
 Route::post('/transfer-personal-money', [TransferMoneyController::class, 'transferToOtherWallet'])->middleware('auth:sanctum');
+Route::get('/get-pending-wallet-transactions', [TransferMoneyController::class, 'getPendingWalletTransfers'])->middleware('auth:sanctum');
+Route::post('/accept-wallet-transfer', [TransferMoneyController::class, 'acceptPendingWalletTransfers'])->middleware('auth:sanctum');
 
 // Transactions (Personal)
 Route::get('/get-wallet-transactions', [TransactionsController::class, 'getTransactionsByWallet'])->middleware('auth:sanctum');
