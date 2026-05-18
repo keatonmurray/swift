@@ -145,10 +145,10 @@ const Home = () => {
                 style={{
                   animation: "fadeInUp 0.65s ease 0.2s forwards",
                   opacity: 0,
-                  fontSize: "clamp(2.5rem, 4vw, 4.5rem)",
+                  fontSize: "clamp(2rem, 3vw, 3.25rem)",
                   lineHeight: 1.08,
                   letterSpacing: "-0.02em",
-                  maxWidth: "14ch",
+                  maxWidth: "18ch",
                 }}
                 className="font-display text-white mb-6"
               >
@@ -269,7 +269,7 @@ const Home = () => {
             </p>
             <h2
               className="font-display text-white"
-              style={{ fontSize: "clamp(2rem, 3.5vw, 3.25rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
+              style={{ fontSize: "clamp(1.6rem, 2.6vw, 2.5rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
             >
               Set it up once. Swift handles the rest.
             </h2>
@@ -344,7 +344,7 @@ const Home = () => {
             </p>
             <h2
               className="font-display text-white"
-              style={{ fontSize: "clamp(2rem, 3.5vw, 3.25rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
+              style={{ fontSize: "clamp(1.6rem, 2.6vw, 2.5rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
             >
               A payment gateway with embedded bookkeeping.
             </h2>
@@ -488,7 +488,7 @@ const Home = () => {
             </p>
             <h2
               className="font-display text-white"
-              style={{ fontSize: "clamp(2rem, 3.5vw, 3.25rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
+              style={{ fontSize: "clamp(1.6rem, 2.6vw, 2.5rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
             >
               Open multi-currency accounts for free.
             </h2>
@@ -637,7 +637,7 @@ const Home = () => {
               </p>
               <h2
                 className="font-display text-white mb-6"
-                style={{ fontSize: "clamp(2rem, 3.5vw, 3.25rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
+                style={{ fontSize: "clamp(1.6rem, 2.6vw, 2.5rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
               >
                 Watch the agent<br />work in real time.
               </h2>
@@ -787,7 +787,7 @@ const Home = () => {
             </p>
             <h2
               className="font-display text-white"
-              style={{ fontSize: "clamp(2rem, 3.5vw, 3.25rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
+              style={{ fontSize: "clamp(1.6rem, 2.6vw, 2.5rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
             >
               Finance teams sleep<br />better with Swift.
             </h2>
@@ -865,7 +865,7 @@ const Home = () => {
               </p>
               <h2
                 className="font-display text-white mb-6"
-                style={{ fontSize: "clamp(2rem, 3.5vw, 3.25rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
+                style={{ fontSize: "clamp(1.6rem, 2.6vw, 2.5rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
               >
                 Pay your team in<br />150+ countries.
               </h2>
@@ -948,7 +948,7 @@ const Home = () => {
             </p>
             <h2
               className="font-display text-white"
-              style={{ fontSize: "clamp(2rem, 3.5vw, 3.25rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
+              style={{ fontSize: "clamp(1.6rem, 2.6vw, 2.5rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
             >
               Questions, answered.
             </h2>
@@ -1034,7 +1034,7 @@ const Home = () => {
           >
             <h2
               className="font-display text-white mb-6"
-              style={{ fontSize: "clamp(2.25rem, 4vw, 4rem)", letterSpacing: "-0.02em", lineHeight: 1.05 }}
+              style={{ fontSize: "clamp(2rem, 3.4vw, 3rem)", letterSpacing: "-0.02em", lineHeight: 1.05 }}
             >
               Ready to let finance run itself?
             </h2>
@@ -1080,7 +1080,7 @@ const Home = () => {
               </p>
               <h2
                 className="font-display text-white"
-                style={{ fontSize: "clamp(2rem, 3.5vw, 3.25rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
+                style={{ fontSize: "clamp(1.6rem, 2.6vw, 2.5rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}
               >
                 Inside autonomous finance.
               </h2>

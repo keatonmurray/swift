@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import {
   FiPlus,
   FiChevronDown,
@@ -10,6 +10,10 @@ import {
 } from "react-icons/fi"
 import DashboardShell from "@/pages/Desktop/components/DashboardShell"
 import { Link } from "react-router-dom"
+import {
+  TransferMoneySkeleton,
+  TransferStatsSkeleton,
+} from "@/pages/Desktop/components/Skeleton"
 
 /* -------------------------------------------------------------------------- */
 /*  Mock data                                                                  */
@@ -52,7 +56,16 @@ const statusStyles = {
 /*  Page                                                                       */
 /* -------------------------------------------------------------------------- */
 
-const PersonalPay = () => (
+const PersonalPay = () => {
+  // TODO: replace with real wallet fetch when wired
+  const [walletLoading, setWalletLoading] = useState(true)
+
+  useEffect(() => {
+    const t = setTimeout(() => setWalletLoading(false), 900)
+    return () => clearTimeout(t)
+  }, [])
+
+  return (
   <DashboardShell
     title="Pay"
     subtitle="Send payouts, manage balances, and track outgoing payments"
@@ -66,7 +79,11 @@ const PersonalPay = () => (
     {/* ── Top row: Wallet hero + stats ───────────────────────────────── */}
     <section className="grid grid-cols-12 gap-4 mb-5">
       {/* Wallet Hero — keeps the original brand color */}
-      <div className="col-span-12 xl:col-span-4 overflow-hidden rounded-[20px] bg-main-pallette p-5 text-white relative">
+      <div className="col-span-12 xl:col-span-4">
+        {walletLoading ? (
+          <TransferMoneySkeleton />
+        ) : (
+        <div className="overflow-hidden rounded-[20px] bg-main-pallette p-5 text-white relative">
         {/* Balance */}
         <div className="relative flex items-start justify-between">
           <div className="min-w-0">
@@ -139,10 +156,16 @@ const PersonalPay = () => (
             </div>
           </div>
         </div>
+        </div>
+        )}
       </div>
 
       {/* Stats column */}
       <div className="col-span-12 xl:col-span-8">
+        {walletLoading ? (
+          <TransferStatsSkeleton />
+        ) : (
+          <>
         {/* Top stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Available */}
@@ -197,6 +220,8 @@ const PersonalPay = () => (
 
           <FiChevronDown size={14} className="text-gray-400" />
         </button>
+        </>
+        )}
       </div>
     </section>
 
@@ -351,6 +376,7 @@ const PersonalPay = () => (
       </aside>
     </section>
   </DashboardShell>
-)
+  )
+}
 
 export default PersonalPay

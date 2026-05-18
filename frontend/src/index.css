@@ -21,6 +21,16 @@
   }
 }
 
+/* Hide scrollbars while keeping the element scrollable
+   (Firefox + IE/Edge legacy + WebKit) */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @theme {
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-display: 'Inter', system-ui, sans-serif;

@@ -22,6 +22,8 @@ import { RiRobot2Line } from "react-icons/ri"
 
 import { LuGoal } from "react-icons/lu"
 
+import useCurrentUser from "@/hooks/useCurrentUser"
+
 const navItems = [
   { label: "Dashboard", icon: IoHomeOutline, to: "/personal" },
   { label: "Open a wallet", icon: BsWallet2, to: "/personal/account" },
@@ -64,6 +66,20 @@ const PersonalSidebar = () => {
   // ADD INSIDE COMPONENT
   const navigate = useNavigate()
   const [accountMenuOpen, setAccountMenuOpen] = useState(false)
+  const { user, loading } = useCurrentUser()
+
+  const displayName = user
+    ? [user.first_name, user.last_name].filter(Boolean).join(" ").trim() ||
+      user.email ||
+      "Account"
+    : ""
+
+  const accountTypeLabel = user?.account_type
+    ? `${user.account_type.charAt(0).toUpperCase()}${user.account_type.slice(1)} Account`
+    : "Personal Account"
+
+  const avatarSrc = user?.profile_avatar || "/img/profile.png"
+
   return (
     <aside className="flex h-screen w-[100%] flex-col border-r border-white/10 bg-[#050816] px-5 py-6">
       {/* LOGO */}
@@ -77,7 +93,7 @@ const PersonalSidebar = () => {
       </div>
 
       {/* NAVIGATION */}
-      <nav className="flex-1 overflow-y-auto">
+      <nav className="flex-1 overflow-y-auto no-scrollbar">
         <ul className="space-y-1">
           {navItems.map((item) => (
             <li key={item.label}>
@@ -111,20 +127,36 @@ const PersonalSidebar = () => {
             onClick={() => setAccountMenuOpen((prev) => !prev)}
             className="flex w-full items-center gap-3 rounded-2xl bg-white/5 p-3 transition-all hover:bg-white/10"
           >
-            <img
-              src="https://i.pravatar.cc/100"
-              alt="avatar"
-              className="h-10 w-10 flex-shrink-0 rounded-full object-cover"
-            />
+            {loading ? (
+              <span className="h-10 w-10 flex-shrink-0 rounded-full bg-white/10 animate-pulse" />
+            ) : (
+              <img
+                src={avatarSrc}
+                alt=""
+                className="h-10 w-10 flex-shrink-0 rounded-full object-cover bg-white/5"
+                onError={(e) => {
+                  e.currentTarget.src = "/img/profile.png"
+                }}
+              />
+            )}
 
             <div className="min-w-0 flex-1 text-left">
-              <p className="truncate text-sm font-semibold text-white">
-                Alex Morgan
-              </p>
+              {loading ? (
+                <>
+                  <span className="block h-3.5 w-24 rounded bg-white/10 animate-pulse mb-1.5" />
+                  <span className="block h-3 w-20 rounded bg-white/5 animate-pulse" />
+                </>
+              ) : (
+                <>
+                  <p className="truncate text-sm font-semibold text-white">
+                    {displayName}
+                  </p>
 
-              <p className="truncate text-xs text-zinc-400">
-                Personal Account
-              </p>
+                  <p className="truncate text-xs text-zinc-400">
+                    {accountTypeLabel}
+                  </p>
+                </>
+              )}
             </div>
 
             <svg

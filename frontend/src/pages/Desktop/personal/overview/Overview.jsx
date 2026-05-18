@@ -26,6 +26,7 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 
 import DashboardShell from "@/pages/Desktop/components/DashboardShell"
+import { StatCardSkeleton } from "@/pages/Desktop/components/Skeleton"
 
 /* -------------------------------------------------------------------------- */
 /*  Stat card                                                                  */
@@ -62,6 +63,7 @@ const notifications = [
 const Overview = () => {
   const [wallet, setWallet] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [transactionsLoading, setTransactionsLoading] = useState(true)
   const [walletTransactions, setWalletTransactions] = useState([])
 
   const userId = localStorage.getItem("user_id")
@@ -93,6 +95,8 @@ const Overview = () => {
       setWalletTransactions(response.data.transactions || [])
     } catch (err) {
       console.error(err)
+    } finally {
+      setTransactionsLoading(false)
     }
   }
 
@@ -218,38 +222,49 @@ const Overview = () => {
     >
       {/* ── Stat cards ─────────────────────────────────────────────────── */}
       <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-5">
-        <StatCard
-          title="Total Balance"
-          value={`$${totalBalance.toLocaleString()}`}
-          subtitle="All accounts"
-          icon={Wallet}
-          iconBg="bg-violet-50"
-          iconColor="text-violet-500"
-        />
-        <StatCard
-          title="Total Transactions"
-          value={String(totalTransactions)}
-          subtitle={`${receivedCount} in · ${sentCount} out`}
-          icon={Users}
-          iconBg="bg-emerald-50"
-          iconColor="text-emerald-500"
-        />
-        <StatCard
-          title="Currencies"
-          value={String(wallet?.accounts?.length || 0)}
-          subtitle="Active accounts"
-          icon={Wallet}
-          iconBg="bg-amber-50"
-          iconColor="text-amber-500"
-        />
-        <StatCard
-          title="Financial Score"
-          value={`${financialScore}/10`}
-          subtitle={financialLabel}
-          icon={TbReportAnalytics}
-          iconBg={financialIconBg}
-          iconColor={financialIconColor}
-        />
+        {loading || transactionsLoading ? (
+          <>
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+          </>
+        ) : (
+          <>
+            <StatCard
+              title="Total Balance"
+              value={`$${totalBalance.toLocaleString()}`}
+              subtitle="All accounts"
+              icon={Wallet}
+              iconBg="bg-violet-50"
+              iconColor="text-violet-500"
+            />
+            <StatCard
+              title="Total Transactions"
+              value={String(totalTransactions)}
+              subtitle={`${receivedCount} in · ${sentCount} out`}
+              icon={Users}
+              iconBg="bg-emerald-50"
+              iconColor="text-emerald-500"
+            />
+            <StatCard
+              title="Currencies"
+              value={String(wallet?.accounts?.length || 0)}
+              subtitle="Active accounts"
+              icon={Wallet}
+              iconBg="bg-amber-50"
+              iconColor="text-amber-500"
+            />
+            <StatCard
+              title="Financial Score"
+              value={`${financialScore}/10`}
+              subtitle={financialLabel}
+              icon={TbReportAnalytics}
+              iconBg={financialIconBg}
+              iconColor={financialIconColor}
+            />
+          </>
+        )}
       </section>
 
       {/* ── Main grid ──────────────────────────────────────────────────── */}
