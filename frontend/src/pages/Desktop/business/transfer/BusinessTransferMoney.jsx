@@ -19,7 +19,7 @@ const SummaryRow = ({ label, value }) => {
   )
 }
 
-const PersonalTransferMoney = () => {
+const BusinessTransferMoney = () => {
 
   const [amount, setAmount] = useState("");
   const [currency, setCurrency] = useState(""); 
@@ -289,4 +289,4 @@ const PersonalTransferMoney = () => {
   )
 }
 
-export default PersonalTransferMoney
+export default BusinessTransferMoney

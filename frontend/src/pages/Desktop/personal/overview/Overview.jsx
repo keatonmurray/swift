@@ -115,42 +115,68 @@ const Overview = () => {
     ) || 0
 
   // Format transactions
-  const transactions = walletTransactions.map((transaction) => ({
-    name: transaction.type
-      ?.replaceAll("_", " ")
-      ?.replace(/\b\w/g, (char) => char.toUpperCase()),
-    initials: transaction.currency,
-    time: new Date(transaction.created_at * 1000).toLocaleString(),
-    amount: `${transaction.type?.includes("in") ? "+" : "-"}$${Number(
-      transaction.amount
-    ).toLocaleString()}`,
-    isIncoming: transaction.type?.includes("in"),
-  }))
+  const transactions = walletTransactions.map((transaction) => {
+    const numericAmount = Number(transaction.amount || 0)
+
+    // Positive = received
+    // Negative = sent
+    const isIncoming = numericAmount > 0
+
+    return {
+      id: transaction.id,
+
+      name:
+        transaction.type
+          ?.replaceAll("_", " ")
+          ?.replace(/\b\w/g, (char) => char.toUpperCase()) || "Transaction",
+
+      initials: transaction.currency?.toUpperCase() || "USD",
+
+      time: new Date(transaction.created_at * 1000).toLocaleString(),
+
+      amount: `${isIncoming ? "+" : "-"}$${Math.abs(
+        numericAmount
+      ).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+
+      rawAmount: numericAmount,
+
+      isIncoming,
+    }
+  })
 
   const payrolls = transactions.map((t) => ({
     date: t.time,
     name: t.name,
     amount: t.amount,
+    rawAmount: t.rawAmount,
     currency: t.initials,
     status: t.isIncoming ? "Received" : "Sent",
   }))
 
   // Financial score
   const totalTransactions = payrolls.length
-  const receivedCount = payrolls.filter((p) => p.status === "Received").length
-  const sentCount = payrolls.filter((p) => p.status === "Sent").length
 
-  const parseAmount = (amount) =>
-    parseFloat(amount.replace(/[^\d.-]/g, "")) || 0
+  const receivedCount = payrolls.filter(
+    (p) => p.rawAmount > 0
+  ).length
+
+  const sentCount = payrolls.filter(
+    (p) => p.rawAmount < 0
+  ).length
 
   const totalReceived = payrolls
-    .filter((p) => p.status === "Received")
-    .reduce((sum, p) => sum + parseAmount(p.amount), 0)
+    .filter((p) => p.rawAmount > 0)
+    .reduce((sum, p) => sum + Math.abs(p.rawAmount), 0)
+
   const totalSent = payrolls
-    .filter((p) => p.status === "Sent")
-    .reduce((sum, p) => sum + parseAmount(p.amount), 0)
+    .filter((p) => p.rawAmount < 0)
+    .reduce((sum, p) => sum + Math.abs(p.rawAmount), 0)
 
   let financialScore = 0
+
   if (totalReceived > totalSent) financialScore += 4
   else if (totalReceived === totalSent) financialScore += 2
   else financialScore += 1
@@ -161,6 +187,7 @@ const Overview = () => {
 
   const receiveRatio =
     totalTransactions > 0 ? receivedCount / totalTransactions : 0
+
   if (receiveRatio >= 0.6) financialScore += 3
   else if (receiveRatio >= 0.4) financialScore += 2
   else financialScore += 1
@@ -168,6 +195,7 @@ const Overview = () => {
   financialScore = Math.min(financialScore, 10)
 
   let financialLabel = "Poor"
+
   if (financialScore >= 9) financialLabel = "Excellent"
   else if (financialScore >= 7) financialLabel = "Good"
   else if (financialScore >= 5) financialLabel = "Average"
@@ -175,6 +203,7 @@ const Overview = () => {
 
   let financialIconBg = "bg-red-50"
   let financialIconColor = "text-red-500"
+
   if (financialScore >= 9) {
     financialIconBg = "bg-emerald-50"
     financialIconColor = "text-emerald-500"
@@ -190,14 +219,23 @@ const Overview = () => {
   const spendTrend = walletTransactions.reduce((acc, transaction) => {
     const month = new Date(transaction.created_at * 1000).toLocaleString(
       "en-US",
-      { month: "short", year: "numeric" }
+      {
+        month: "short",
+        year: "numeric",
+      }
     )
+
     const existing = acc.find((item) => item.month === month)
+
     if (existing) {
       existing.amount += Number(transaction.amount || 0)
     } else {
-      acc.push({ month, amount: Number(transaction.amount || 0) })
+      acc.push({
+        month,
+        amount: Number(transaction.amount || 0),
+      })
     }
+
     return acc
   }, [])
 
@@ -205,12 +243,12 @@ const Overview = () => {
   const transactionStatus = [
     {
       name: "Received",
-      value: transactions.filter((t) => t.isIncoming).length,
+      value: transactions.filter((t) => t.rawAmount > 0).length,
       color: "#22c55e",
     },
     {
       name: "Sent",
-      value: transactions.filter((t) => !t.isIncoming).length,
+      value: transactions.filter((t) => t.rawAmount < 0).length,
       color: "#6366f1",
     },
   ]

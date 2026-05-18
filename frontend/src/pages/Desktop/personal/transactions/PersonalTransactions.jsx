@@ -54,9 +54,14 @@ const PersonalTransactions = () => {
     walletTransactions.length > 0
       ? walletTransactions.map((t) => {
           const numericAmount = Number(t.amount || 0)
+
+          // Positive = received
+          // Negative = sent
           const isReceived = numericAmount > 0
 
           return {
+            id: t.id,
+
             date: new Date(t.created_at * 1000).toLocaleDateString("en-US", {
               month: "short",
               day: "numeric",
@@ -73,15 +78,23 @@ const PersonalTransactions = () => {
                 ?.replaceAll("_", " ")
                 ?.replace(/\b\w/g, (char) => char.toUpperCase()) || "Transaction",
 
-            sub: t.reason || t.type || "",
+            sub: t.reason || t.status || "",
 
             currency: t.currency?.toUpperCase() || "USD",
 
+            // Properly format +/- based on actual amount
             amount: `${isReceived ? "+" : "-"}$${Math.abs(
               numericAmount
-            ).toLocaleString()}`,
+            ).toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}`,
+
+            rawAmount: numericAmount,
 
             status: isReceived ? "Received" : "Sent",
+
+            color: isReceived ? "bg-emerald-500" : "bg-indigo-500",
           }
         })
       : []
@@ -93,26 +106,31 @@ const PersonalTransactions = () => {
   )
 
   const received = transactions.filter(
-    (t) => t.status === "Received"
+    (t) => t.rawAmount > 0
   ).length
 
   const sent = transactions.filter(
-    (t) => t.status === "Sent"
+    (t) => t.rawAmount < 0
   ).length
 
   const summaryStatuses = [
-    { label: "Received", count: received, color: "bg-emerald-500" },
-    { label: "Sent", count: sent, color: "bg-indigo-500" },
+    {
+      label: "Received",
+      count: received,
+      color: "bg-emerald-500",
+    },
+    {
+      label: "Sent",
+      count: sent,
+      color: "bg-indigo-500",
+    },
   ]
 
-  // Recent activity
   const recentActivity = transactions.slice(0, 3).map((t) => ({
     title: t.description,
     amount: t.amount,
     time: t.time,
-    color: t.status === "Received"
-      ? "bg-emerald-500"
-      : "bg-indigo-500",
+    color: t.color,
   }))
 
   return (

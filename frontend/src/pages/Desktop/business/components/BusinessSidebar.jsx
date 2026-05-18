@@ -6,75 +6,51 @@ import {
 } from "react-icons/io5"
 
 import { GoCreditCard } from "react-icons/go"
+import { BsWallet2 } from "react-icons/bs";
 
 import {
   TbArrowsExchange,
-  TbReportAnalytics,
 } from "react-icons/tb"
 
-import { BsCreditCard2Front } from "react-icons/bs"
 
-import { MdOutlinePayments } from "react-icons/md"
-
+import { MdOutlineAccountBalance } from "react-icons/md";
+import { FaRegCalendarCheck } from "react-icons/fa";
 import {
-  RiGeminiLine,
   RiRobot2Line,
 } from "react-icons/ri"
 
 import { AiOutlineTeam } from "react-icons/ai"
-
+import { CiMoneyBill } from "react-icons/ci";
 import { LuWallet } from "react-icons/lu"
 
 import useCurrentUser from "@/hooks/useCurrentUser"
 
 const navItems = [
   { label: "Overview", icon: IoHomeOutline, to: "/business" },
-  { label: "Accounts", icon: GoCreditCard, to: "/business/accounts" },
+  { label: "Open a wallet", icon: BsWallet2, to: "/business/accounts" },
+  { label: "Transfer money", icon: GoCreditCard, to: "/business/transfer" },
+  { label: "Accept money", icon: CiMoneyBill, to: "/business/pending-transfer" },
   {
     label: "Transactions",
     icon: TbArrowsExchange,
     to: "/business/transactions",
   },
-  // {
-  //   label: "Payments",
-  //   icon: BsCreditCard2Front,
-  //   to: "/business/payments",
-  // },
-  // {
-  //   label: "Payouts",
-  //   icon: MdOutlinePayments,
-  //   to: "/business/payouts",
-  // },
+  { label: "Corporate Bills", icon: MdOutlineAccountBalance, to: "/business/payments" },
   {
     label: "Payroll",
-    icon: LuWallet,
+    icon: FaRegCalendarCheck,
     to: "/business/payroll",
   },
-  // {
-  //   label: "Reports",
-  //   icon: TbReportAnalytics,
-  //   to: "/business/reports",
-  // },
-  // {
-  //   label: "AI Insights",
-  //   icon: RiGeminiLine,
-  //   to: "/business/ai-insights",
-  // },
   {
     label: "Automations",
     icon: RiRobot2Line,
     to: "/business/automations",
   },
   {
-    label: "Recipients",
+    label: "Your Employees",
     icon: AiOutlineTeam,
     to: "/business/recipients",
   },
-  // {
-  //   label: "Settings",
-  //   icon: IoSettingsOutline,
-  //   to: "/business/settings",
-  // },
 ]
 
 const BusinessSidebar = () => {
