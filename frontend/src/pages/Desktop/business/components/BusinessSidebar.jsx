@@ -6,6 +6,7 @@ import {
 } from "react-icons/io5"
 
 import { GoCreditCard } from "react-icons/go"
+import { BsWallet2 } from "react-icons/bs";
 
 import {
   TbArrowsExchange,
@@ -27,12 +28,15 @@ import { LuWallet } from "react-icons/lu"
 
 const navItems = [
   { label: "Overview", icon: IoHomeOutline, to: "/business" },
-  { label: "Accounts", icon: GoCreditCard, to: "/business/accounts" },
+  { label: "Open a wallet", icon: BsWallet2, to: "/business/accounts" },
+  { label: "Transfer money", icon: BsWallet2, to: "/business/transfer" },
+  { label: "Accept money", icon: BsWallet2, to: "/business/pending-transfer" },
   {
     label: "Transactions",
     icon: TbArrowsExchange,
     to: "/business/transactions",
   },
+  { label: "Payouts", icon: BsWallet2, to: "/business/payments" },
   // {
   //   label: "Payments",
   //   icon: BsCreditCard2Front,

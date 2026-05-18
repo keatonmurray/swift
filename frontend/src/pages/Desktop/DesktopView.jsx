@@ -23,9 +23,11 @@ import BusinessEmployeePayrollDetail from "./business/payroll/EmployeePayrollDet
 import BusinessPayrollSettings from "./business/payroll/PayrollSettings";
 import BusinessAutomations from "./business/automations/Automations";
 import Account from "./business/account/Account";
-import Transactions from "./business/transactions/Transactions";
+import BusinessTransferMoney from "./business/transfer/BusinessTransferMoney";
+import BusinessPendingTransfer from "./business/pending-transfer/BusinessPendingTransfer";
 import Recipients from "./business/recipients/Recipients";
 import PersonalPay from "./personal/pay/PersonalPay";
+import Payments from "./business/payments/Payments";
 
 // Personal pages
 import PersonalOverview from "./personal/overview/Overview";
@@ -58,6 +60,21 @@ const DesktopView = () => {
           <Route
             path="payments"
             element={<BusinessPayments />}
+          />
+
+          <Route
+            path="transfer"
+            element={<BusinessTransferMoney />}
+          />
+
+          <Route
+            path="payments"
+            element={<Payments />}
+          />
+
+          <Route
+            path="pending-transfer"
+            element={<BusinessPendingTransfer />}
           />
 
           <Route path="accounts" element={<Account />} />

@@ -355,7 +355,7 @@ const Overview = () => {
 
       <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-5">
         <StatCard
-          title="Total Wallet Balance"
+          title="Total Corporate Balance"
           value={`$${totalBalance.toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
@@ -376,7 +376,7 @@ const Overview = () => {
         />
 
         <StatCard
-          title="Total Received"
+          title="Total Revenue"
           value={`$${totalReceived.toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
@@ -708,11 +708,14 @@ const Overview = () => {
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-[14px] font-semibold text-gray-900 mb-3">
-                  Incoming Transfers
+                  Total Company Revenue
                 </h2>
 
                 <p className="text-[28px] font-bold tracking-tight text-gray-900 leading-none">
-                  {receivedCount}
+                   {`$${totalBalance.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}`}
                 </p>
 
                 <p className="text-[12px] text-gray-400 mt-1">
@@ -732,18 +735,15 @@ const Overview = () => {
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-[14px] font-semibold text-gray-900 mb-3">
-                  Outgoing Transfers
+                  Total Sent
                 </h2>
-
                 <p className="text-[28px] font-bold tracking-tight text-gray-900 leading-none">
-                  {sentCount}
+                  ${totalSent.toLocaleString()}
                 </p>
-
                 <p className="text-[12px] text-gray-400 mt-1">
-                  Total outgoing transactions
+                  {sentCount} transactions
                 </p>
               </div>
-
               <button className="h-9 w-9 flex items-center justify-center rounded-xl border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-700 transition-colors flex-shrink-0">
                 <ArrowRight size={15} />
               </button>
