@@ -18,11 +18,12 @@ import {
 } from "react-icons/tb"
 
 import { LuGoal } from "react-icons/lu"
+import { BsWallet2 } from "react-icons/bs";
 
 const navItems = [
   { label: "Dashboard", icon: IoHomeOutline, to: "/personal" },
-  { label: "Account", icon: GoCreditCard, to: "/personal/account" },
-  { label: "Pay", icon: GoCreditCard, to: "/personal/pay" },
+  { label: "Open a wallet", icon: BsWallet2, to: "/personal/account" },
+  { label: "Your Account", icon: GoCreditCard, to: "/personal/pay" },
   {
     label: "Transactions",
     icon: TbArrowsExchange,

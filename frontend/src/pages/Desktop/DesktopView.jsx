@@ -31,6 +31,7 @@ import PersonalPay from "./personal/pay/PersonalPay";
 import PersonalOverview from "./personal/overview/Overview";
 import PersonalTransactions from "./personal/transactions/PersonalTransactions";
 import PersonalAccount from "./personal/account/PersonalAccount";
+import PersonalWalletTransfer from "./personal/wallet-transfer/PersonalWalletTransfer";
 
 const DesktopView = () => {
   return (
@@ -96,9 +97,12 @@ const DesktopView = () => {
         </Route>
       </Route>
 
-      {/* =========================
+      {
+      /* =========================
           PERSONAL ROUTES
-      ========================== */}
+      ========================== */
+      }
+      
       <Route element={<PrivateRoute allowedType="personal" />}>
         <Route
           path="/personal"
@@ -107,12 +111,11 @@ const DesktopView = () => {
           }
         >
           <Route index element={<PersonalOverview />} />
-
           <Route path="account" element={<PersonalAccount />} />
-
-          {/* Future Routes */}
           <Route path="pay" element={<PersonalPay />} />
           <Route path="transactions" element={<PersonalTransactions />} />
+          <Route path="send-to-wallet" element={<PersonalWalletTransfer />} />
+
           {/* <Route path="cards" element={<Cards />} /> */}
           {/* <Route path="expenses" element={<Expenses />} /> */}
           {/* <Route path="reports" element={<Reports />} /> */}

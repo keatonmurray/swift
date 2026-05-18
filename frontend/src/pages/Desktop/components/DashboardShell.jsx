@@ -1,5 +1,6 @@
 import { IoSearchOutline, IoNotificationsOutline } from "react-icons/io5"
 import { HiOutlineSparkles } from "react-icons/hi2"
+import { HiOutlineMenuAlt2 } from "react-icons/hi"
 
 /**
  * DashboardShell
@@ -16,55 +17,84 @@ import { HiOutlineSparkles } from "react-icons/hi2"
  *     ...page content...
  *   </DashboardShell>
  */
-const DashboardShell = ({ title, subtitle, actions, children }) => {
+const DashboardShell = ({
+  title,
+  subtitle,
+  actions,
+  children,
+  onMenuClick,
+}) => {
   return (
-    <div className="p-3 min-h-full">
-      <div className="bg-white rounded-[28px] p-7">
+    <div className="min-h-screen bg-white p-3">
+      <div className="min-h-full bg-white rounded-[32px] overflow-hidden">
         {/* Topbar */}
-        <header className="flex items-start justify-between gap-6 mb-6">
-          <div>
-            {title && (
-              <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">{title}</h1>
-            )}
-            {subtitle && (
-              <p className="text-sm text-gray-500 mt-1">{subtitle}</p>
-            )}
-          </div>
+        <header className="border-b border-zinc-200 px-5 py-5 sm:px-8">
+          <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
+            {/* LEFT */}
+            <div className="flex items-center gap-3">
+              {/* Mobile menu */}
+              <button
+                onClick={onMenuClick}
+                className="flex h-11 w-11 items-center justify-center rounded-2xl border border-zinc-200 bg-white lg:hidden"
+              >
+                <HiOutlineMenuAlt2 className="text-zinc-700" size={20} />
+              </button>
 
-          <div className="flex items-center gap-3">
-            {/* Optional per-page actions slot */}
-            {actions}
+              <div>
+                {title && (
+                  <h1 className="text-4xl font-semibold tracking-tight text-zinc-900">
+                    {title}
+                  </h1>
+                )}
 
-            {/* Search — pill input, hairline-light border */}
-            <div className="relative w-[320px]">
-              <IoSearchOutline
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                size={16}
-              />
-              <input
-                type="text"
-                placeholder="Search anything..."
-                className="w-full h-10 bg-gray-50 border border-gray-200 rounded-full pl-9 pr-14 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-gray-300"
-              />
-              <kbd className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] text-gray-500 bg-white border border-gray-200 rounded-md px-1.5 py-0.5 font-semibold">
-                ⌘ K
-              </kbd>
+                {subtitle && (
+                  <p className="mt-1 text-base text-zinc-500">
+                    {subtitle}
+                  </p>
+                )}
+              </div>
             </div>
 
-            {/* Notifications */}
-            <button className="h-10 w-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-gray-100 transition-colors">
-              <IoNotificationsOutline size={18} />
-            </button>
+            {/* RIGHT */}
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              {/* Optional per-page actions slot */}
+              {actions}
 
-            {/* AI assistant — black pill, brand stamp */}
-            <button className="h-10 w-10 rounded-full bg-black flex items-center justify-center text-white hover:bg-gray-900 transition-colors">
-              <HiOutlineSparkles size={16} />
-            </button>
+              {/* Search */}
+              <div className="relative w-full sm:w-[360px]">
+                <IoSearchOutline
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"
+                  size={18}
+                />
+
+                <input
+                  type="text"
+                  placeholder="Search anything..."
+                  className="h-14 w-full rounded-2xl border border-zinc-200 bg-white pl-12 pr-20 text-[15px] text-zinc-700 placeholder:text-zinc-400 outline-none transition-all focus:border-zinc-400"
+                />
+
+                <kbd className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg border border-zinc-200 bg-white px-2 py-1 text-xs font-medium text-zinc-500">
+                  ⌘ K
+                </kbd>
+              </div>
+
+              {/* Notifications */}
+              <button className="flex h-14 w-14 items-center justify-center rounded-2xl border border-zinc-200 bg-white text-zinc-700 transition-all hover:bg-zinc-50">
+                <IoNotificationsOutline size={20} />
+              </button>
+
+              {/* AI assistant */}
+              <button className="flex h-14 w-14 items-center justify-center rounded-2xl bg-black text-white transition-all hover:bg-zinc-900">
+                <HiOutlineSparkles size={18} />
+              </button>
+            </div>
           </div>
         </header>
 
         {/* Page content */}
-        {children}
+        <div className="p-5 sm:p-8">
+          {children}
+        </div>
       </div>
     </div>
   )
