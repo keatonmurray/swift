@@ -152,7 +152,7 @@ const Home = () => {
                 }}
                 className="font-display text-white mb-6"
               >
-                A gateway that runs your bookkeeping for you
+                A gateway that operates accounting for you
               </h1>
 
               <p
