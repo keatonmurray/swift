@@ -6,6 +6,10 @@ import {
   Wallet,
   ChevronDown,
   ArrowRight,
+  RefreshCw,
+  Loader2,
+  Lightbulb,
+  TrendingUp,
 } from "lucide-react"
 
 import {
@@ -66,6 +70,11 @@ const Overview = () => {
   const [transactionsLoading, setTransactionsLoading] = useState(true)
   const [walletTransactions, setWalletTransactions] = useState([])
 
+  // AI Insights state
+  const [aiSummary, setAiSummary] = useState(null)
+  const [aiLoading, setAiLoading] = useState(false)
+  const [aiError, setAiError] = useState(false)
+
   const userId = localStorage.getItem("user_id")
 
   // Retrieve wallet
@@ -100,12 +109,73 @@ const Overview = () => {
     }
   }
 
+  // Fetch AI Summary from Gemini
+  const fetchAiSummary = async (walletData, txns) => {
+    const token = localStorage.getItem("api_token")
+    if (!token) return
+
+    setAiLoading(true)
+    setAiError(false)
+
+    try {
+      const accounts = walletData?.accounts || []
+      const balance = accounts.reduce(
+        (sum, a) => sum + Number(a.balance || 0),
+        0
+      )
+      const currencies = accounts.map((a) => a.currency?.toUpperCase()).filter(Boolean)
+      const received = txns.filter((t) => Number(t.amount || 0) > 0).length
+      const sent = txns.filter((t) => Number(t.amount || 0) < 0).length
+
+      const recentTransactions = txns.slice(0, 8).map((t) => ({
+        type: t.type?.replaceAll("_", " ") || "transaction",
+        amount: Number(t.amount || 0),
+        currency: t.currency?.toUpperCase() || "USD",
+        status: Number(t.amount || 0) > 0 ? "Received" : "Sent",
+      }))
+
+      const payload = {
+        totalBalance: balance,
+        currencyCount: currencies.length,
+        transactionCount: txns.length,
+        receivedCount: received,
+        sentCount: sent,
+        currencies,
+        recentTransactions,
+      }
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/gemini/personal-summary`,
+        payload,
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+
+      if (response.data?.success && response.data?.data) {
+        setAiSummary(response.data.data)
+      } else {
+        setAiError(true)
+      }
+    } catch (err) {
+      console.error("AI summary fetch failed:", err)
+      setAiError(true)
+    } finally {
+      setAiLoading(false)
+    }
+  }
+
   useEffect(() => {
     if (userId) {
       handleRetrieveWallet()
       fetchWalletTransactions()
     }
   }, [userId])
+
+  // Trigger AI fetch once wallet + transactions are both loaded
+  useEffect(() => {
+    if (!loading && !transactionsLoading && wallet) {
+      fetchAiSummary(wallet, walletTransactions)
+    }
+  }, [loading, transactionsLoading])
 
   // Total balance
   const totalBalance =
@@ -497,54 +567,118 @@ const Overview = () => {
 
         {/* RIGHT SIDEBAR */}
         <aside className="col-span-12 lg:col-span-4 space-y-4">
-          {/* AI Insights */}
+          {/* AI Insights – Gemini Powered */}
           <div className="bg-white border border-gray-200 rounded-[20px] p-5">
             <div className="flex items-center justify-between mb-1">
               <h2 className="text-[14px] font-semibold text-gray-900 flex items-center gap-1.5">
                 <Sparkles size={14} className="text-violet-500" />
                 AI Insights
               </h2>
-              <span className="text-[10px] font-semibold text-violet-600 bg-violet-50 border border-violet-100 rounded-full px-2 py-0.5">
-                Beta
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-semibold text-violet-600 bg-violet-50 border border-violet-100 rounded-full px-2 py-0.5">
+                  Beta
+                </span>
+                <button
+                  onClick={() => wallet && fetchAiSummary(wallet, walletTransactions)}
+                  disabled={aiLoading}
+                  className="h-6 w-6 flex items-center justify-center rounded-lg border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-colors disabled:opacity-40"
+                  title="Refresh AI insights"
+                >
+                  <RefreshCw size={12} className={aiLoading ? "animate-spin" : ""} />
+                </button>
+              </div>
             </div>
             <p className="text-[12px] text-gray-400 mb-4">
-              Here&apos;s what AI found for you.
+              {aiSummary?.is_fallback
+                ? "Showing default insights."
+                : "Here\u0027s what AI found for you."}
             </p>
-            <div className="space-y-3">
-              <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-3">
+
+            {/* Loading state */}
+            {aiLoading && (
+              <div className="flex flex-col items-center justify-center py-6 gap-2">
+                <Loader2 size={20} className="text-violet-400 animate-spin" />
+                <p className="text-[12px] text-gray-400">Analyzing your finances…</p>
+              </div>
+            )}
+
+            {/* Error state */}
+            {!aiLoading && aiError && !aiSummary && (
+              <div className="bg-red-50 border border-red-100 rounded-xl p-3">
                 <div className="flex items-start gap-2.5">
-                  <CircleCheck
-                    size={14}
-                    className="text-emerald-600 flex-shrink-0 mt-0.5"
-                  />
+                  <CircleAlert size={14} className="text-red-500 flex-shrink-0 mt-0.5" />
                   <div>
                     <p className="text-[12px] font-semibold text-gray-900 leading-snug">
-                      Finances are healthy
+                      Unable to load AI insights
                     </p>
                     <p className="text-[11px] text-gray-500 mt-0.5 leading-relaxed">
-                      Your income exceeds spending this month.
+                      Please try again later or refresh.
                     </p>
                   </div>
                 </div>
               </div>
-              <div className="bg-amber-50 border border-amber-100 rounded-xl p-3">
-                <div className="flex items-start gap-2.5">
-                  <CircleAlert
-                    size={14}
-                    className="text-amber-500 flex-shrink-0 mt-0.5"
-                  />
-                  <div>
-                    <p className="text-[12px] font-semibold text-gray-900 leading-snug">
-                      Subscription renewal coming
-                    </p>
-                    <p className="text-[11px] text-gray-500 mt-0.5 leading-relaxed">
-                      3 subscriptions renew in the next 7 days.
+            )}
+
+            {/* Summary + Insights + Recommendation */}
+            {!aiLoading && aiSummary && (
+              <div className="space-y-3">
+                {/* Summary */}
+                <div className="bg-violet-50 border border-violet-100 rounded-xl p-3">
+                  <div className="flex items-start gap-2.5">
+                    <Sparkles size={14} className="text-violet-600 flex-shrink-0 mt-0.5" />
+                    <p className="text-[12px] text-gray-700 leading-relaxed">
+                      {aiSummary.summary}
                     </p>
                   </div>
                 </div>
+
+                {/* Insights */}
+                {aiSummary.insights?.map((insight, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-emerald-50 border border-emerald-100 rounded-xl p-3"
+                  >
+                    <div className="flex items-start gap-2.5">
+                      <Lightbulb
+                        size={14}
+                        className="text-emerald-600 flex-shrink-0 mt-0.5"
+                      />
+                      <p className="text-[12px] text-gray-700 leading-relaxed">
+                        {insight}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+
+                {/* Recommendation */}
+                {aiSummary.recommendation && (
+                  <div className="bg-amber-50 border border-amber-100 rounded-xl p-3">
+                    <div className="flex items-start gap-2.5">
+                      <TrendingUp
+                        size={14}
+                        className="text-amber-600 flex-shrink-0 mt-0.5"
+                      />
+                      <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-500 mb-0.5">
+                          Recommendation
+                        </p>
+                        <p className="text-[12px] text-gray-700 leading-relaxed">
+                          {aiSummary.recommendation}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
+            )}
+
+            {/* Initial empty state before first load */}
+            {!aiLoading && !aiError && !aiSummary && (
+              <div className="flex flex-col items-center justify-center py-6 gap-1">
+                <Sparkles size={18} className="text-gray-300" />
+                <p className="text-[12px] text-gray-400">Waiting for data…</p>
+              </div>
+            )}
           </div>
 
           {/* Quick Stats */}
